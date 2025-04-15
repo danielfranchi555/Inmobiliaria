@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  password  String
+  name      String
+  role      UserRole   @default(BUYER)
+  phone     String?
+  avatar    String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  favorites Favorite[]
+  Property  Property[]
+  reviews   Review[]   @relation("UserReviews")
+
+  @@index([email])
+}
+
+model Property {
+  id            String              @id @default(cuid())
+  title         String
+  description   String
+  price         Int
+  listingType   PropertyListingType
+  status        PropertyStatus      @default(AVAILABLE)
+  propertyType  PropertyType
+  address       String
+  currency      CurrencyType    
+  city          String
+  bedrooms      Int?
+  bathrooms     Int?
+  squareMeters  Float
+  parkingSpaces Int?
+  furnished     Boolean             @default(false)
+  images        String[]
+  featuredImage String?
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  views         Int                 @default(0)
+  userSellerId  String?
+  studio        Boolean             @default(false)
+  neighborhood  String
+  favorites     Favorite[]
+  User          User?               @relation(fields: [userSellerId], references: [id])
+  reviews       Review[]
+
+  @@index([city])
+  @@index([listingType])
+  @@index([status])
+  @@index([price])
+}
+
+model Review {
+  id             String   @id @default(cuid())
+  rating         Int
+  comment        String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userReviewerId String
+  propertyId     String
+  property       Property @relation(fields: [propertyId], references: [id])
+  userReviewer   User     @relation("UserReviews", fields: [userReviewerId], references: [id])
+
+  @@index([userReviewerId])
+  @@index([propertyId])
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  userId     String
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([propertyId])
+}
+
+enum UserRole {
+  BUYER
+  SELLER
+  ADMIN
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  COMMERCIAL
+  LAND
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  SOLD
+  RENTED
+  PENDING
+}
+
+enum PropertyListingType {
+  SALE // Para venta
+  RENT // Para alquiler
+}
+
+
+enum CurrencyType {
+  USD
+  ARG
+}
