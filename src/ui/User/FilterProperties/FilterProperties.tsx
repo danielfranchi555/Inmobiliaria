@@ -12,6 +12,10 @@ import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Delete, DeleteIcon, Trash2 } from "lucide-react";
+import { generatePriceRanges } from "@/app/utils/generatePriceRanges";
+import { Input } from "@/components/ui/input";
+import { useRef, useState } from "react";
+import { set } from "zod";
 
 const propertiesTypes = [
   { id: 1, name: "HOUSE", label: "House" },
@@ -25,10 +29,21 @@ const contractTypes = [
   { id: 2, name: "SALE", label: "Sale" },
 ];
 
-const FilterProperties = () => {
+type Props = {
+  rangePrices?: Number[];
+};
+
+const FilterProperties = ({ rangePrices }: Props) => {
+  const minPriceRef = useRef<HTMLInputElement>(null);
+  const maxPriceRef = useRef<HTMLInputElement>(null);
+
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = new URLSearchParams(searchParams.toString());
+
+  const priceRanges = rangePrices
+    ? generatePriceRanges(Number(rangePrices[0]), Number(rangePrices[1]))
+    : [];
 
   const setFilter = (key: string, value: string) => {
     if (value) {
@@ -40,10 +55,19 @@ const FilterProperties = () => {
     router.push(`?${params.toString()}`);
   };
 
+  const setFilterPrice = (key: string, value: string) => {
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    router.push(`?${params.toString()}`);
+  };
   const clearFilters = () => {
-    params.delete("propertyType");
-    params.delete("contractType");
     params.delete("maxPrice");
+    params.delete("minPrice");
+    if (minPriceRef.current) minPriceRef.current.value = "";
+    if (maxPriceRef.current) maxPriceRef.current.value = "";
     router.push(`?${params.toString()}`);
   };
 
@@ -66,6 +90,7 @@ const FilterProperties = () => {
                     {prop.label}
                   </SelectItem>
                 ))}
+                <SelectItem value="all">All</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -91,33 +116,55 @@ const FilterProperties = () => {
           </Select>
         </div>
         <div className="w-full flex flex-col gap-2">
-          <Label>Select max price </Label>
+          <Label>Select price </Label>
           <Select>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a contract" />
+              <SelectValue placeholder="Select price" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Contract</SelectLabel>
-                {contractTypes.map((item) => (
-                  <SelectItem key={item.id} value={item.name}>
-                    {item.label}
-                  </SelectItem>
-                ))}
+                <SelectLabel>Price</SelectLabel>
+                <div className="grid gap-2 p-2">
+                  <div className="flex items-center gap-2">
+                    <div className="flex flex-col gap-2">
+                      <Label>Min price</Label>
+                      <Input
+                        ref={minPriceRef}
+                        type="number"
+                        defaultValue={searchParams.get("minPrice") || ""}
+                        onChange={(e) =>
+                          setFilterPrice("minPrice", e.target.value)
+                        }
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <Label>Max price</Label>
+                      <Input
+                        ref={maxPriceRef}
+                        type="number"
+                        defaultValue={searchParams.get("maxPrice") || ""}
+                        onChange={(e) =>
+                          setFilterPrice("maxPrice", e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    disabled={
+                      !minPriceRef.current?.value && !maxPriceRef.current?.value
+                    }
+                    className="cursor-pointer"
+                    onClick={() => clearFilters()}
+                    variant="destructive"
+                  >
+                    {" "}
+                    <Trash2 /> Delete Filters
+                  </Button>
+                </div>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
-        {/* <div className="w-full flex items-end ">
-          <Button
-            onClick={() => clearFilters()}
-            className="max-w-max cursor-pointer"
-            type="button"
-          >
-            <Trash2 className="mr-2" />
-            Clear filters
-          </Button>
-        </div> */}
       </div>
     </div>
   );

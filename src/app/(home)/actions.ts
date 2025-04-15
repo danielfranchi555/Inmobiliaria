@@ -75,3 +75,29 @@ export async function getSimilarProperties(
     };
   }
 }
+
+export async function getPriceRangeUSD() {
+  try {
+    const pricesProperties = await prisma.property.findMany({
+      select: {
+        price: true,
+        currency: true,
+      },
+    });
+
+    const filter = pricesProperties.map((property) => {
+      return property.currency === "USD"
+        ? property.price
+        : property.price / 1000;
+    });
+
+    const minPriceUSD = Math.min(...filter);
+    const maxPriceUSD = Math.max(...filter);
+
+    const data = [minPriceUSD, maxPriceUSD];
+
+    return { success: true, error: null, data };
+  } catch (error) {
+    return { success: false, data: null, error: error };
+  }
+}

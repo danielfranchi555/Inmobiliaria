@@ -79,11 +79,7 @@ export async function createProperty(data: Inputs) {
 
 export async function getProperties() {
   try {
-    const properties = await prisma.property.findMany({
-      where: {
-        status: "AVAILABLE",
-      },
-    });
+    const properties = await prisma.property.findMany({});
     return {
       success: true,
       data: properties,
