@@ -11,11 +11,9 @@ import {
 import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Delete, DeleteIcon, Trash2 } from "lucide-react";
-import { generatePriceRanges } from "@/app/utils/generatePriceRanges";
+import { Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useRef, useState } from "react";
-import { set } from "zod";
+import { useRef } from "react";
 
 const propertiesTypes = [
   { id: 1, name: "HOUSE", label: "House" },
@@ -29,21 +27,13 @@ const contractTypes = [
   { id: 2, name: "SALE", label: "Sale" },
 ];
 
-type Props = {
-  rangePrices?: Number[];
-};
-
-const FilterProperties = ({ rangePrices }: Props) => {
+const FilterProperties = () => {
   const minPriceRef = useRef<HTMLInputElement>(null);
   const maxPriceRef = useRef<HTMLInputElement>(null);
 
   const searchParams = useSearchParams();
   const router = useRouter();
   const params = new URLSearchParams(searchParams.toString());
-
-  const priceRanges = rangePrices
-    ? generatePriceRanges(Number(rangePrices[0]), Number(rangePrices[1]))
-    : [];
 
   const setFilter = (key: string, value: string) => {
     if (value) {
@@ -52,7 +42,7 @@ const FilterProperties = ({ rangePrices }: Props) => {
       params.delete(key);
     }
 
-    router.push(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
 
   const setFilterPrice = (key: string, value: string) => {
@@ -61,7 +51,7 @@ const FilterProperties = ({ rangePrices }: Props) => {
     } else {
       params.delete(key);
     }
-    router.push(`?${params.toString()}`);
+    router.replace(`?${params.toString()}`, { scroll: false });
   };
   const clearFilters = () => {
     params.delete("maxPrice");
@@ -78,7 +68,7 @@ const FilterProperties = ({ rangePrices }: Props) => {
         {/* SELECT TYPE PROPERTY */}
         <div className="w-full flex flex-col gap-2">
           <Label>Property Type</Label>
-          <Select onValueChange={(value) => setFilter("propertyType", value)}>
+          <Select onValueChange={(value) => setFilter("Type", value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a type" />
             </SelectTrigger>
@@ -94,12 +84,11 @@ const FilterProperties = ({ rangePrices }: Props) => {
               </SelectGroup>
             </SelectContent>
           </Select>
-          <input type="hidden" name="propertyType" />
         </div>
         {/* // SELECT PRICE MAX */}
         <div className="w-full flex flex-col gap-2">
           <Label>Contract Type </Label>
-          <Select onValueChange={(value) => setFilter("contractType", value)}>
+          <Select onValueChange={(value) => setFilter("Contract", value)}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a contract" />
             </SelectTrigger>
@@ -131,9 +120,9 @@ const FilterProperties = ({ rangePrices }: Props) => {
                       <Input
                         ref={minPriceRef}
                         type="number"
-                        defaultValue={searchParams.get("minPrice") || ""}
+                        defaultValue={searchParams.get("Minprice") || ""}
                         onChange={(e) =>
-                          setFilterPrice("minPrice", e.target.value)
+                          setFilterPrice("Minprice", e.target.value)
                         }
                       />
                     </div>
@@ -142,9 +131,9 @@ const FilterProperties = ({ rangePrices }: Props) => {
                       <Input
                         ref={maxPriceRef}
                         type="number"
-                        defaultValue={searchParams.get("maxPrice") || ""}
+                        defaultValue={searchParams.get("Maxprice") || ""}
                         onChange={(e) =>
-                          setFilterPrice("maxPrice", e.target.value)
+                          setFilterPrice("Maxprice", e.target.value)
                         }
                       />
                     </div>

@@ -3,14 +3,14 @@ import { getProperties } from "../admin/properties/actions";
 import { filteredData } from "../utils/dataFilter";
 import { PropertyType } from "@prisma/client";
 import ListProperties from "@/ui/User/ListProperties/ListProperties";
-import { DolarPrice } from "@/ui/User/DolarPrice/DolarPrice";
 import { getPriceRangeUSD } from "./actions";
+import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
 
 type SearchParams = Promise<{
-  propertyType?: string;
-  contractType?: string;
-  minPrice?: string;
-  maxPrice?: string;
+  Type?: string;
+  Contract?: string;
+  Minprice?: string;
+  Maxprice?: string;
 }>;
 export default async function Home({
   searchParams,
@@ -26,16 +26,17 @@ export default async function Home({
       </div>
     );
   }
-  const { contractType, minPrice, propertyType, maxPrice } = await searchParams;
+  const { Contract, Minprice, Type, Maxprice } = await searchParams;
 
   const filters = {
-    propertyType: propertyType as PropertyType,
-    contractType: contractType as string,
-    minPrice: minPrice as string,
-    maxPrice: maxPrice as string,
+    Type: Type as PropertyType,
+    Contract: Contract as string,
+    Minprice: Minprice as string,
+    Maxprice: Maxprice as string,
   };
 
   const dataFiltered = filteredData(data, filters);
+
   const {
     data: rangePrice,
     error: errorRange,
@@ -47,7 +48,7 @@ export default async function Home({
 
   return (
     <div className=" grid gap-8 w-full ">
-      <main className="flex w-full flex-col h-full gap-10 p-8 md:p-20 justify-center text-center bg-gray-50 ">
+      <main className="flex w-full flex-col  h-full p-4 gap-4 md:gap-8 md:p-20 justify-center text-center bg-gray-50 ">
         <section className="flex flex-col gap-4">
           <h1 className="text-5xl text-black font-bold">
             Find your ideal property
@@ -57,11 +58,14 @@ export default async function Home({
           </p>
         </section>
         <div className=" w-full bg-white p-6 flex justify-center items-center shadow-md rounded-lg">
-          <FilterProperties rangePrices={rangePrice} />
-          {/* <DolarPrice /> */}
+          <FilterProperties />
         </div>
+        <ShowFilters />
       </main>
-      <section className="px-6">
+      <section
+        id="property-list"
+        className="px-6 min-h-[600px] flex flex-col gap-4"
+      >
         <ListProperties data={dataFiltered} />
       </section>
     </div>

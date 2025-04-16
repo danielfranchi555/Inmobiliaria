@@ -1,10 +1,10 @@
 import { Property } from "@prisma/client";
 
 type Filters = {
-  propertyType: string;
-  contractType: string;
-  minPrice: string;
-  maxPrice: string;
+  Type: string;
+  Contract: string;
+  Minprice: string;
+  Maxprice: string;
 };
 
 export const filteredData = (
@@ -12,16 +12,19 @@ export const filteredData = (
   filters: Filters
 ): Property[] => {
   return data.filter((property) => {
-    const { propertyType, contractType, minPrice, maxPrice } = filters;
+    const { Type, Contract, Minprice, Maxprice } = filters;
 
-    const propertyTypeFilter = propertyType || "";
-    const contractTypeFilter = contractType || "";
-    const minPriceFilter = minPrice || "";
-    const maxPriceFilter = maxPrice || "";
+    // const propertyTypeAllFilter = propertyType || "";
+    const propertyTypeFilter = Type || "";
+    const contractTypeFilter = Contract || "";
+    const minPriceFilter = Minprice || "";
+    const maxPriceFilter = Maxprice || "";
+    console.log({ TypeFrofilter: Type });
 
     const matchesPropertyType = propertyTypeFilter
       ? property.propertyType === propertyTypeFilter
       : true;
+
     const matchesContractType = contractTypeFilter
       ? property.listingType === contractTypeFilter
       : true;
