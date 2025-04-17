@@ -121,11 +121,11 @@ const FilterProperties = () => {
         <div className="w-full flex flex-col gap-2 ">
           <Label>Select price </Label>
           <Select>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full ">
               {priceDisplay() || "Select price"}
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
+              <SelectGroup className="">
                 <SelectLabel>Price</SelectLabel>
                 <div className="grid gap-2 p-2 ">
                   <div>
@@ -147,8 +147,8 @@ const FilterProperties = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="flex items-center gap-2 ">
-                    <div className="flex flex-col gap-2">
+                  <div className="flex flex-col md:flex items-center gap-2 ">
+                    <div className="flex w-full flex-col gap-2">
                       <Label>Min price</Label>
                       <Input
                         ref={minPriceRef}
@@ -159,7 +159,7 @@ const FilterProperties = () => {
                         }}
                       />
                     </div>
-                    <div className="flex flex-col gap-2">
+                    <div className="flex w-full flex-col gap-2">
                       <Label>Max price</Label>
                       <Input
                         ref={maxPriceRef}

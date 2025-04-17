@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Filter, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 export const ShowFilters = () => {
   const params = useSearchParams();
   const router = useRouter();
@@ -28,8 +29,6 @@ export const ShowFilters = () => {
   }, [params]);
 
   const deleteParams = (key: string) => {
-    console.log(key);
-
     const parseKey = capitalizeFirstLetter(key);
     if (key) {
       const params = new URLSearchParams(window.location.search);
