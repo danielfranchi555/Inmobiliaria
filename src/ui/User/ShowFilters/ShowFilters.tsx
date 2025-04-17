@@ -28,6 +28,8 @@ export const ShowFilters = () => {
   }, [params]);
 
   const deleteParams = (key: string) => {
+    console.log(key);
+
     const parseKey = capitalizeFirstLetter(key);
     if (key) {
       const params = new URLSearchParams(window.location.search);

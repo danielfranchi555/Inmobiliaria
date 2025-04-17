@@ -5,6 +5,7 @@ type Filters = {
   Contract: string;
   Minprice: string;
   Maxprice: string;
+  Currency: string;
 };
 
 export const filteredData = (
@@ -12,14 +13,14 @@ export const filteredData = (
   filters: Filters
 ): Property[] => {
   return data.filter((property) => {
-    const { Type, Contract, Minprice, Maxprice } = filters;
+    const { Type, Contract, Minprice, Maxprice, Currency } = filters;
 
     // const propertyTypeAllFilter = propertyType || "";
     const propertyTypeFilter = Type || "";
     const contractTypeFilter = Contract || "";
     const minPriceFilter = Minprice || "";
     const maxPriceFilter = Maxprice || "";
-    console.log({ TypeFrofilter: Type });
+    const currencyFilter = Currency || "";
 
     const matchesPropertyType = propertyTypeFilter
       ? property.propertyType === propertyTypeFilter
@@ -37,9 +38,14 @@ export const filteredData = (
       ? property.price <= Number(maxPriceFilter)
       : true;
 
+    const matchesCurrency = currencyFilter
+      ? property.currency === currencyFilter
+      : true;
+
     return (
       matchesPropertyType &&
       matchesContractType &&
+      matchesCurrency &&
       matchesMinPrice &&
       matchesMaxPrice
     );

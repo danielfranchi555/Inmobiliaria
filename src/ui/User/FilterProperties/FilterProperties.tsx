@@ -27,12 +27,18 @@ const contractTypes = [
   { id: 2, name: "SALE", label: "Sale" },
 ];
 
+const currency = ["USD", "ARG"];
+
 const FilterProperties = () => {
   const minPriceRef = useRef<HTMLInputElement>(null);
   const maxPriceRef = useRef<HTMLInputElement>(null);
 
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const minPrice = searchParams.get("Minprice") || "";
+  const maxPrice = searchParams.get("Maxprice") || "";
+
   const params = new URLSearchParams(searchParams.toString());
 
   const setFilter = (key: string, value: string) => {
@@ -41,7 +47,6 @@ const FilterProperties = () => {
     } else {
       params.delete(key);
     }
-
     router.replace(`?${params.toString()}`, { scroll: false });
   };
 
@@ -53,12 +58,21 @@ const FilterProperties = () => {
     }
     router.replace(`?${params.toString()}`, { scroll: false });
   };
+
   const clearFilters = () => {
     params.delete("maxPrice");
     params.delete("minPrice");
     if (minPriceRef.current) minPriceRef.current.value = "";
     if (maxPriceRef.current) maxPriceRef.current.value = "";
     router.push(`?${params.toString()}`);
+  };
+
+  const priceDisplay = () => {
+    if (!minPrice && !maxPrice) return "Select price";
+    if (!minPrice && !maxPrice) return "Select price";
+    if (minPrice && maxPrice) return `$${minPrice} - $${maxPrice}`;
+    if (minPrice) return `$${minPrice}`;
+    if (maxPrice) return `Up to $${maxPrice}`;
   };
 
   return (
@@ -85,7 +99,7 @@ const FilterProperties = () => {
             </SelectContent>
           </Select>
         </div>
-        {/* // SELECT PRICE MAX */}
+        {/* // SELECT CONTRACT */}
         <div className="w-full flex flex-col gap-2">
           <Label>Contract Type </Label>
           <Select onValueChange={(value) => setFilter("Contract", value)}>
@@ -104,26 +118,45 @@ const FilterProperties = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className="w-full flex flex-col gap-2">
+        <div className="w-full flex flex-col gap-2 ">
           <Label>Select price </Label>
           <Select>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select price" />
+              {priceDisplay() || "Select price"}
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Price</SelectLabel>
-                <div className="grid gap-2 p-2">
-                  <div className="flex items-center gap-2">
+                <div className="grid gap-2 p-2 ">
+                  <div>
+                    <Select
+                      onValueChange={(value) => setFilter("Currency", value)}
+                    >
+                      <SelectTrigger className="w-full">
+                        {searchParams.get("Currency") || "Select currency"}
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Contract</SelectLabel>
+                          {currency.map((item, index) => (
+                            <SelectItem key={index} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex items-center gap-2 ">
                     <div className="flex flex-col gap-2">
                       <Label>Min price</Label>
                       <Input
                         ref={minPriceRef}
                         type="number"
                         defaultValue={searchParams.get("Minprice") || ""}
-                        onChange={(e) =>
-                          setFilterPrice("Minprice", e.target.value)
-                        }
+                        onChange={(e) => {
+                          setFilterPrice("Minprice", e.target.value);
+                        }}
                       />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -132,9 +165,9 @@ const FilterProperties = () => {
                         ref={maxPriceRef}
                         type="number"
                         defaultValue={searchParams.get("Maxprice") || ""}
-                        onChange={(e) =>
-                          setFilterPrice("Maxprice", e.target.value)
-                        }
+                        onChange={(e) => {
+                          setFilterPrice("Maxprice", e.target.value);
+                        }}
                       />
                     </div>
                   </div>

@@ -11,6 +11,7 @@ type SearchParams = Promise<{
   Contract?: string;
   Minprice?: string;
   Maxprice?: string;
+  Currency?: string;
 }>;
 export default async function Home({
   searchParams,
@@ -26,25 +27,17 @@ export default async function Home({
       </div>
     );
   }
-  const { Contract, Minprice, Type, Maxprice } = await searchParams;
+  const { Contract, Minprice, Type, Maxprice, Currency } = await searchParams;
 
   const filters = {
     Type: Type as PropertyType,
     Contract: Contract as string,
     Minprice: Minprice as string,
     Maxprice: Maxprice as string,
+    Currency: Currency as string,
   };
 
   const dataFiltered = filteredData(data, filters);
-
-  const {
-    data: rangePrice,
-    error: errorRange,
-    success: successRange,
-  } = await getPriceRangeUSD();
-  if (!rangePrice || errorRange || !successRange) {
-    return <h4>no HAY RANGO DE PRECIOS</h4>;
-  }
 
   return (
     <div className=" grid gap-8 w-full ">
