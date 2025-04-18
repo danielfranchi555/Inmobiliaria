@@ -2,6 +2,7 @@ import FilterProperties from "@/ui/User/FilterProperties/FilterProperties";
 import { getProperties } from "../admin/properties/actions";
 import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
 import HomePageClient from "./pageClient";
+import { Suspense } from "react";
 
 export default async function Home() {
   const { data, error, success, message } = await getProperties();
@@ -35,7 +36,9 @@ export default async function Home() {
         className="px-6 min-h-[600px] flex flex-col gap-4"
       >
         <main>
-          <HomePageClient data={data} />
+          <Suspense fallback={<div>Loading properties...</div>}>
+            <HomePageClient data={data} />
+          </Suspense>
         </main>
       </section>
     </div>
