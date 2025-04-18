@@ -1,8 +1,16 @@
 import FilterProperties from "@/ui/User/FilterProperties/FilterProperties";
 import { getProperties } from "../admin/properties/actions";
 import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
-import HomePageClient from "./pageClient";
-import { Suspense } from "react";
+import dynamic from "next/dynamic";
+
+const HomePageClient = dynamic(() => import("./pageClient"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex justify-center items-center h-screen">
+      <h1 className="text-2xl font-bold text-red-500">Loading...</h1>
+    </div>
+  ),
+});
 
 export default async function Home() {
   const { data, error, success, message } = await getProperties();
