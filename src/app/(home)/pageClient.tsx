@@ -5,12 +5,13 @@ import { Property } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useMemo } from "react";
 import { filteredData } from "../utils/dataFilter";
+import dynamic from "next/dynamic";
 
 type Props = {
   data: Property[];
 };
 
-export default function HomePageClient({ data }: Props) {
+function HomePageClient({ data }: Props) {
   const searchParams = useSearchParams();
 
   const filters = {
@@ -24,7 +25,7 @@ export default function HomePageClient({ data }: Props) {
   const filtered = useMemo(() => filteredData(data, filters), [data, filters]);
 
   return (
-    <Suspense fallback={<div>Loading properties...</div>}>
+    <>
       {filtered.length === 0 ? (
         <div className="text-center text-muted-foreground">
           No properties found
@@ -32,6 +33,15 @@ export default function HomePageClient({ data }: Props) {
       ) : (
         <ListProperties data={filtered} />
       )}
-    </Suspense>
+    </>
   );
 }
+
+export default dynamic(async () => HomePageClient, {
+  ssr: false,
+  loading: () => (
+    <div className="flex justify-center items-center h-screen">
+      <h1 className="text-2xl font-bold text-red-500">Loading...</h1>
+    </div>
+  ),
+});
