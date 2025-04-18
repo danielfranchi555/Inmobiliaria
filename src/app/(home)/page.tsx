@@ -36,9 +36,7 @@ export default async function Home() {
         className="px-6 min-h-[600px] flex flex-col gap-4"
       >
         <main>
-          <Suspense fallback={<div>Loading properties...</div>}>
-            <HomePageClient data={data} />
-          </Suspense>
+          <HomePageClient data={data} />
         </main>
       </section>
     </div>

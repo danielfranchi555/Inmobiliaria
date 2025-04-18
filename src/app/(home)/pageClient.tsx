@@ -3,7 +3,7 @@
 import ListProperties from "@/ui/User/ListProperties/ListProperties";
 import { Property } from "@prisma/client";
 import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { filteredData } from "../utils/dataFilter";
 
 type Props = {
@@ -24,16 +24,14 @@ export default function HomePageClient({ data }: Props) {
   const filtered = useMemo(() => filteredData(data, filters), [data, filters]);
 
   return (
-    <>
-      <>
-        {filtered.length === 0 ? (
-          <div className="text-center text-muted-foreground">
-            No properties found
-          </div>
-        ) : (
-          <ListProperties data={filtered} />
-        )}
-      </>
-    </>
+    <Suspense fallback={<div>Loading properties...</div>}>
+      {filtered.length === 0 ? (
+        <div className="text-center text-muted-foreground">
+          No properties found
+        </div>
+      ) : (
+        <ListProperties data={filtered} />
+      )}
+    </Suspense>
   );
 }
