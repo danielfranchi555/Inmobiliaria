@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Filter, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { set } from "zod";
 
 export const ShowFilters = () => {
   const params = useSearchParams();
@@ -13,8 +12,7 @@ export const ShowFilters = () => {
   const [filters, setFilters] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!params) return;
-    console.log(params);
+    if (!params || params.get("page")) return;
 
     const entries = Array.from(params.entries());
     console.log({ entries });

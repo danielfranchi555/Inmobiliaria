@@ -2,6 +2,7 @@ import FilterProperties from "@/ui/User/FilterProperties/FilterProperties";
 import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
 import ListProperties from "@/ui/User/ListProperties/ListProperties";
 import { getProperties } from "./actions";
+import { PaginationWrapper } from "@/ui/Pagination/Pagination";
 
 type Props = {
   searchParams: Promise<{
@@ -10,11 +11,14 @@ type Props = {
     Minprice: string;
     Maxprice: string;
     Currency: string;
+    page?: string; // nuevo parámetro opcional para página
+    pageSize?: string;
   }>;
 };
 
 export default async function Home({ searchParams }: Props) {
-  const { data, error, success, message } = await getProperties(searchParams);
+  const { data, error, success, message, pagination } =
+    await getProperties(searchParams);
 
   if (!data || error || !success) {
     return (
@@ -46,6 +50,10 @@ export default async function Home({ searchParams }: Props) {
       >
         <main>
           <ListProperties data={data} />
+          <PaginationWrapper
+            currentPage={pagination?.page || 1}
+            totalPages={pagination?.pageSize || 1}
+          />
         </main>
       </section>
     </div>

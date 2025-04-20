@@ -109,6 +109,8 @@ export async function getProperties(
     Minprice: string;
     Maxprice: string;
     Currency: string;
+    page?: string; // nuevo parámetro opcional para página
+    pageSize?: string;
   }>
 ) {
   const params = await searchParams;
@@ -140,39 +142,21 @@ export async function getProperties(
     };
   }
 
-  // if (params.Minprice && params.Maxprice) {
-  //   where.price = {
-  //     gte: parseInt(params.Minprice),
-  //     lte: parseInt(params.Maxprice),
-  //   };
-  // }
+  // Parámetros para paginación
+  const page = params.page ? Math.max(parseInt(params.page), 1) : 1;
+  const pageSize = params.pageSize ? Math.max(parseInt(params.pageSize), 1) : 3;
+
+  const skip = (page - 1) * pageSize;
+  const take = pageSize;
 
   try {
     const properties = await prisma.property.findMany({
       where,
-      // select: {
-      //   id: true,
-      //   title: true,
-      //   description: true,
-      //   price: true,
-      //   listingType: true,
-      //   status: true,
-      //   propertyType: true,
-      //   address: true,
-      //   currency: true,
-      //   city: true,
-      //   bedrooms: true,
-      //   bathrooms: true,
-      //   squareMeters: true,
-      //   parkingSpaces: true,
-      //   furnished: true,
-      //   neighborhood: true,
-      //   studio: true,
-      //   userSellerId: true,
-      //   views: true,
-      //   images: true,
-      //   // Excluimos las imágenes y cualquier campo problemático
-      // },
+      skip, // usa skip calculado
+      take, // usa take calculado (3)
+      orderBy: {
+        createdAt: "desc", // opcional: ordena por fecha
+      },
     });
 
     return {
@@ -180,6 +164,10 @@ export async function getProperties(
       data: properties, // <-- ✅ Esto soluciona el error
       error: null,
       message: "properties fetched",
+      pagination: {
+        page,
+        pageSize,
+      },
     };
   } catch (error) {
     return {
