@@ -37,7 +37,7 @@ model Property {
   city          String
   bedrooms      Int?
   bathrooms     Int?
-  squareMeters  Float
+  squareMeters  Float 
   parkingSpaces Int?
   furnished     Boolean             @default(false)
   images        String[]

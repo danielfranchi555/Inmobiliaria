@@ -1,20 +1,12 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
 import imageTest from "../../../../image/test-image-1.webp";
 import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
-import { Property } from "@prisma/client";
+import { PropertyType } from "@/app/types/property";
 
 type Props = {
-  dataItem: Property;
+  dataItem: PropertyType;
   widht: string;
 };
 export function CardPropertie({ dataItem, widht }: Props) {

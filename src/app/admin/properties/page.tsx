@@ -1,8 +1,8 @@
 import TableProperties from "@/ui/Admin/TableProperties/TableProperties";
-import { getProperties } from "./actions";
+import { getPropertiesByAdmin } from "./actions";
 
 export default async function page() {
-  const { data, error, message } = await getProperties();
+  const { data, error, message } = await getPropertiesByAdmin();
   if (error) {
     return (
       <div className="flex flex-col w-full items-center justify-center h-screen">

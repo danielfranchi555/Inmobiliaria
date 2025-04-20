@@ -1,4 +1,4 @@
-import { Property } from "@prisma/client";
+import { PropertyType } from "../types/property";
 
 type Filters = {
   Type: string;
@@ -9,9 +9,9 @@ type Filters = {
 };
 
 export const filteredData = (
-  data: Property[],
+  data: PropertyType[],
   filters: Filters
-): Property[] => {
+): PropertyType[] => {
   return data.filter((property) => {
     const { Type, Contract, Minprice, Maxprice, Currency } = filters;
 

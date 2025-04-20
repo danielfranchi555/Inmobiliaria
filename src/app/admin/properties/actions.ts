@@ -77,12 +77,37 @@ export async function createProperty(data: Inputs) {
   }
 }
 
-export async function getProperties() {
+export async function getPropertiesByAdmin() {
   try {
-    const properties = await prisma.property.findMany({});
+    const properties = await prisma.property.findMany({
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        price: true,
+        listingType: true,
+        status: true,
+        propertyType: true,
+        address: true,
+        currency: true,
+        city: true,
+        bedrooms: true,
+        bathrooms: true,
+        squareMeters: true,
+        parkingSpaces: true,
+        furnished: true,
+        neighborhood: true,
+        studio: true,
+        userSellerId: true,
+        views: true,
+        images: true,
+        // Excluimos las imágenes y cualquier campo problemático
+      },
+    });
+
     return {
       success: true,
-      data: properties,
+      data: properties, // <-- ✅ Esto soluciona el error
       error: null,
       message: "properties fetched",
     };

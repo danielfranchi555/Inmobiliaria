@@ -1,19 +1,20 @@
 import FilterProperties from "@/ui/User/FilterProperties/FilterProperties";
-import { getProperties } from "../admin/properties/actions";
 import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
-import dynamic from "next/dynamic";
+import ListProperties from "@/ui/User/ListProperties/ListProperties";
+import { getProperties } from "./actions";
 
-const HomePageClient = dynamic(() => import("./pageClient"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex justify-center items-center h-screen">
-      <h1 className="text-2xl font-bold text-red-500">Loading...</h1>
-    </div>
-  ),
-});
+type Props = {
+  searchParams: Promise<{
+    Type: string;
+    Contract: string;
+    Minprice: string;
+    Maxprice: string;
+    Currency: string;
+  }>;
+};
 
-export default async function Home() {
-  const { data, error, success, message } = await getProperties();
+export default async function Home({ searchParams }: Props) {
+  const { data, error, success, message } = await getProperties(searchParams);
 
   if (!data || error || !success) {
     return (
@@ -44,7 +45,7 @@ export default async function Home() {
         className="px-6 min-h-[600px] flex flex-col gap-4"
       >
         <main>
-          <HomePageClient data={data} />
+          <ListProperties data={data} />
         </main>
       </section>
     </div>

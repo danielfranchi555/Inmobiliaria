@@ -1,15 +1,15 @@
-import { Property } from "@prisma/client";
 import { CardPropertie } from "./CardPropertie/CardPropertie";
 import Link from "next/link";
+import { PropertyType } from "@/app/types/property";
 
 type Props = {
-  data: Property[];
+  data: PropertyType[];
 };
 
 const ListProperties = ({ data }: Props) => {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-[400px]">
+      <div className="flex items-cenvter justify-center h-[400px]">
         <h1 className="text-2xl font-bold">No properties available</h1>
       </div>
     );
@@ -19,9 +19,9 @@ const ListProperties = ({ data }: Props) => {
     <div className="w-full  flex flex-col gap-8">
       <h3 className="text-2xl font-bold">List Properties</h3>
       <div className="grid gap-4 md:grid-cols-3">
-        {data.map((item: Property) => (
+        {data.map((item: PropertyType) => (
           <Link href={`/propertie/${item.id}`} key={item.id}>
-            <CardPropertie widht="w-full" dataItem={item as Property} />
+            <CardPropertie widht="w-full" dataItem={item as PropertyType} />
           </Link>
         ))}
       </div>

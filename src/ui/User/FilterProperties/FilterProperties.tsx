@@ -13,7 +13,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useRef } from "react";
+import { useRef, useState, useTransition } from "react";
+import { set } from "zod";
 
 const propertiesTypes = [
   { id: 1, name: "HOUSE", label: "House" },
@@ -32,7 +33,7 @@ const currency = ["USD", "ARG"];
 const FilterProperties = () => {
   const minPriceRef = useRef<HTMLInputElement>(null);
   const maxPriceRef = useRef<HTMLInputElement>(null);
-
+  const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -47,7 +48,9 @@ const FilterProperties = () => {
     } else {
       params.delete(key);
     }
-    router.replace(`?${params.toString()}`, { scroll: false });
+    setTransition(async () => {
+      router.replace(`?${params.toString()}`, { scroll: false });
+    });
   };
 
   const setFilterPrice = (key: string, value: string) => {

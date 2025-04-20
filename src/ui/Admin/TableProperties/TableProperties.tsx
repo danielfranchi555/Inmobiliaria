@@ -14,9 +14,10 @@ import { Property } from "@prisma/client";
 import Link from "next/link";
 import { deleteProperty } from "@/app/admin/properties/actions";
 import Alert from "@/ui/Alert/Alert";
+import { PropertyType } from "@/app/types/property";
 
 type TablePropertiesProps = {
-  data: Property[];
+  data: PropertyType[];
   total: number;
 };
 const TableProperties = ({ data, total }: TablePropertiesProps) => {

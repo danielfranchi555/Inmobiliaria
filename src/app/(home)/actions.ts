@@ -101,3 +101,67 @@ export async function getPriceRangeUSD() {
     return { success: false, data: null, error: error };
   }
 }
+
+export async function getProperties(
+  searchParams: Promise<{
+    Type: string;
+    Contract: string;
+    Minprice: string;
+    Maxprice: string;
+    Currency: string;
+  }>
+) {
+  const params = await searchParams;
+  const where: any = {};
+
+  if (params.Type) {
+    where.propertyType = params.Type;
+  }
+
+  if (params.Contract) {
+    where.listingType = params.Contract;
+  }
+
+  try {
+    const properties = await prisma.property.findMany({
+      where,
+      // select: {
+      //   id: true,
+      //   title: true,
+      //   description: true,
+      //   price: true,
+      //   listingType: true,
+      //   status: true,
+      //   propertyType: true,
+      //   address: true,
+      //   currency: true,
+      //   city: true,
+      //   bedrooms: true,
+      //   bathrooms: true,
+      //   squareMeters: true,
+      //   parkingSpaces: true,
+      //   furnished: true,
+      //   neighborhood: true,
+      //   studio: true,
+      //   userSellerId: true,
+      //   views: true,
+      //   images: true,
+      //   // Excluimos las imágenes y cualquier campo problemático
+      // },
+    });
+
+    return {
+      success: true,
+      data: properties, // <-- ✅ Esto soluciona el error
+      error: null,
+      message: "properties fetched",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error fetching properties",
+      error,
+      data: null,
+    };
+  }
+}
