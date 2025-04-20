@@ -122,6 +122,31 @@ export async function getProperties(
     where.listingType = params.Contract;
   }
 
+  if (params.Currency) {
+    where.currency = params.Currency;
+  }
+
+  if (params.Minprice) {
+    where.price = {
+      ...where.price,
+      gte: parseInt(params.Minprice),
+    };
+  }
+
+  if (params.Maxprice) {
+    where.price = {
+      ...where.price,
+      lte: parseInt(params.Maxprice),
+    };
+  }
+
+  // if (params.Minprice && params.Maxprice) {
+  //   where.price = {
+  //     gte: parseInt(params.Minprice),
+  //     lte: parseInt(params.Maxprice),
+  //   };
+  // }
+
   try {
     const properties = await prisma.property.findMany({
       where,
