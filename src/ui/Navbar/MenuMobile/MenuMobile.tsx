@@ -1,10 +1,10 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-import { Dropdown } from "../Dropdown/Dropdown";
-// import { Dropdown } from "./Dropdown/Dropdown";
+import { Button } from "@/components/ui/button";
+import { deleteSession } from "@/app/auth/sessionActions";
 
 export const MobileMenu = ({
   navLinks,
@@ -30,7 +30,7 @@ export const MobileMenu = ({
             <Link
               key={link.href}
               href={link.href}
-              className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-base font-medium"
+              className="text-gray-600 hover:text-gray-900 py-2 rounded-md text-base font-medium"
               onClick={() => setOpen(false)}
             >
               {link.label}
@@ -38,8 +38,19 @@ export const MobileMenu = ({
           ))}
 
           {userData && (
-            <div className="text-gray-800 px-3 py-2">
-              Hello, {userData.name}
+            <div className="border-t pt-4 mt-2 flex flex-col gap-2 text-gray-800">
+              <span className="text-sm">Hello, {userData.name}</span>
+              <Button
+                onClick={async () => {
+                  await deleteSession();
+                  setOpen(false);
+                }}
+                variant="outline"
+                className="flex items-center gap-2 justify-start w-full bg-red-500 text-white hover:bg-red-600 px-3 py-2 rounded-md"
+              >
+                <LogOut size={18} />
+                Log Out
+              </Button>
             </div>
           )}
         </div>

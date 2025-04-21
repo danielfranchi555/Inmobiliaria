@@ -5,7 +5,6 @@ import { cookies } from "next/headers";
 import { decrypt } from "@/app/auth/sessionActions";
 import { getUserData } from "@/app/auth/actions";
 import { MobileMenu } from "./MenuMobile/MenuMobile";
-// import { MobileMenu } from "./MobileMenu";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -18,14 +17,11 @@ const Navbar = async () => {
   const cookie = cookieStore.get("session")?.value;
   const session = await decrypt(cookie);
   const id = session?.userId;
+
   const { message, success, user } = await getUserData(id as string);
 
-  if (!success || !user) {
-    return null; // Handle error or redirect
-  }
-
   return (
-    <nav className="bg-white shadow-md w-full top-0 z-50">
+    <nav className=" shadow-md w-full top-0 z-50">
       <div className="w-full px-6">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -47,12 +43,7 @@ const Navbar = async () => {
                 {link.label}
               </Link>
             ))}
-            {user && (
-              <div>
-                {/* Render data */}Hello, {user.name}
-              </div>
-            )}
-            <Dropdown />
+            <Dropdown userData={user} />
           </div>
 
           {/* Mobile menu toggle + content */}

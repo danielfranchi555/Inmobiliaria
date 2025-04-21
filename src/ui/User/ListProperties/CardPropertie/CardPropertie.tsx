@@ -12,7 +12,7 @@ type Props = {
 export function CardPropertie({ dataItem, widht }: Props) {
   return (
     <Card
-      className={`  hover:scale-101 transition-all duration-300 ease-in-out shadow-md cursor-pointer ${widht}`}
+      className={` hover:scale-101 transition-all duration-300 ease-in-out shadow-md cursor-pointer  ${widht}`}
     >
       <CardHeader className="p-0 relative">
         <div className="relative">
@@ -21,10 +21,8 @@ export function CardPropertie({ dataItem, widht }: Props) {
             width={100}
             height={200}
             alt="image"
-            className="w-full h-[200px] rounded-t-lg object-cover "
+            className="w-full h-[250px] rounded-t-lg object-cover "
           />
-          <div className="absolute inset-0 bg-black/70 opacity-50 rounded-t-lg"></div>
-          <div className=""></div>
         </div>
         <div className="absolute bottom-3 left-1">
           <Badge

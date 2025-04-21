@@ -30,7 +30,7 @@ async function page({
     await getSimilarProperties(data.propertyType, id);
 
   return (
-    <div className="grid grid-cols-4 gap-4 px-6">
+    <div className="grid grid-cols-4 gap-4 px-6 mt-10">
       <div className="col-span-4 grid grid-cols-4  gap-4 ">
         <div className="col-span-4 md:col-span-3">
           <Carousel images={data.images} />
