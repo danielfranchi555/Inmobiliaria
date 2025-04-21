@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma/prisma";
 import { SignUpSchema } from "../schemas/auth/signup";
 import bcrypt from "bcryptjs";
 import { loginSchema } from "../schemas/auth/login";
-import { createSession } from "./sessionActions";
+import { createSession, deleteSession } from "./sessionActions";
 
 export type FormStateRegister =
   | {
@@ -142,4 +142,43 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
     success: true,
     message: "Login successful",
   };
+}
+
+export async function logout() {
+  // delete session
+  await deleteSession();
+}
+
+export async function getUserData(userId: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
+
+    return {
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      },
+      message: "User data retrieved successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: "Error getting user data",
+    };
+  }
 }
