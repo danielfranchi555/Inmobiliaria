@@ -125,7 +125,7 @@ export function SignUpForm({
             </div>
             {state?.success === false && (
               <div className="mt-4 text-sm text-red-500">
-                <p>{state.message} </p>
+                <p className="text-center">{state.message} </p>
               </div>
             )}
           </form>
