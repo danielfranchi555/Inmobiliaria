@@ -13,6 +13,7 @@ export type FormStateRegister =
       role?: string;
       errors?: {
         name?: string[];
+        lastname?: string[];
         email?: string[];
         password?: string[];
         phone?: string[];
