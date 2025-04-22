@@ -6,12 +6,18 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { deleteSession } from "@/app/auth/sessionActions";
 
+type SessionData = {
+  userId: string;
+  role: "ADMIN" | "USER";
+  name?: string;
+} | null;
+
 export const MobileMenu = ({
   navLinks,
-  userData,
+  session,
 }: {
   navLinks: { href: string; label: string }[];
-  userData: any;
+  session: SessionData;
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -37,9 +43,9 @@ export const MobileMenu = ({
             </Link>
           ))}
 
-          {userData && (
+          {session ? (
             <div className="border-t pt-4 mt-2 flex flex-col gap-2 text-gray-800">
-              <span className="text-sm">Hello, {userData.name}</span>
+              <span className="text-sm">Hello, {session.name}</span>
               <Button
                 onClick={async () => {
                   await deleteSession();
@@ -52,6 +58,8 @@ export const MobileMenu = ({
                 Log Out
               </Button>
             </div>
+          ) : (
+            <Link href={"/auth/login"}>Log in</Link>
           )}
         </div>
       )}

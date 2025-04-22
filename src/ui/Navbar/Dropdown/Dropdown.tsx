@@ -12,19 +12,19 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
 import { deleteSession } from "@/app/auth/sessionActions";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 type DropdownProps = {
-  userData?: {
-    name: string;
-    email: string;
-  };
+  session: {
+    userId: string;
+    role: "ADMIN" | "USER";
+    name?: string;
+  } | null;
 };
 
-export const Dropdown = ({ userData }: DropdownProps) => {
+export const Dropdown = ({ session }: DropdownProps) => {
   return (
     <>
-      {userData ? (
+      {session ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-3 py-2 rounded-md transition-colors">
@@ -34,8 +34,8 @@ export const Dropdown = ({ userData }: DropdownProps) => {
                 </AvatarFallback>
               </Avatar>
               <span>
-                {userData ? (
-                  userData.name
+                {session ? (
+                  session.name
                 ) : (
                   <Link href={"/auth/login"}>Sign In</Link>
                 )}

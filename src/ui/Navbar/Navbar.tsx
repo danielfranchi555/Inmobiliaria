@@ -1,9 +1,7 @@
 import { House } from "lucide-react";
 import Link from "next/link";
 import { Dropdown } from "./Dropdown/Dropdown";
-import { cookies } from "next/headers";
-import { decrypt } from "@/app/auth/sessionActions";
-import { getUserData } from "@/app/auth/actions";
+import { getSession } from "@/app/auth/sessionActions";
 import { MobileMenu } from "./MenuMobile/MenuMobile";
 
 const navLinks = [
@@ -13,12 +11,7 @@ const navLinks = [
 ];
 
 const Navbar = async () => {
-  const cookieStore = await cookies();
-  const cookie = cookieStore.get("session")?.value;
-  const session = await decrypt(cookie);
-  const id = session?.userId;
-
-  const { message, success, user } = await getUserData(id as string);
+  const session = await getSession();
 
   return (
     <nav className=" shadow-md w-full top-0 z-50">
@@ -43,12 +36,12 @@ const Navbar = async () => {
                 {link.label}
               </Link>
             ))}
-            <Dropdown userData={user} />
+            <Dropdown session={session} />
           </div>
 
           {/* Mobile menu toggle + content */}
           <div className="md:hidden">
-            <MobileMenu navLinks={navLinks} userData={user} />
+            <MobileMenu navLinks={navLinks} session={session} />
           </div>
         </div>
       </div>
