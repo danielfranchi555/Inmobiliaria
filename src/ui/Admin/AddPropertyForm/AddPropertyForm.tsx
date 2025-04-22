@@ -25,6 +25,7 @@ import uploadCloudinary from "@/app/utils/uploadCloudinary";
 import ImageUploader from "../ImageUploader/ImageUploader";
 import { useRouter } from "next/navigation";
 import { UseSelect } from "../UseSelect/UseSelect";
+import Link from "next/link";
 
 const OPTIONS = {
   status: ["AVAILABLE", "SOLD", "RENTED", "PENDING"],
@@ -58,6 +59,7 @@ type SellersProps = {
   data: {
     id: string;
     name: string;
+    lastName: string;
   }[];
 };
 
@@ -80,6 +82,8 @@ export default function AddPropertyForm({ data }: SellersProps) {
   });
 
   const sellersOptions = data;
+  console.log(sellersOptions);
+
   const watchStudio = watch("studio");
   const watchImages = watch("images");
   const watchListingType = watch("listingType");
@@ -112,7 +116,6 @@ export default function AddPropertyForm({ data }: SellersProps) {
     if (!success || error) {
       throw new Error(message);
     }
-
     return message;
   };
 
@@ -188,6 +191,12 @@ export default function AddPropertyForm({ data }: SellersProps) {
   const handleFurnishedChecked = (value: boolean) => {
     setValue("furnished", value);
     trigger("furnished");
+  };
+
+  const validateSeller = () => {
+    if (sellersOptions.length === 0) {
+      return true;
+    }
   };
 
   return (
@@ -454,7 +463,11 @@ export default function AddPropertyForm({ data }: SellersProps) {
               </div>
               <div className="space-y-2">
                 <Label>Seller</Label>
-                <Select value={watchSeller || ""} onValueChange={handleSeller}>
+                <Select
+                  disabled={validateSeller()}
+                  value={watchSeller || ""}
+                  onValueChange={handleSeller}
+                >
                   <SelectTrigger
                     className="w-full"
                     data-testid="select-userSellerId"
@@ -470,12 +483,25 @@ export default function AddPropertyForm({ data }: SellersProps) {
                           key={item.id}
                           data-testid={`select-item-${item.name.replace(/\s/g, "-")}`}
                         >
-                          {item.name}
+                          {item.name} {item.lastName}
                         </SelectItem>
                       ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {sellersOptions.length === 0 && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <p className=" text-muted-foreground">
+                      not found sellers availables
+                    </p>
+                    <Link
+                      className="text-blue-500  hover:underline"
+                      href={"/admin/sellers"}
+                    >
+                      Create seller
+                    </Link>
+                  </div>
+                )}
                 {errors.userSellerId && (
                   <p className="text-red-500 text-sm">
                     {errors.userSellerId.message}

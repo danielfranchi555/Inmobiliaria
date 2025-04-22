@@ -1,6 +1,6 @@
 "use server";
+import { userSchema } from "@/app/schemas/createSeller";
 import { prisma } from "@/lib/prisma/prisma";
-import { userSchema } from "@/ui/Admin/AddSeller/AddSeller";
 import { UserRole } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -15,6 +15,7 @@ export async function getUserSeller() {
         id: true,
         name: true,
         email: true,
+        lastName: true,
         phone: true,
         role: true,
         createdAt: true,
@@ -38,12 +39,15 @@ export async function getUserSeller() {
 }
 
 export const createSeller = async (dataForm: z.infer<typeof userSchema>) => {
+  console.log(dataForm);
+
   const validatedFields = userSchema.safeParse(dataForm);
 
   if (!validatedFields.success) {
     return { success: false, message: "Invalid fields" };
   }
-  const { email, name, password, phone, role } = dataForm;
+  const { email, lastname, name, password, phone, role } = dataForm;
+  console.log(dataForm);
 
   const sellerAlreadyExist = await prisma.user.findUnique({
     where: {
@@ -60,6 +64,7 @@ export const createSeller = async (dataForm: z.infer<typeof userSchema>) => {
     data: {
       email: email,
       name: name,
+      lastName: lastname,
       password: password,
       phone: phone,
       role: role as UserRole,

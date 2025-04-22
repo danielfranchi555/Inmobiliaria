@@ -16,14 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { createSeller } from "@/app/admin/sellers/actions";
-
-export const userSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  phone: z.string().min(1, { message: "Phone is required" }),
-  password: z.string().min(1, { message: "Password is required" }),
-  role: z.string().min(1, { message: "Role is required" }),
-});
+import { userSchema } from "@/app/schemas/createSeller";
 
 type Inputs = z.infer<typeof userSchema>;
 
@@ -86,8 +79,24 @@ const AddSeller = () => {
                   </p>
                 </div>
                 <div className="space-y-2">
+                  <Label>Lastname</Label>
+                  <Input
+                    {...form.register("lastname")}
+                    placeholder="lastname"
+                  />
+                  <p className="text-sm text-red-500">
+                    {form.formState.errors.lastname?.message}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2  ">
+                <div className="space-y-2 w-full col-span-2">
                   <Label>Email</Label>
-                  <Input {...form.register("email")} placeholder="Email" />
+                  <Input
+                    {...form.register("email")}
+                    placeholder="Email"
+                    className="w-full"
+                  />
                   <p className="text-sm text-red-500">
                     {form.formState.errors.email?.message}
                   </p>

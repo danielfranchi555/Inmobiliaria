@@ -4,7 +4,6 @@ import { Badge } from "@/components/ui/badge";
 import { Bath, Bed, Car, Maximize } from "lucide-react";
 import { FormSeller } from "@/ui/User/FormSeller/FormSeller";
 import { getSimilarProperties } from "../../actions";
-import { Card } from "@/components/ui/card";
 import { CardPropertie } from "@/ui/User/ListProperties/CardPropertie/CardPropertie";
 import Link from "next/link";
 
@@ -29,6 +28,9 @@ async function page({
   const { data: similarProperties, error: errorSimilarProperties } =
     await getSimilarProperties(data.propertyType, id);
 
+  if (!data.User) {
+    return;
+  }
   return (
     <div className="grid grid-cols-4 gap-4 px-6 mt-10">
       <div className="col-span-4 grid grid-cols-4  gap-4 ">
@@ -36,7 +38,7 @@ async function page({
           <Carousel images={data.images} />
         </div>
         <div className="w-full col-span-4  md:col-span-1">
-          <FormSeller />
+          <FormSeller sellerData={data.User} />
         </div>
       </div>
 

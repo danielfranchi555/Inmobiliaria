@@ -26,8 +26,6 @@ type Inputs = {
 };
 
 export async function createProperty(data: Inputs) {
-  console.log(data);
-
   const validate = schemaCreateProperty.safeParse(data);
 
   if (!validate.success) {
@@ -69,6 +67,8 @@ export async function createProperty(data: Inputs) {
       error: null,
     };
   } catch (error) {
+    console.log(error);
+
     return {
       success: false,
       message: "Error creating property",
@@ -127,25 +127,16 @@ export async function getPropertieId(id: string) {
       where: {
         id: id,
       },
-      select: {
-        title: true,
-        price: true,
-        currency: true,
-        status: true,
-        address: true,
-        city: true,
-        neighborhood: true,
-        bedrooms: true,
-        studio: true,
-        squareMeters: true,
-        bathrooms: true,
-        parkingSpaces: true,
-        furnished: true,
-        description: true,
-        images: true,
-        listingType: true,
-        userSellerId: true,
-        propertyType: true,
+      include: {
+        User: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            phone: true,
+            lastName: true,
+          },
+        },
       },
     });
 

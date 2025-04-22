@@ -12,6 +12,7 @@ model User {
   email     String     @unique
   password  String
   name      String
+  lastName  String
   role      UserRole   @default(BUYER)
   phone     String?
   avatar    String?

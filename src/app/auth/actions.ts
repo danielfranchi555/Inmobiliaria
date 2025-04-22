@@ -69,8 +69,9 @@ export async function registerUser(
       name: formData.name as string,
       email: formData.email as string,
       password: hashedPassword,
+      lastName: formData.lastname as string,
       phone: formData.phone as string,
-      role: "BUYER",
+      role: "BUYER", // Default role
     },
   });
 

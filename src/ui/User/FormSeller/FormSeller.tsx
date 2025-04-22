@@ -13,6 +13,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useActionState } from "react";
 import { contactSeller } from "@/app/(home)/propertie/[id]/actions";
 import Link from "next/link";
+import { capitalizeFirstLetter } from "@/app/utils/capitalizeFirstLetter";
+import { getInitials } from "@/app/utils/nameAvatar";
 
 type FormStateSeller =
   | {
@@ -26,7 +28,16 @@ type FormStateSeller =
     }
   | undefined;
 
-export const FormSeller = () => {
+type Props = {
+  sellerData: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string | null;
+    lastName: string;
+  };
+};
+export const FormSeller = ({ sellerData }: Props) => {
   const initialState: FormStateSeller = undefined;
   const [state, formAction, isPending] = useActionState(
     contactSeller,
@@ -38,15 +49,20 @@ export const FormSeller = () => {
       <CardHeader>
         <CardDescription className="flex py-4 gap-2">
           <Avatar>
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>
+              {getInitials(sellerData.name, sellerData.lastName)}
+            </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col ">
+          <div className="flex flex-col">
             <div>
-              <h4 className="font-bold">Carlos Rodriguez</h4>
+              <h4 className="font-bold">
+                {capitalizeFirstLetter(sellerData.name)}{" "}
+                {capitalizeFirstLetter(sellerData.lastName)}
+              </h4>
               <p>Seller Agent</p>
             </div>
             <div>
-              <p className="text-muted-foreground">+123 456 7890</p>
+              <p className="text-muted-foreground">+ {sellerData.phone}</p>
             </div>
           </div>
         </CardDescription>
