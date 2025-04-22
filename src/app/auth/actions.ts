@@ -5,10 +5,12 @@ import { SignUpSchema } from "../schemas/auth/signup";
 import bcrypt from "bcryptjs";
 import { loginSchema } from "../schemas/auth/login";
 import { createSession, deleteSession } from "./sessionActions";
+import { redirect } from "next/navigation";
 
 export type FormStateRegister =
   | {
       success: boolean;
+      role?: string;
       errors?: {
         name?: string[];
         email?: string[];
@@ -62,33 +64,36 @@ export async function registerUser(
   const password = formData.password as string;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  try {
-    const userCreate = await prisma.user.create({
-      data: {
-        name: formData.name as string,
-        email: formData.email as string,
-        password: hashedPassword,
-        phone: formData.phone as string,
-        role: "BUYER",
-      },
-    });
+  const userCreate = await prisma.user.create({
+    data: {
+      name: formData.name as string,
+      email: formData.email as string,
+      password: hashedPassword,
+      phone: formData.phone as string,
+      role: "BUYER",
+    },
+  });
 
-    // 4. Create a session for the user
-    console.log("User created successfully", userCreate);
+  // create session
+  await createSession({
+    userId: userCreate.id,
+    role: userCreate.role,
+    name: userCreate.name,
+    expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+  });
 
-    const userId = userCreate.id;
-    await createSession(userId);
-
-    return {
-      success: true,
-      message: "User registered successfully",
-    };
-  } catch (error) {
-    return {
-      success: false,
-      message: "Error creating user",
-    };
+  // 🔥 Redirigimos según el rol
+  if (userCreate.role === "ADMIN") {
+    redirect("/admin");
+  } else if (userCreate.role === "BUYER") {
+    redirect("/");
   }
+
+  return {
+    success: true,
+    message: "User registered successfully",
+    role: userCreate.role,
+  };
 }
 
 export async function login(prevState: FormStateLogin, formData: FormData) {
@@ -134,8 +139,20 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
   }
 
   // create session
+
   const userId = user.id;
-  await createSession(userId);
+  await createSession({
+    userId,
+    role: user.role,
+    name: user.name,
+    expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+  });
+  // 🔥 Redirigimos según el rol
+  if (user.role === "ADMIN") {
+    redirect("/admin");
+  } else if (user.role === "BUYER") {
+    redirect("/");
+  }
 
   // if everything is ok, return success
   return {

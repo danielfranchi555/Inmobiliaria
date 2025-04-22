@@ -1,8 +1,20 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { getSession } from "../auth/sessionActions";
 
-export default function Page({ children }: { children: React.ReactNode }) {
+export default async function Page({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await getSession();
+  console.log(session);
+
+  if (!session) {
+    // redirigí o renderizá un fallback
+    return <p>You must be logged in</p>;
+  }
   return (
     <SidebarProvider
       style={
@@ -12,7 +24,7 @@ export default function Page({ children }: { children: React.ReactNode }) {
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" />
+      <AppSidebar dataUser={session} />
       <SidebarInset>
         <SiteHeader />
         <div className="flex flex-1 flex-col">

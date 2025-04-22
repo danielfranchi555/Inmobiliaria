@@ -8,7 +8,9 @@ const key = new TextEncoder().encode(secretKey);
 
 type SessionPayload = {
   userId: string;
-  expiresAt: Date;
+  role: string;
+  expiresAt: string;
+  name?: string;
 };
 
 export async function encrypt(payload: SessionPayload) {
@@ -30,9 +32,19 @@ export async function decrypt(session: string | undefined = "") {
   }
 }
 
-export async function createSession(userId: string) {
+export async function createSession(user: {
+  userId: string;
+  role: string;
+  expiresAt: Date;
+  name?: string;
+}) {
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
-  const session = await encrypt({ userId, expiresAt });
+  const session = await encrypt({
+    userId: user.userId,
+    role: user.role,
+    name: user.name,
+    expiresAt: user.expiresAt.toString(), // 👈 usá el que viene del parámetro
+  });
 
   const cookieStore = await cookies();
   cookieStore.set("session", session, {
@@ -60,4 +72,29 @@ export async function deleteSession() {
   const cookieStore = await cookies();
   cookieStore.delete("session");
   redirect("/auth/login");
+}
+
+type SessionData = {
+  userId: string;
+  role: "ADMIN" | "USER";
+  name?: string;
+};
+
+export async function getSession(): Promise<SessionData | null> {
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("session")?.value;
+
+  if (!cookie) return null;
+
+  const session = (await decrypt(cookie)) as Partial<SessionData>;
+
+  if (!session?.userId || !session?.role) {
+    return null;
+  }
+
+  return {
+    userId: session.userId,
+    role: session.role,
+    name: session.name,
+  };
 }

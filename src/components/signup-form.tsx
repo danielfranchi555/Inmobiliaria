@@ -17,6 +17,7 @@ import Link from "next/link";
 export type FormState =
   | {
       success: boolean;
+      role?: string;
       errors?: {
         name?: string[];
         email?: string[];
@@ -37,6 +38,8 @@ export function SignUpForm({
     registerUser,
     initialState
   );
+
+  // Verificar si el registro fue exitoso y redirigir
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -130,7 +133,7 @@ export function SignUpForm({
                 )}
               </div>
               <div className="flex flex-col gap-3">
-                <Button type="submit" className="w-full">
+                <Button disabled={isPending} type="submit" className="w-full">
                   {isPending ? "Loading..." : "Register"}
                 </Button>
               </div>
@@ -144,11 +147,6 @@ export function SignUpForm({
                 Login
               </Link>
             </div>
-            {state?.success && (
-              <div className="mt-4 text-center text-sm text-green-500">
-                {state.message}
-              </div>
-            )}
             {state?.success === false && (
               <div className="mt-4 text-center text-sm text-red-500">
                 {state.message}
