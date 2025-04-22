@@ -74,6 +74,12 @@ export async function registerUser(
     },
   });
 
+  if (!userCreate) {
+    return {
+      success: false,
+      message: "Error creating user",
+    };
+  }
   // create session
   await createSession({
     userId: userCreate.id,
@@ -120,7 +126,7 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
   if (!user) {
     return {
       success: false,
-      message: "User not found",
+      message: "Invalid Credentials",
     };
   }
 

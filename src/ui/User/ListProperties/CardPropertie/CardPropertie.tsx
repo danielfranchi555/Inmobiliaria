@@ -12,7 +12,7 @@ type Props = {
 export function CardPropertie({ dataItem, widht }: Props) {
   return (
     <Card
-      className={` hover:scale-101 transition-all duration-300 ease-in-out shadow-md cursor-pointer  ${widht}`}
+      className={` hover:scale-101 transition-all duration-300 ease-in-out shadow-md cursor-pointer p-0 pb-5  ${widht}`}
     >
       <CardHeader className="p-0 relative">
         <div className="relative">
