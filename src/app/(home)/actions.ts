@@ -144,7 +144,7 @@ export async function getProperties(
 
   // Parámetros para paginación
   const page = params.page ? Math.max(parseInt(params.page), 1) : 1;
-  const pageSize = params.pageSize ? Math.max(parseInt(params.pageSize), 1) : 3;
+  const pageSize = params.pageSize ? Math.max(parseInt(params.pageSize), 1) : 6;
 
   const skip = (page - 1) * pageSize;
   const take = pageSize;

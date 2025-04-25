@@ -13,8 +13,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useRef, useState, useTransition } from "react";
-import { set } from "zod";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 const propertiesTypes = [
   { id: 1, name: "HOUSE", label: "House" },
@@ -27,6 +27,14 @@ const contractTypes = [
   { id: 1, name: "RENT", label: "Rent" },
   { id: 2, name: "SALE", label: "Sale" },
 ];
+
+type Inputs = {
+  type: string;
+  contract: string;
+  minprice: string;
+  maxprice: string;
+  currency: string;
+};
 
 const currency = ["USD", "ARG"];
 
@@ -42,72 +50,111 @@ const FilterProperties = () => {
 
   const params = new URLSearchParams(searchParams.toString());
 
-  const setFilter = (key: string, value: string) => {
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues: {
+      type: searchParams.get("Type") || "",
+      contract: searchParams.get("Contract") || "",
+      minprice: searchParams.get("Minprice") || "",
+      maxprice: searchParams.get("Maxprice") || "",
+      currency: searchParams.get("Currency") || "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const { type, contract, minprice, maxprice, currency } = data;
+
+    if (type) params.set("Type", type);
+    if (contract) params.set("Contract", contract);
+    if (currency) params.set("Currency", currency);
+    if (minprice) params.set("Minprice", minprice);
+    if (maxprice) params.set("Maxprice", maxprice);
+
     setTransition(async () => {
       router.replace(`?${params.toString()}`, { scroll: false });
     });
+
+    // Esperá un poco antes de hacer scroll, para que la navegación y render hayan terminado
+    setTimeout(() => {
+      const element = document.getElementById("property-section");
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    });
   };
 
-  const setFilterPrice = (key: string, value: string) => {
-    if (value) {
-      params.set(key, value);
-    } else {
-      params.delete(key);
-    }
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
+  useEffect(() => {
+    const newValues = {
+      type: searchParams.get("Type") || "",
+      contract: searchParams.get("Contract") || "",
+      minprice: searchParams.get("Minprice") || "",
+      maxprice: searchParams.get("Maxprice") || "",
+      currency: "",
+    };
+    reset(newValues);
+  }, [searchParams, reset]);
 
-  const clearFilters = () => {
-    params.delete("maxPrice");
-    params.delete("minPrice");
-    if (minPriceRef.current) minPriceRef.current.value = "";
-    if (maxPriceRef.current) maxPriceRef.current.value = "";
-    router.push(`?${params.toString()}`);
-  };
+  // const clearFilters = () => {
+  //   params.delete("maxPrice");
+  //   params.delete("minPrice");
+  //   if (minPriceRef.current) minPriceRef.current.value = "";
+  //   if (maxPriceRef.current) maxPriceRef.current.value = "";
+  //   router.push(`?${params.toString()}`);
+  // };
 
-  const priceDisplay = () => {
-    if (!minPrice && !maxPrice) return "Select price";
-    if (!minPrice && !maxPrice) return "Select price";
-    if (minPrice && maxPrice) return `$${minPrice} - $${maxPrice}`;
-    if (minPrice) return `$${minPrice}`;
-    if (maxPrice) return `Up to $${maxPrice}`;
-  };
+  // const priceDisplay = () => {
+  //   if (!minPrice && !maxPrice) return "Select price";
+  //   if (!minPrice && !maxPrice) return "Select price";
+  //   if (minPrice && maxPrice) return `$${minPrice} - $${maxPrice}`;
+  //   if (minPrice) return `$${minPrice}`;
+  //   if (maxPrice) return `Up to $${maxPrice}`;
+  // };
 
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full bg-white max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
       <h2 className="text-2xl font-semibold">Filter your search</h2>
-      <div className="grid gap-6 md:flex md:justify-around md:gap-5  ">
-        {/* SELECT TYPE PROPERTY */}
-        <div className="w-full flex flex-col gap-2">
-          <Label>Property Type</Label>
-          <Select onValueChange={(value) => setFilter("Type", value)}>
+      <form
+        className="flex flex-col md:flex-row items-center gap-4 " // Usa `gap-4` para mejor espacio entre elementos
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="flex flex-col gap-1 w-full">
+          <Label>Type</Label>
+          <Select
+            onValueChange={(value) => {
+              setValue("type", value);
+            }}
+            value={watch("type")}
+          >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a type" />
+              <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Type</SelectLabel>
-                {propertiesTypes.map((prop) => (
-                  <SelectItem key={prop.id} value={prop.name}>
-                    {prop.label}
+                {propertiesTypes.map((item) => (
+                  <SelectItem key={item.id} value={item.name}>
+                    {item.label}
                   </SelectItem>
                 ))}
-                <SelectItem value="all">All</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
-        {/* // SELECT CONTRACT */}
-        <div className="w-full flex flex-col gap-2">
-          <Label>Contract Type </Label>
-          <Select onValueChange={(value) => setFilter("Contract", value)}>
+
+        <div className="flex flex-col gap-1 w-full">
+          <Label>Contract</Label>
+          <Select
+            value={watch("contract") || searchParams.get("Contract") || ""}
+            onValueChange={(value) => setValue("contract", value)}
+          >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select a contract" />
+              <SelectValue placeholder="Contract" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -121,76 +168,60 @@ const FilterProperties = () => {
             </SelectContent>
           </Select>
         </div>
-        <div className="w-full flex flex-col gap-2 ">
-          <Label>Select price </Label>
+
+        <div className="flex flex-col gap-1 w-full">
+          <Label>Price</Label>
           <Select>
-            <SelectTrigger className="w-full ">
-              {priceDisplay() || "Select price"}
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Price" />
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup className="">
+              <SelectGroup>
                 <SelectLabel>Price</SelectLabel>
-                <div className="grid gap-2 p-2 ">
-                  <div>
-                    <Select
-                      onValueChange={(value) => setFilter("Currency", value)}
-                    >
-                      <SelectTrigger className="w-full">
-                        {searchParams.get("Currency") || "Select currency"}
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectLabel>Contract</SelectLabel>
-                          {currency.map((item, index) => (
-                            <SelectItem key={index} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex flex-col md:flex items-center gap-2 ">
-                    <div className="flex w-full flex-col gap-2">
-                      <Label>Min price</Label>
-                      <Input
-                        ref={minPriceRef}
-                        type="number"
-                        defaultValue={searchParams.get("Minprice") || ""}
-                        onChange={(e) => {
-                          setFilterPrice("Minprice", e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="flex w-full flex-col gap-2">
-                      <Label>Max price</Label>
-                      <Input
-                        ref={maxPriceRef}
-                        type="number"
-                        defaultValue={searchParams.get("Maxprice") || ""}
-                        onChange={(e) => {
-                          setFilterPrice("Maxprice", e.target.value);
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <Button
-                    disabled={
-                      !minPriceRef.current?.value && !maxPriceRef.current?.value
-                    }
-                    className="cursor-pointer"
-                    onClick={() => clearFilters()}
-                    variant="destructive"
+                <div className="flex  flex-col gap-2">
+                  <Select
+                    value={watch("currency")}
+                    onValueChange={(value) => setValue("currency", value)}
                   >
-                    {" "}
-                    <Trash2 /> Delete Filters
-                  </Button>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>currency</SelectLabel>
+                        {currency.map((item) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <div className="flex flex-col md:flex-row md:items-center gap-2">
+                    <Input
+                      {...register("minprice")}
+                      type="number"
+                      className="w-full"
+                      placeholder="min price"
+                    />
+                    <Input {...register("maxprice")} placeholder="max price" />
+                  </div>
                 </div>
               </SelectGroup>
             </SelectContent>
           </Select>
         </div>
-      </div>
+
+        <div className="flex flex-col items-center w-full mt-4">
+          <Button
+            className="w-full bg-green-500"
+            type="submit"
+            disabled={isPending}
+          >
+            {isPending ? "Loading..." : "Search"}
+          </Button>
+        </div>
+      </form>
     </div>
   );
 };

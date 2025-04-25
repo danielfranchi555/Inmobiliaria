@@ -40,7 +40,7 @@ export const ShowFilters = () => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 text-black  h-20 rounded-md px-4">
       <div className="hidden md:flex md:items-center md:gap-4 ">
         <Filter size={25} strokeWidth={1} />
         <p className=" whitespace-nowrap">Filters Activated: </p>
