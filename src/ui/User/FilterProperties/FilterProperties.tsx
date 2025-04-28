@@ -100,22 +100,6 @@ const FilterProperties = () => {
     reset(newValues);
   }, [searchParams, reset]);
 
-  // const clearFilters = () => {
-  //   params.delete("maxPrice");
-  //   params.delete("minPrice");
-  //   if (minPriceRef.current) minPriceRef.current.value = "";
-  //   if (maxPriceRef.current) maxPriceRef.current.value = "";
-  //   router.push(`?${params.toString()}`);
-  // };
-
-  // const priceDisplay = () => {
-  //   if (!minPrice && !maxPrice) return "Select price";
-  //   if (!minPrice && !maxPrice) return "Select price";
-  //   if (minPrice && maxPrice) return `$${minPrice} - $${maxPrice}`;
-  //   if (minPrice) return `$${minPrice}`;
-  //   if (maxPrice) return `Up to $${maxPrice}`;
-  // };
-
   return (
     <div className="w-full bg-white max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
       <h2 className="text-2xl font-semibold">Filter your search</h2>

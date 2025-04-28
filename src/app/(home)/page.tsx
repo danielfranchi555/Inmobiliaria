@@ -57,7 +57,7 @@ export default async function Home({ searchParams }: Props) {
         <ListProperties data={data} />
         <PaginationWrapper
           currentPage={pagination?.page || 1}
-          totalPages={pagination?.pageSize || 1}
+          totalPages={pagination.totalPages || 1}
         />
       </main>
     </div>

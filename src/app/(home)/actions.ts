@@ -109,7 +109,7 @@ export async function getProperties(
     Minprice: string;
     Maxprice: string;
     Currency: string;
-    page?: string; // nuevo parámetro opcional para página
+    page?: string;
     pageSize?: string;
   }>
 ) {
@@ -143,30 +143,37 @@ export async function getProperties(
   }
 
   // Parámetros para paginación
-  const page = params.page ? Math.max(parseInt(params.page), 1) : 1;
-  const pageSize = params.pageSize ? Math.max(parseInt(params.pageSize), 1) : 6;
+  const page = params.page ? Math.max(parseInt(params.page), 1) : 1; // obtener page
+  const pageSize = 3; // cantidad de elementos que queremos que se muestre por page
 
-  const skip = (page - 1) * pageSize;
-  const take = pageSize;
+  const skip = (page - 1) * pageSize; // = 5
+  const take = skip + pageSize;
 
   try {
     const properties = await prisma.property.findMany({
       where,
-      skip, // usa skip calculado
-      take, // usa take calculado (3)
+      skip,
+      take,
       orderBy: {
         createdAt: "desc", // opcional: ordena por fecha
       },
     });
 
+    const totalProperties = await prisma.property.count({ where });
+
+    const totalPages = Math.ceil(totalProperties / pageSize);
+    console.log({ totalPages });
+
     return {
       success: true,
-      data: properties, // <-- ✅ Esto soluciona el error
+      data: properties,
       error: null,
       message: "properties fetched",
       pagination: {
         page,
         pageSize,
+        totalPages,
+        totalProperties,
       },
     };
   } catch (error) {
