@@ -39,14 +39,9 @@ type Inputs = {
 const currency = ["USD", "ARG"];
 
 const FilterProperties = () => {
-  const minPriceRef = useRef<HTMLInputElement>(null);
-  const maxPriceRef = useRef<HTMLInputElement>(null);
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  const minPrice = searchParams.get("Minprice") || "";
-  const maxPrice = searchParams.get("Maxprice") || "";
 
   const params = new URLSearchParams(searchParams.toString());
 
@@ -68,27 +63,28 @@ const FilterProperties = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const { type, contract, minprice, maxprice, currency } = data;
+    const params = new URLSearchParams();
 
-    if (type) params.set("Type", type);
-    if (contract) params.set("Contract", contract);
-    if (currency) params.set("Currency", currency);
-    if (minprice) params.set("Minprice", minprice);
-    if (maxprice) params.set("Maxprice", maxprice);
+    // Resetear siempre a página 1 al aplicar nuevos filtros
+    params.set("page", "1");
+
+    // Setear nuevos valores
+    if (data.type) params.set("Type", data.type);
+    if (data.contract) params.set("Contract", data.contract);
+    if (data.currency) params.set("Currency", data.currency);
+    if (data.minprice) params.set("Minprice", data.minprice);
+    if (data.maxprice) params.set("Maxprice", data.maxprice);
 
     setTransition(async () => {
       router.replace(`?${params.toString()}`, { scroll: false });
     });
 
-    // Esperá un poco antes de hacer scroll, para que la navegación y render hayan terminado
     setTimeout(() => {
-      const element = document.getElementById("property-section");
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    });
+      document
+        .getElementById("property-section")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
-
   useEffect(() => {
     const newValues = {
       type: searchParams.get("Type") || "",
