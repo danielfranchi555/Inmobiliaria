@@ -12,31 +12,30 @@ export const ShowFilters = () => {
   const [filters, setFilters] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!params || params.get("page")) return;
+    if (!params) return;
 
-    const entries = Array.from(params.entries());
-    console.log({ entries });
+    const entries = Array.from(params.entries()).filter(
+      ([key]) => !["page", "pagesize"].includes(key.toLowerCase())
+    );
 
-    if (entries.length === 0) {
-      setFilters([]);
-      return;
-    }
     const filtersArray = entries.map(
       ([key, value]) =>
-        `${capitalizeFirstLetter(key)}: ${decodeURIComponent(capitalizeFirstLetter(value))}`
+        `${capitalizeFirstLetter(key)}: ${decodeURIComponent(value)}`
     );
+
     setFilters(filtersArray);
   }, [params]);
 
   const deleteParams = (key: string) => {
-    const parseKey = capitalizeFirstLetter(key);
-    if (key) {
-      const params = new URLSearchParams(window.location.search);
-      params.delete(parseKey);
-      setTransition(async () => {
-        router.replace(`?${params.toString()}`, { scroll: false });
-      });
-    }
+    const parsedKey = key.toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+
+    params.delete(parsedKey);
+    params.delete("page"); // ← Resetear paginación
+
+    setTransition(() => {
+      router.replace(`?${params.toString()}`, { scroll: false });
+    });
   };
 
   return (
