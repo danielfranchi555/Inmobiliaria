@@ -27,10 +27,9 @@ export const ShowFilters = () => {
   }, [params]);
 
   const deleteParams = (key: string) => {
-    const parsedKey = key.toLowerCase();
     const params = new URLSearchParams(window.location.search);
 
-    params.delete(parsedKey);
+    params.delete(key);
     params.delete("page"); // ← Resetear paginación
 
     setTransition(() => {
