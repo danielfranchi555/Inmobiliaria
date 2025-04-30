@@ -84,8 +84,8 @@ const CarouselSimilarProperties = ({ data }: props) => {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="bottom-[-45px] left-4 top-auto translate-y-0" />
+      <CarouselNext className="bottom-[-45px] right-4 top-auto translate-y-0" />
     </Carousel>
   );
 };
