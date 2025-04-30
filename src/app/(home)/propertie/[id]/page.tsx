@@ -7,6 +7,7 @@ import { getSimilarProperties } from "../../actions";
 import { CardPropertie } from "@/ui/User/ListProperties/CardPropertie/CardPropertie";
 import Link from "next/link";
 import { CardSimilarProperties } from "@/ui/User/SimilarProperties/CardSimilarProperties";
+import CarouselSimilarProperties from "@/ui/User/CarouselSimilarProperties/CarouselSimilarProperties";
 
 async function page({
   params,
@@ -88,13 +89,25 @@ async function page({
         {!similarProperties ? (
           "No similar properties"
         ) : (
-          <div className="grid grid-cols-4  gap-4 w-full">
-            {similarProperties.map((item) => (
-              <Link key={item.id} href={`/propertie/${item.id}`}>
-                <CardSimilarProperties dataItem={item} />
-              </Link>
-            ))}
-          </div>
+          <>
+            <div className="hidden md:grid md:grid-cols-4  md:gap-4 md:w-full">
+              {similarProperties.map((item) => (
+                <Link key={item.id} href={`/propertie/${item.id}`}>
+                  <CardSimilarProperties dataItem={item} />
+                </Link>
+              ))}
+            </div>
+
+            {/* MOBILE */}
+            <div className=" md:hidden ">
+              <CarouselSimilarProperties data={similarProperties} />
+              {/* {similarProperties.map((item) => (
+                <Link key={item.id} href={`/propertie/${item.id}`}>
+                  <CardSimilarProperties dataItem={item} />
+                </Link>
+              ))} */}
+            </div>
+          </>
         )}
       </div>
     </section>
