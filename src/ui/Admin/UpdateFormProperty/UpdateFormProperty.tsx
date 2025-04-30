@@ -65,7 +65,7 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
   const [isPending, startTransition] = useTransition();
   const [images, setImages] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
-  const [formattedPrice, setFormattedPrice] = useState("");
+  const [formattedPrice, setFormattedPrice] = useState(propertie.price);
 
   const router = useRouter();
 
@@ -230,13 +230,14 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
   };
 
   const handlePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = e.target.value;
-    const numeric = raw.replace(/\D/g, ""); // solo dígitos
-    const formatted = formatPrice(raw);
+    const rawValue = e.target.value;
 
-    setFormattedPrice(formatted);
-    setValue("price", parseInt(numeric || "0")); // guarda valor real en el form
+    // Remueve cualquier caracter que no sea número
+    const numericValue = rawValue.replace(/[^\d]/g, "");
+    const numberValue = Number(numericValue);
 
+    setFormattedPrice(numberValue);
+    setValue("price", numberValue);
     trigger("price");
   };
 
@@ -247,12 +248,12 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
     ) : null;
   };
 
-  useEffect(() => {
-    if (propertie.price) {
-      const formatted = formatPrice(propertie.price.toString());
-      setFormattedPrice(formatted);
-    }
-  }, [setValue, propertie]);
+  // useEffect(() => {
+  //   if (propertie.price) {
+  //     const formatted = formatPrice(propertie.price);
+  //     setFormattedPrice(formatted);
+  //   }
+  // }, [setValue, propertie]);
 
   return (
     <div>
@@ -280,12 +281,12 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
                 <Input
                   id="price"
                   type="text"
-                  value={formattedPrice}
+                  value={formatPrice(formattedPrice)}
                   placeholder="Enter price"
                   className="w-full"
-                  min={1}
                   onChange={handlePrice}
                 />
+                {formattedPrice}
                 {errors.price && (
                   <p className="text-red-500 text-sm">{errors.price.message}</p>
                 )}
