@@ -15,6 +15,7 @@ import { Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { formatPrice } from "@/app/utils/formatPrice";
 
 const propertiesTypes = [
   { id: 1, name: "HOUSE", label: "House" },
@@ -42,6 +43,10 @@ const FilterProperties = () => {
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [formattedPrice, setFormattedPrice] = useState({
+    minprice: "",
+    maxprice: "",
+  });
 
   const params = new URLSearchParams(searchParams.toString());
 
@@ -85,6 +90,28 @@ const FilterProperties = () => {
         ?.scrollIntoView({ behavior: "smooth" });
     }, 100);
   };
+
+  const handleInputPrice = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    key: string
+  ) => {
+    // Eliminar comas antes de guardar en el estado
+    const rawValue = e.target.value.replace(/,/g, "");
+    const numericValue = parseFloat(rawValue);
+
+    if (!isNaN(numericValue)) {
+      // Guardar solo el valor numérico
+      setFormattedPrice((prev) => ({
+        ...prev,
+        [key]: formatPrice(numericValue),
+      }));
+      setValue(key as "minprice" | "maxprice", numericValue.toString());
+    } else {
+      // Si no es un número válido, limpiar el valor
+      setFormattedPrice((prev) => ({ ...prev, [key]: "" }));
+      setValue(key as "minprice" | "maxprice", "");
+    }
+  };
   useEffect(() => {
     const newValues = {
       type: searchParams.get("Type") || "",
@@ -96,8 +123,10 @@ const FilterProperties = () => {
     reset(newValues);
   }, [searchParams, reset]);
 
+  console.log(formattedPrice);
+
   return (
-    <div className="w-full bg-white max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
+    <div className="w-full  bg-white max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
       <h2 className="text-2xl font-semibold">Filter your search</h2>
       <form
         className="flex flex-col md:flex-row items-center gap-4 " // Usa `gap-4` para mejor espacio entre elementos
@@ -179,12 +208,17 @@ const FilterProperties = () => {
                   </Select>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <Input
-                      {...register("minprice")}
-                      type="number"
-                      className="w-full"
+                      // {...register("minprice")}
+                      value={formattedPrice.minprice}
+                      onChange={(e) => handleInputPrice(e, "minprice")}
                       placeholder="min price"
                     />
-                    <Input {...register("maxprice")} placeholder="max price" />
+                    <Input
+                      // {...register("maxprice")}
+                      placeholder="max price"
+                      onChange={(e) => handleInputPrice(e, "maxprice")}
+                      value={formattedPrice.maxprice}
+                    />
                   </div>
                 </div>
               </SelectGroup>

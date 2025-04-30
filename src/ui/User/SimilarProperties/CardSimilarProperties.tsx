@@ -8,6 +8,7 @@ import { PropertyType } from "@/app/types/property";
 type Props = {
   dataItem: PropertyType;
 };
+
 export function CardSimilarProperties({ dataItem }: Props) {
   return (
     <Card

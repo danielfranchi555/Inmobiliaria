@@ -22,7 +22,9 @@ export default async function page({ searchParams }: searchParams) {
 
   const filteredData = query
     ? data.filter((user) =>
-        user.name.toLocaleLowerCase().includes(query.toString())
+        user.name
+          .toLocaleLowerCase()
+          .includes(query.toLocaleLowerCase().toString())
       )
     : data;
 
