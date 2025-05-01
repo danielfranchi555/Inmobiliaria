@@ -16,7 +16,7 @@ const ListProperties = ({ data }: Props) => {
   }
 
   return (
-    <div className="w-full  flex flex-col gap-8">
+    <div id="properties" className="w-full  flex flex-col gap-8">
       <h3 className="text-2xl font-bold">List Properties</h3>
       <div className="grid gap-4 md:grid-cols-3">
         {data.map((item: PropertyType) => (

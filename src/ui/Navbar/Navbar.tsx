@@ -4,11 +4,7 @@ import { Dropdown } from "./Dropdown/Dropdown";
 import { getSession } from "@/app/auth/sessionActions";
 import { MobileMenu } from "./MenuMobile/MenuMobile";
 
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/properties", label: "Properties" },
-  { href: "/contact", label: "Contact" },
-];
+const navLinks = [{ href: "/properties", label: "Properties" }];
 
 const Navbar = async () => {
   const session = await getSession();
@@ -28,13 +24,13 @@ const Navbar = async () => {
           {/* Desktop nav */}
           <div className="hidden md:flex md:items-center md:space-x-6">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.href}
-                href={link.href}
+                href="#properties"
                 className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 {link.label}
-              </Link>
+              </a>
             ))}
             <Dropdown session={session} />
           </div>
