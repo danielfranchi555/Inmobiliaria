@@ -43,12 +43,6 @@ const FilterProperties = () => {
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
-  // const [formattedPrice, setFormattedPrice] = useState({
-  //   minprice: "",
-  //   maxprice: "",
-  // });
-
-  const params = new URLSearchParams(searchParams.toString());
 
   const {
     register,
@@ -91,27 +85,6 @@ const FilterProperties = () => {
     }, 100);
   };
 
-  // const handleInputPrice = (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   key: string
-  // ) => {
-  //   // Eliminar comas antes de guardar en el estado
-  //   const rawValue = e.target.value.replace(/,/g, "");
-  //   const numericValue = parseFloat(rawValue);
-
-  //   if (!isNaN(numericValue)) {
-  //     // Guardar solo el valor numérico
-  //     setFormattedPrice((prev) => ({
-  //       ...prev,
-  //       [key]: formatPrice(numericValue),
-  //     }));
-  //     setValue(key as "minprice" | "maxprice", numericValue.toString());
-  //   } else {
-  //     // Si no es un número válido, limpiar el valor
-  //     setFormattedPrice((prev) => ({ ...prev, [key]: "" }));
-  //     setValue(key as "minprice" | "maxprice", "");
-  //   }
-  // };
   useEffect(() => {
     const newValues = {
       type: searchParams.get("Type") || "",

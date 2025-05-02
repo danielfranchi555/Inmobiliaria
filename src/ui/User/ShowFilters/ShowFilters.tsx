@@ -1,7 +1,7 @@
 "use client";
 import { capitalizeFirstLetter } from "@/app/utils/capitalizeFirstLetter";
 import { Badge } from "@/components/ui/badge";
-import { Filter, Loader2, X } from "lucide-react";
+import { Filter, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 

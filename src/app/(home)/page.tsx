@@ -42,7 +42,7 @@ export default async function Home({ searchParams }: Props) {
         id="property-section"
         className="px-6 min-h-[600px] flex flex-col gap-4"
       >
-        <ShowFilters />
+        {/* <ShowFilters /> */}
         <Suspense fallback={<SkeletonListProperties />}>
           <ListProperties searchParams={searchParams} />
         </Suspense>
