@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { useActionState } from "react";
 import { login } from "@/app/auth/actions";
 import Link from "next/link";
+import { MoveLeft } from "lucide-react";
 
 export type FormStateLogin =
   | {
@@ -90,15 +91,17 @@ export function LoginForm({
                     {state.message}
                   </div>
                 )}
+                <Link
+                  href={"/"}
+                  className="text-blue-500 underline flex-col justify-center items-center gap-1"
+                >
+                  Home
+                </Link>
               </div>
             </div>
           </form>
         </CardContent>
       </Card>
-      <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   );
 }

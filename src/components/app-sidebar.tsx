@@ -48,11 +48,6 @@ const data = {
       url: "/admin/sellers",
       icon: IconHomeHand,
     },
-    {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
   ],
   navClouds: [
     {
