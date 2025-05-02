@@ -6,16 +6,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
 export const ShowFilters = () => {
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [filters, setFilters] = useState<string[]>([]);
   const [deletingKey, setDeletingKey] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    if (!params) return;
+    if (!searchParams) return;
 
-    const entries = Array.from(params.entries()).filter(
+    const entries = Array.from(searchParams.entries()).filter(
       ([key]) => !["page", "pagesize"].includes(key.toLowerCase())
     );
 
@@ -25,12 +25,12 @@ export const ShowFilters = () => {
     );
 
     setFilters(filtersArray);
-  }, [params]);
+  }, [searchParams]);
 
   const deleteParams = (key: string) => {
-    setDeletingKey(key); // ← Marcar cuál filtro se está eliminando
+    setDeletingKey(key); // ← Marcar cuál filtro se está eliminagitndo
 
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(searchParams);
     params.delete(key);
     params.delete("page");
 

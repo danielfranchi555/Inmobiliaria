@@ -1,8 +1,6 @@
 import FilterProperties from "@/ui/User/FilterProperties/FilterProperties";
 import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
 import ListProperties from "@/ui/User/ListProperties/ListProperties";
-import { getProperties } from "./actions";
-import { PaginationWrapper } from "@/ui/Pagination/Pagination";
 import { Suspense } from "react";
 import SkeletonListProperties from "../skeletons/SkeletonListProperties";
 
@@ -44,9 +42,7 @@ export default async function Home({ searchParams }: Props) {
         id="property-section"
         className="px-6 min-h-[600px] flex flex-col gap-4"
       >
-        <Suspense fallback={null}>
-          <ShowFilters />
-        </Suspense>{" "}
+        <ShowFilters />
         <Suspense fallback={<SkeletonListProperties />}>
           <ListProperties searchParams={searchParams} />
         </Suspense>
