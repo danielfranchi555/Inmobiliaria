@@ -11,7 +11,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -45,7 +44,6 @@ const FilterProperties = () => {
   const router = useRouter();
 
   const {
-    register,
     handleSubmit,
     watch,
     setValue,
@@ -97,13 +95,13 @@ const FilterProperties = () => {
   }, [searchParams, reset]);
 
   return (
-    <div className="w-full  bg-white max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
+    <div className="w-full shadow-xl bg-white max-w-[300px] md:max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
       <h2 className="text-2xl font-semibold">Filter your search</h2>
       <form
-        className="flex flex-col md:flex-row items-center gap-4 " // Usa `gap-4` para mejor espacio entre elementos
+        className="flex flex-col md:flex-row  items-center gap-6 " // Usa `gap-4` para mejor espacio entre elementos
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex flex-col gap-1 w-full">
+        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
           <Label>Type</Label>
           <Select
             onValueChange={(value) => {
@@ -111,7 +109,7 @@ const FilterProperties = () => {
             }}
             value={watch("type")}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
               <SelectValue placeholder="Type" />
             </SelectTrigger>
             <SelectContent>
@@ -127,14 +125,14 @@ const FilterProperties = () => {
           </Select>
         </div>
 
-        <div className="flex flex-col gap-1 w-full">
+        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
           <Label>Contract</Label>
           <Select
             value={watch("contract") || searchParams.get("Contract") || ""}
             onValueChange={(value) => setValue("contract", value)}
           >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Contract" />
+            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
+              <SelectValue placeholder="Contract" className="font-light" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -149,10 +147,10 @@ const FilterProperties = () => {
           </Select>
         </div>
 
-        <div className="flex flex-col gap-1 w-full">
+        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
           <Label>Price</Label>
           <Select>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
               <SelectValue placeholder="Price" />
             </SelectTrigger>
             <SelectContent>
@@ -223,7 +221,7 @@ const FilterProperties = () => {
 
         <div className="flex flex-col items-center w-full mt-4">
           <Button
-            className="w-full bg-green-500"
+            className="w-full bg-[#4A60A1]"
             type="submit"
             disabled={isPending}
           >

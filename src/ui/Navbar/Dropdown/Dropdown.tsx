@@ -37,7 +37,9 @@ export const Dropdown = ({ session }: DropdownProps) => {
                 {session ? (
                   session.name
                 ) : (
-                  <Link href={"/auth/login"}>Sign In</Link>
+                  <Link href={"/auth/login"} className="text-white">
+                    Sign In
+                  </Link>
                 )}
               </span>
             </div>
@@ -60,7 +62,12 @@ export const Dropdown = ({ session }: DropdownProps) => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Link href={"/auth/login"}>Sign in</Link>
+        <Link
+          href={"/auth/login"}
+          className="text-white px-3 py-2 text-sm  font-medium transition-all duration-300 border-b-1 border-transparent hover:border-white"
+        >
+          Sign in
+        </Link>
       )}
     </>
   );

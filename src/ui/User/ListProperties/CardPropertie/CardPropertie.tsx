@@ -47,7 +47,7 @@ export function CardPropertie({ dataItem, widht }: Props) {
             <span>{dataItem.bathrooms} bathrooms</span>
             <span>{dataItem.squareMeters} m²</span>
           </div>
-          <p className="text-1xl flex flex-col items-center gap-0 md:flex-row md:gap-1 md:text-lg font-bold text-green-600">
+          <p className="text-1xl flex flex-col items-center gap-0 md:flex-row md:gap-1 md:text-lg font-bold text-[#4A60A1]">
             <span> {dataItem.currency === "USD" ? "$ USD " : " $ ARG "}</span>
             <span> {dataItem.price.toLocaleString("en-US")}</span>
           </p>

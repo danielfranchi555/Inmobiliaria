@@ -66,15 +66,15 @@ export const ShowFilters = () => {
               <div className="flex items-center gap-2" key={index}>
                 <Badge
                   variant="secondary"
-                  className="bg-green-200 w-full flex items-center  gap-1 h-10 px-3 text-green-800 md:w-40"
+                  className="bg-[#4A60A1] w-full flex items-center  gap-1 h-10 px-3 text-white md:w-40"
                 >
                   <span className="text-xs ">{item}</span>
                   {deletingKey === key ? (
-                    <div className="w-4 h-4 border-2 ml-1  border-green-700 p-0.5 border-t-transparent border-r-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 ml-1  border-white p-0.5 border-t-transparent border-r-transparent rounded-full animate-spin" />
                   ) : (
                     <button
                       onClick={() => deleteParams(key)}
-                      className="ml-1 rounded-full hover:bg-green-300 p-0.5 cursor-pointer"
+                      className="ml-1 rounded-full hover:bg-[#4A60A1] p-0.5 cursor-pointer"
                     >
                       <X className="h-4 w-4" />
                     </button>
