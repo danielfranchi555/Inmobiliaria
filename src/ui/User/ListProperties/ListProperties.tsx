@@ -1,15 +1,36 @@
 import { CardPropertie } from "./CardPropertie/CardPropertie";
 import Link from "next/link";
 import { PropertyType } from "@/app/types/property";
+import { getProperties } from "@/app/(home)/actions";
+import { PaginationWrapper } from "@/ui/Pagination/Pagination";
 
 type Props = {
-  data: PropertyType[];
+  searchParams: Promise<{
+    Type: string;
+    Contract: string;
+    Minprice: string;
+    Maxprice: string;
+    Currency: string;
+    page?: string;
+    pageSize?: string;
+  }>;
 };
 
-const ListProperties = ({ data }: Props) => {
+export async function ListProperties({ searchParams }: Props) {
+  const { data, error, success, message, pagination } =
+    await getProperties(searchParams);
+
+  if (!data || error || !success) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <h1 className="text-2xl font-bold text-red-500">{message}</h1>
+      </div>
+    );
+  }
+
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-cenvter justify-center h-[400px]">
+      <div className="flex items-center justify-center w-full h-[500px]">
         <h1 className="text-2xl font-bold">No properties available</h1>
       </div>
     );
@@ -25,8 +46,12 @@ const ListProperties = ({ data }: Props) => {
           </Link>
         ))}
       </div>
+      <PaginationWrapper
+        currentPage={pagination?.page || 1}
+        totalPages={pagination.totalPages || 1}
+      />
     </div>
   );
-};
+}
 
 export default ListProperties;

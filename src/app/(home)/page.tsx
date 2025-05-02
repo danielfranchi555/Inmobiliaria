@@ -3,6 +3,8 @@ import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
 import ListProperties from "@/ui/User/ListProperties/ListProperties";
 import { getProperties } from "./actions";
 import { PaginationWrapper } from "@/ui/Pagination/Pagination";
+import { Suspense } from "react";
+import SkeletonListProperties from "../skeletons/SkeletonListProperties";
 
 type Props = {
   searchParams: Promise<{
@@ -17,17 +19,6 @@ type Props = {
 };
 
 export default async function Home({ searchParams }: Props) {
-  const { data, error, success, message, pagination } =
-    await getProperties(searchParams);
-
-  if (!data || error || !success) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <h1 className="text-2xl font-bold text-red-500">{message}</h1>
-      </div>
-    );
-  }
-
   return (
     <div className=" grid gap-4 w-full ">
       <header className="relative flex w-full flex-col p-4 gap-4 md:gap-8 md:p-20 justify-center text-center bg-[url('/bg-image.jpg')] bg-cover bg-top h-[630px]">
@@ -54,11 +45,9 @@ export default async function Home({ searchParams }: Props) {
         className="px-6 min-h-[600px] flex flex-col gap-4"
       >
         <ShowFilters />
-        <ListProperties data={data} />
-        <PaginationWrapper
-          currentPage={pagination?.page || 1}
-          totalPages={pagination.totalPages || 1}
-        />
+        <Suspense fallback={<SkeletonListProperties />}>
+          <ListProperties searchParams={searchParams} />
+        </Suspense>
       </main>
     </div>
   );

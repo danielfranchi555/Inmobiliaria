@@ -43,10 +43,10 @@ const FilterProperties = () => {
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [formattedPrice, setFormattedPrice] = useState({
-    minprice: "",
-    maxprice: "",
-  });
+  // const [formattedPrice, setFormattedPrice] = useState({
+  //   minprice: "",
+  //   maxprice: "",
+  // });
 
   const params = new URLSearchParams(searchParams.toString());
 
@@ -91,27 +91,27 @@ const FilterProperties = () => {
     }, 100);
   };
 
-  const handleInputPrice = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    key: string
-  ) => {
-    // Eliminar comas antes de guardar en el estado
-    const rawValue = e.target.value.replace(/,/g, "");
-    const numericValue = parseFloat(rawValue);
+  // const handleInputPrice = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   key: string
+  // ) => {
+  //   // Eliminar comas antes de guardar en el estado
+  //   const rawValue = e.target.value.replace(/,/g, "");
+  //   const numericValue = parseFloat(rawValue);
 
-    if (!isNaN(numericValue)) {
-      // Guardar solo el valor numérico
-      setFormattedPrice((prev) => ({
-        ...prev,
-        [key]: formatPrice(numericValue),
-      }));
-      setValue(key as "minprice" | "maxprice", numericValue.toString());
-    } else {
-      // Si no es un número válido, limpiar el valor
-      setFormattedPrice((prev) => ({ ...prev, [key]: "" }));
-      setValue(key as "minprice" | "maxprice", "");
-    }
-  };
+  //   if (!isNaN(numericValue)) {
+  //     // Guardar solo el valor numérico
+  //     setFormattedPrice((prev) => ({
+  //       ...prev,
+  //       [key]: formatPrice(numericValue),
+  //     }));
+  //     setValue(key as "minprice" | "maxprice", numericValue.toString());
+  //   } else {
+  //     // Si no es un número válido, limpiar el valor
+  //     setFormattedPrice((prev) => ({ ...prev, [key]: "" }));
+  //     setValue(key as "minprice" | "maxprice", "");
+  //   }
+  // };
   useEffect(() => {
     const newValues = {
       type: searchParams.get("Type") || "",
@@ -122,8 +122,6 @@ const FilterProperties = () => {
     };
     reset(newValues);
   }, [searchParams, reset]);
-
-  console.log(formattedPrice);
 
   return (
     <div className="w-full  bg-white max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
@@ -189,7 +187,11 @@ const FilterProperties = () => {
                 <SelectLabel>Price</SelectLabel>
                 <div className="flex  flex-col gap-2">
                   <Select
-                    value={watch("currency")}
+                    value={
+                      watch("currency") || searchParams.get("Currency") || ""
+                    }
+                    // defaultValue={searchParams.get("Currency") || ""}
+                    // value={searchParams.get("Currency") || ""}
                     onValueChange={(value) => setValue("currency", value)}
                   >
                     <SelectTrigger className="w-full">
@@ -208,16 +210,36 @@ const FilterProperties = () => {
                   </Select>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <Input
-                      // {...register("minprice")}
-                      value={formattedPrice.minprice}
-                      onChange={(e) => handleInputPrice(e, "minprice")}
                       placeholder="min price"
+                      value={
+                        watch("minprice")
+                          ? formatPrice(Number(watch("minprice")))
+                          : ""
+                      }
+                      onChange={(e) => {
+                        const raw = e.target.value.replace(/,/g, "");
+                        const number = parseInt(raw, 10);
+                        setValue(
+                          "minprice",
+                          isNaN(number) ? "" : number.toString()
+                        );
+                      }}
                     />
                     <Input
-                      // {...register("maxprice")}
                       placeholder="max price"
-                      onChange={(e) => handleInputPrice(e, "maxprice")}
-                      value={formattedPrice.maxprice}
+                      value={
+                        watch("maxprice")
+                          ? formatPrice(Number(watch("maxprice")))
+                          : ""
+                      }
+                      onChange={(e) => {
+                        const raw = e.target.value.replace(/,/g, "");
+                        const number = parseInt(raw, 10);
+                        setValue(
+                          "maxprice",
+                          isNaN(number) ? "" : number.toString()
+                        );
+                      }}
                     />
                   </div>
                 </div>
