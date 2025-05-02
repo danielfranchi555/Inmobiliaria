@@ -30,7 +30,7 @@ export default async function Home({ searchParams }: Props) {
 
   return (
     <div className=" grid gap-4 w-full ">
-      <header className="relative flex w-full flex-col p-4 gap-4 md:gap-8 md:p-20 justify-center text-center bg-[url('/bg-uptomized.jpg)] bg-cover bg-top h-[630px]">
+      <header className="relative flex w-full flex-col p-4 gap-4 md:gap-8 md:p-20 justify-center text-center bg-[url('/bg-image.jpg')] bg-cover bg-top h-[630px]">
         {/* <!-- Capa de opacidad solo para la imagen --> */}
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
