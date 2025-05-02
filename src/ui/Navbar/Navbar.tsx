@@ -1,23 +1,37 @@
+"use client";
 import { House } from "lucide-react";
 import Link from "next/link";
 import { Dropdown } from "./Dropdown/Dropdown";
-import { getSession } from "@/app/auth/sessionActions";
 import { MobileMenu } from "./MenuMobile/MenuMobile";
+import { usePathname } from "next/navigation";
 
 const navLinks = [{ href: "/properties", label: "Properties" }];
 
-const Navbar = async () => {
-  const session = await getSession();
+type sessionProps = {
+  session: {
+    userId: string;
+    role: "ADMIN" | "USER";
+    name?: string;
+  } | null;
+};
+
+const Navbar = ({ session }: sessionProps) => {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
 
   return (
-    <nav className=" w-full top-0 z-50">
-      <div className="w-full px-6">
+    <nav className=" w-full top-0 z-50 ">
+      <div className={`w-full px-6  ${!isHome ? "shadow-md" : ""}`}>
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center">
             <span className="text-2xl gap-2 font-bold text-gray-800 flex items-center">
-              <House color="white" />
-              <h1 className="text-white font-medium">RealState</h1>
+              <House color={`${isHome ? "white" : "black"}`} />
+              <h1
+                className={`${isHome ? " text-white" : "text-black"} font-medium`}
+              >
+                RealState
+              </h1>
             </span>
           </Link>
 
@@ -27,7 +41,7 @@ const Navbar = async () => {
               <a
                 key={link.href}
                 href="#properties"
-                className="text-white px-3 py-2 text-sm  font-medium transition-all duration-300 border-b-1 border-transparent hover:border-white"
+                className={`${isHome ? "text-white" : "text-black"} px-3 py-2 text-sm  font-medium transition-all duration-300 border-b-1 border-transparent hover:border-white`}
               >
                 {link.label}
               </a>

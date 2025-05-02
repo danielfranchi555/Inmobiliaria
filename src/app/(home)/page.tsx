@@ -4,6 +4,7 @@ import ListProperties from "@/ui/User/ListProperties/ListProperties";
 import { Suspense } from "react";
 import SkeletonListProperties from "../skeletons/SkeletonListProperties";
 import Navbar from "@/ui/Navbar/Navbar";
+import NavbarWrapper from "@/ui/Navbar/NavBarWrapper/NavBarWrapper";
 
 type Props = {
   searchParams: Promise<{
@@ -24,7 +25,7 @@ export default async function Home({ searchParams }: Props) {
         <div className="absolute inset-0 bg-[#063053] opacity-40"></div>
 
         <div className="absolute top-0 left-0 w-full z-20">
-          <Navbar />
+          <NavbarWrapper />
         </div>
 
         <section className="relative flex flex-col gap-4 z-10 mt-20 px-4">

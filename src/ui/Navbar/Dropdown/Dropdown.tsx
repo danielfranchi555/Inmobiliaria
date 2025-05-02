@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { LogOut, User } from "lucide-react";
 import { deleteSession } from "@/app/auth/sessionActions";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type DropdownProps = {
   session: {
@@ -22,6 +23,8 @@ type DropdownProps = {
 };
 
 export const Dropdown = ({ session }: DropdownProps) => {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   return (
     <>
       {session ? (
@@ -37,7 +40,10 @@ export const Dropdown = ({ session }: DropdownProps) => {
                 {session ? (
                   session.name
                 ) : (
-                  <Link href={"/auth/login"} className="text-white">
+                  <Link
+                    href={"/auth/login"}
+                    className={`${isHome ? "text-white" : "text-black"}`}
+                  >
                     Sign In
                   </Link>
                 )}
@@ -64,7 +70,7 @@ export const Dropdown = ({ session }: DropdownProps) => {
       ) : (
         <Link
           href={"/auth/login"}
-          className="text-white px-3 py-2 text-sm  font-medium transition-all duration-300 border-b-1 border-transparent hover:border-white"
+          className={`${isHome ? "text-white" : "text-black"} px-3 py-2 text-sm  font-medium transition-all duration-300 border-b-1 border-transparent hover:border-white`}
         >
           Sign in
         </Link>
