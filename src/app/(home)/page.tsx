@@ -34,7 +34,9 @@ export default async function Home({ searchParams }: Props) {
         </section>
 
         <div className="relative z-10 w-auto  p-6 flex justify-center items-center shadow-md rounded-lg">
-          <FilterProperties />
+          <Suspense fallback={null}>
+            <FilterProperties />
+          </Suspense>
         </div>
       </header>
 
