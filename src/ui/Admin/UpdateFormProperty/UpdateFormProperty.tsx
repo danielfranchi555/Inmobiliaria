@@ -69,6 +69,8 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
 
   const router = useRouter();
 
+  console.log(propertie);
+
   const CURRENCY_OPTIONS = ["USD", "ARG"];
   const {
     register,
@@ -109,8 +111,6 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
 
   const formValues = watch();
   const watchCurrency = watch("currency");
-
-  // Usar el hook en lugar de la función handleImagesChange
 
   const uploadNewImage = async (filesImages: Array<File>) => {
     if (!files) return [];
@@ -183,8 +183,8 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
   };
 
   const handleBedroomsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value ? Number(e.target.value) : undefined;
-    if (value !== undefined && value <= 0) {
+    const value = e.target.value ? Number(e.target.value) : null;
+    if (value !== null && value <= 0) {
       return trigger("bedrooms");
     }
 
@@ -248,12 +248,7 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
     ) : null;
   };
 
-  // useEffect(() => {
-  //   if (propertie.price) {
-  //     const formatted = formatPrice(propertie.price);
-  //     setFormattedPrice(formatted);
-  //   }
-  // }, [setValue, propertie]);
+  console.log(errors);
 
   return (
     <div>
@@ -286,7 +281,6 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
                   className="w-full"
                   onChange={handlePrice}
                 />
-                {formattedPrice}
                 {errors.price && (
                   <p className="text-red-500 text-sm">{errors.price.message}</p>
                 )}
@@ -383,7 +377,8 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
                   type="number"
                   placeholder="Number of bedrooms"
                   className="w-full"
-                  {...register("bedrooms")}
+                  value={formValues.bedrooms ?? ""} // <-- Esto es clave
+                  // {...register("bedrooms")}
                   disabled={formValues.studio} // ** Cambiado: deshabilitar si es un studio **
                   onChange={handleBedroomsChange} // ** Cambiado: manejo de cambio **
                 />
