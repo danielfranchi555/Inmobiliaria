@@ -1,7 +1,7 @@
 import { getPropertieId } from "@/app/admin/properties/actions";
 import Carousel from "@/ui/User/Carousel";
 import { Badge } from "@/components/ui/badge";
-import { Bath, Bed, Car, Maximize } from "lucide-react";
+import { Bath, Bed, Car, Maximize, ArrowLeft } from "lucide-react";
 import { FormSeller } from "@/ui/User/FormSeller/FormSeller";
 import { getSimilarProperties } from "../../actions";
 import { CardPropertie } from "@/ui/User/ListProperties/CardPropertie/CardPropertie";
@@ -38,6 +38,13 @@ async function page({
     <div>
       <section className="flex flex-col">
         <div className="grid grid-cols-4 gap-4 px-6 mt-10">
+          <Link
+            href={"/"}
+            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors w-fit bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg"
+          >
+            <ArrowLeft size={20} />
+            <span>Volver al inicio</span>
+          </Link>
           <div className="col-span-4 grid grid-cols-4  gap-4 ">
             <div className="col-span-4 md:col-span-3">
               <Carousel images={data.images} />
@@ -46,7 +53,6 @@ async function page({
               <FormSeller sellerData={data.User} />
             </div>
           </div>
-
           <div className="col-span-4 md:col-span-3 grid">
             <div className="flex  justify-between ">
               <h1 className="text-2xl font-bold text-center">{data.title}</h1>

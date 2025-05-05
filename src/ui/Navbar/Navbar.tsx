@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Dropdown } from "./Dropdown/Dropdown";
 import { MobileMenu } from "./MenuMobile/MenuMobile";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 
 const navLinks = [{ href: "/properties", label: "Properties" }];
 
@@ -20,33 +21,64 @@ const Navbar = ({ session }: sessionProps) => {
   const isHome = pathname === "/";
 
   return (
-    <nav className=" w-full top-0 z-50 ">
-      <div className={`w-full px-6  ${!isHome ? "shadow-md" : ""}`}>
-        <div className="flex justify-between items-center h-16">
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full fixed top-0 z-50 backdrop-blur-sm bg-opacity-80"
+    >
+      <div
+        className={`w-full  ${!isHome ? "bg-white/80 shadow-lg" : "bg-transparent"} transition-all duration-300`}
+      >
+        <div className="px-6 mx-auto flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 flex items-center">
-            <span className="text-2xl gap-2 font-bold text-gray-800 flex items-center">
-              <House color={`${isHome ? "white" : "black"}`} />
+          <Link href="/" className="flex-shrink-0 flex items-center group">
+            <motion.span
+              whileHover={{ scale: 1.05 }}
+              className="text-2xl gap-3 font-bold flex items-center"
+            >
+              <div
+                className={`p-2 rounded-lg ${isHome ? "bg-white/10" : "bg-black/5"} transition-colors duration-300`}
+              >
+                <House
+                  size={24}
+                  color={`${isHome ? "white" : "black"}`}
+                  className="transition-transform duration-300 group-hover:rotate-12"
+                />
+              </div>
               <h1
-                className={`${isHome ? " text-white" : "text-black"} font-medium`}
+                className={`${
+                  isHome ? "text-white drop-shadow-md" : "text-gray-800"
+                } font-semibold tracking-tight transition-colors duration-300`}
               >
                 RealState
               </h1>
-            </span>
+            </motion.span>
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex md:items-center md:space-x-6">
+          <div className="hidden md:flex md:items-center md:space-x-8">
             {navLinks.map((link) => (
-              <a
+              <motion.a
                 key={link.href}
                 href="#properties"
-                className={`${isHome ? "text-white" : "text-black"} px-3 py-2 text-sm  font-medium transition-all duration-300 border-b-1 border-transparent hover:border-white`}
+                whileHover={{ scale: 1.05 }}
+                className={`
+                  ${isHome ? "text-white" : "text-gray-800"}
+                  relative px-4 py-2 text-sm font-medium transition-all duration-300
+                  before:content-['']
+                  before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5
+                  before:transition-all before:duration-300
+                  before:bg-current
+                  hover:before:w-full
+                `}
               >
                 {link.label}
-              </a>
+              </motion.a>
             ))}
-            <Dropdown session={session} />
+            <div className="pl-4">
+              <Dropdown session={session} />
+            </div>
           </div>
 
           {/* Mobile menu toggle + content */}
@@ -55,7 +87,7 @@ const Navbar = ({ session }: sessionProps) => {
           </div>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
