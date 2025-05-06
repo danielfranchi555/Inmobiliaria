@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { registerUser } from "@/app/auth/actions";
 import Link from "next/link";
-import { stat } from "fs";
+import { useRouter } from "next/navigation";
 
 export type FormState =
   | {
@@ -26,6 +26,7 @@ export type FormState =
         lastname?: string[];
         phone?: string[];
       };
+      redirectUrl?: string;
       message?: string;
     }
   | undefined;
@@ -40,6 +41,14 @@ export function SignUpForm({
     registerUser,
     initialState
   );
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.success && state.redirectUrl) {
+      router.push(state.redirectUrl);
+    }
+  }, [state, router]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

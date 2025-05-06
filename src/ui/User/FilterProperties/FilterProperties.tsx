@@ -89,7 +89,7 @@ const FilterProperties = () => {
       contract: searchParams.get("Contract") || "",
       minprice: searchParams.get("Minprice") || "",
       maxprice: searchParams.get("Maxprice") || "",
-      currency: "",
+      currency: searchParams.get("Currency") || "",
     };
     reset(newValues);
   }, [searchParams, reset]);

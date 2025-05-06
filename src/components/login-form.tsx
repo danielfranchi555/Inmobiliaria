@@ -10,10 +10,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { login } from "@/app/auth/actions";
 import Link from "next/link";
-import { MoveLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LogIn } from "lucide-react";
 
 export type FormStateLogin =
   | {
@@ -22,6 +23,7 @@ export type FormStateLogin =
         email?: string[];
         password?: string[];
       };
+      redirectUrl?: string;
       message?: string;
     }
   | undefined;
@@ -36,10 +38,17 @@ export function LoginForm({
       email: [],
       password: [],
     },
+    redirectUrl: "",
     message: "",
   };
   const [state, formAction, isPending] = useActionState(login, initialState);
+  const router = useRouter();
 
+  useEffect(() => {
+    if (state?.success && state.redirectUrl) {
+      router.push(state.redirectUrl);
+    }
+  }, [state, router]);
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -86,18 +95,22 @@ export function LoginForm({
                 >
                   Sign up
                 </Link>
-                {state.success === false && (
-                  <div className="mt-4 text-sm text-red-500">
-                    {state.message}
+                {state?.message && !state?.success && (
+                  <div className="flex items-start gap-3 p-4 border border-red-400 text-red-700 bg-red-50 rounded-md">
+                    {/* <LogIn className="w-5 h-5 mt-0.5" /> */}
+                    <div>
+                      <p className="font-semibold">Login failed</p>
+                      <p className="text-sm">{state.message}</p>
+                    </div>
                   </div>
                 )}
-                <Link
-                  href={"/"}
-                  className="text-blue-500 underline flex-col justify-center items-center gap-1"
-                >
-                  Home
-                </Link>
               </div>
+              <Link
+                href={"/"}
+                className="text-blue-500 text-center underline flex-col justify-center items-center gap-1"
+              >
+                Home
+              </Link>
             </div>
           </form>
         </CardContent>

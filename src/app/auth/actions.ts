@@ -18,6 +18,7 @@ export type FormStateRegister =
         password?: string[];
         phone?: string[];
       };
+      redirectUrl?: string;
       message?: string;
     }
   | undefined;
@@ -29,6 +30,7 @@ export type FormStateLogin =
         email?: string[];
         password?: string[];
       };
+      redirectUrl?: string;
       message?: string;
     }
   | undefined;
@@ -37,136 +39,139 @@ export async function registerUser(
   state: FormStateRegister,
   data: FormData
 ): Promise<FormStateRegister> {
-  const formData = Object.fromEntries(data);
-  const validatedFields = SignUpSchema.safeParse(formData);
+  try {
+    const formData = Object.fromEntries(data);
+    const validatedFields = SignUpSchema.safeParse(formData);
 
-  if (!validatedFields.success) {
+    if (!validatedFields.success) {
+      return {
+        success: false,
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Validation error",
+      };
+    }
+
+    const userExist = await prisma.user.findUnique({
+      where: {
+        email: formData.email as string,
+      },
+    });
+
+    if (userExist) {
+      return {
+        success: false,
+        message: "User already exists",
+      };
+    }
+
+    // Hash the user's password
+    const password = formData.password as string;
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const userCreate = await prisma.user.create({
+      data: {
+        name: formData.name as string,
+        email: formData.email as string,
+        password: hashedPassword,
+        lastName: formData.lastname as string,
+        phone: formData.phone as string,
+        role: "BUYER", // Default role
+      },
+    });
+
+    if (!userCreate) {
+      return {
+        success: false,
+        message: "Error creating user",
+      };
+    }
+    // create session
+    await createSession({
+      userId: userCreate.id,
+      role: userCreate.role,
+      name: userCreate.name,
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+    });
+
+    return {
+      success: true,
+      message: "User registered successfully",
+      role: userCreate.role,
+      redirectUrl: userCreate.role === "ADMIN" ? "/admin" : "/",
+    };
+  } catch (error) {
     return {
       success: false,
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Validation error",
+      message: "An unexpected error occurred. Please try again later.",
+      redirectUrl: "/auth/login",
+      role: undefined,
     };
   }
-
-  const userExist = await prisma.user.findUnique({
-    where: {
-      email: formData.email as string,
-    },
-  });
-
-  if (userExist) {
-    return {
-      success: false,
-      message: "User already exists",
-    };
-  }
-
-  // Hash the user's password
-  const password = formData.password as string;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  const userCreate = await prisma.user.create({
-    data: {
-      name: formData.name as string,
-      email: formData.email as string,
-      password: hashedPassword,
-      lastName: formData.lastname as string,
-      phone: formData.phone as string,
-      role: "BUYER", // Default role
-    },
-  });
-
-  if (!userCreate) {
-    return {
-      success: false,
-      message: "Error creating user",
-    };
-  }
-  // create session
-  await createSession({
-    userId: userCreate.id,
-    role: userCreate.role,
-    name: userCreate.name,
-    expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-  });
-
-  // 🔥 Redirigimos según el rol
-  if (userCreate.role === "ADMIN") {
-    redirect("/admin");
-  } else if (userCreate.role === "BUYER") {
-    redirect("/");
-  }
-
-  return {
-    success: true,
-    message: "User registered successfully",
-    role: userCreate.role,
-  };
 }
 
 export async function login(prevState: FormStateLogin, formData: FormData) {
-  // obtener la data y convertirla a un objeto
-  const data = Object.fromEntries(formData);
-  //parsear la data con zod
-  const validatedFields = loginSchema.safeParse(data);
+  try {
+    // obtener la data y convertirla a un objeto
+    const data = Object.fromEntries(formData);
+    //parsear la data con zod
+    const validatedFields = loginSchema.safeParse(data);
 
-  if (validatedFields.success === false) {
+    if (validatedFields.success === false) {
+      return {
+        success: false,
+        errors: validatedFields.error.flatten().fieldErrors,
+        message: "Error validating fields",
+      };
+    }
+
+    // check if user exists
+    const user = await prisma.user.findUnique({
+      where: {
+        email: data.email as string,
+      },
+    });
+
+    if (!user) {
+      return {
+        success: false,
+        message: "Invalid Credentials",
+      };
+    }
+
+    // check if password is correct
+    const isPasswordValid = await bcrypt.compare(
+      data.password as string,
+      user.password as string
+    );
+
+    // if password is not valid, return error
+    if (!isPasswordValid) {
+      return {
+        success: false,
+        message: "Invalid Credentials",
+      };
+    }
+
+    // create session
+    const userId = user.id;
+    await createSession({
+      userId,
+      role: user.role,
+      name: user.name,
+      expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+    });
+    return {
+      success: true,
+      message: "Login successful",
+      redirectUrl: user?.role === "ADMIN" ? "/admin" : "/",
+    };
+  } catch (error) {
     return {
       success: false,
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Error validating fields",
+      message: "An unexpected error occurred. Please try again later.",
+      redirectUrl: "/auth/login",
     };
   }
-
-  // check if user exists
-  const user = await prisma.user.findUnique({
-    where: {
-      email: data.email as string,
-    },
-  });
-
-  if (!user) {
-    return {
-      success: false,
-      message: "Invalid Credentials",
-    };
-  }
-
-  // check if password is correct
-  const isPasswordValid = await bcrypt.compare(
-    data.password as string,
-    user.password as string
-  );
-
-  // if password is not valid, return error
-  if (!isPasswordValid) {
-    return {
-      success: false,
-      message: "Invalid Credentials",
-    };
-  }
-
-  // create session
-
-  const userId = user.id;
-  await createSession({
-    userId,
-    role: user.role,
-    name: user.name,
-    expiresAt: new Date(Date.now() + 60 * 60 * 1000),
-  });
-  // 🔥 Redirigimos según el rol
-  if (user.role === "ADMIN") {
-    redirect("/admin");
-  } else if (user.role === "BUYER") {
-    redirect("/");
-  }
-
-  // if everything is ok, return success
-  return {
-    success: true,
-    message: "Login successful",
-  };
 }
 
 export async function logout() {
