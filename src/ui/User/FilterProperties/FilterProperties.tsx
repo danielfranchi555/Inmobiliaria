@@ -17,15 +17,15 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { formatPrice } from "@/app/utils/formatPrice";
 
 const propertiesTypes = [
-  { id: 1, name: "HOUSE", label: "House" },
-  { id: 2, name: "APARTMENT", label: "Apartment" },
-  { id: 3, name: "COMMERCIAL", label: "Commercial" },
-  { id: 4, name: "LAND", label: "Land" },
+  { id: 1, name: "HOUSE", label: "Casas" },
+  { id: 2, name: "APARTMENT", label: "Departamentos" },
+  // { id: 3, name: "COMMERCIAL", label: "Commercial" },
+  // { id: 4, name: "LAND", label: "Land" },
 ];
 
 const contractTypes = [
-  { id: 1, name: "RENT", label: "Rent" },
-  { id: 2, name: "SALE", label: "Sale" },
+  { id: 1, name: "RENT", label: "Alquiler" },
+  { id: 2, name: "SALE", label: "Venta" },
 ];
 
 type Inputs = {
@@ -96,13 +96,13 @@ const FilterProperties = () => {
 
   return (
     <div className="w-full shadow-xl bg-white max-w-[300px] md:max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
-      <h2 className="text-2xl font-semibold">Filter your search</h2>
+      <h2 className="text-2xl font-semibold">Filtra tu busqueda</h2>
       <form
         className="flex flex-col md:flex-row  items-center gap-6 " // Usa `gap-4` para mejor espacio entre elementos
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
-          <Label>Type</Label>
+          <Label>Selecciona el tipo</Label>
           <Select
             onValueChange={(value) => {
               setValue("type", value);
@@ -110,11 +110,11 @@ const FilterProperties = () => {
             value={watch("type")}
           >
             <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
-              <SelectValue placeholder="Type" />
+              <SelectValue placeholder="Tipo de propiedad" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Type</SelectLabel>
+                <SelectLabel>Tipo de propiedad</SelectLabel>
                 {propertiesTypes.map((item) => (
                   <SelectItem key={item.id} value={item.name}>
                     {item.label}
@@ -126,17 +126,17 @@ const FilterProperties = () => {
         </div>
 
         <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
-          <Label>Contract</Label>
+          <Label>Tipo de contrato</Label>
           <Select
             value={watch("contract") || searchParams.get("Contract") || ""}
             onValueChange={(value) => setValue("contract", value)}
           >
             <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
-              <SelectValue placeholder="Contract" className="font-light" />
+              <SelectValue placeholder="Contrato" className="font-light" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Contract</SelectLabel>
+                <SelectLabel>Contrato</SelectLabel>
                 {contractTypes.map((item) => (
                   <SelectItem key={item.id} value={item.name}>
                     {item.label}
@@ -148,14 +148,14 @@ const FilterProperties = () => {
         </div>
 
         <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
-          <Label>Price</Label>
+          <Label>Precio</Label>
           <Select>
             <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
-              <SelectValue placeholder="Price" />
+              <SelectValue placeholder="Precio" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Price</SelectLabel>
+                <SelectLabel>Precio</SelectLabel>
                 <div className="flex  flex-col gap-2">
                   <Select
                     value={
@@ -166,11 +166,11 @@ const FilterProperties = () => {
                     onValueChange={(value) => setValue("currency", value)}
                   >
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Currency" />
+                      <SelectValue placeholder="Moneda" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>currency</SelectLabel>
+                        <SelectLabel>Moneda</SelectLabel>
                         {currency.map((item) => (
                           <SelectItem key={item} value={item}>
                             {item}
@@ -181,7 +181,7 @@ const FilterProperties = () => {
                   </Select>
                   <div className="flex flex-col md:flex-row md:items-center gap-2">
                     <Input
-                      placeholder="min price"
+                      placeholder="precio min"
                       value={
                         watch("minprice")
                           ? formatPrice(Number(watch("minprice")))
@@ -197,7 +197,7 @@ const FilterProperties = () => {
                       }}
                     />
                     <Input
-                      placeholder="max price"
+                      placeholder="precio max"
                       value={
                         watch("maxprice")
                           ? formatPrice(Number(watch("maxprice")))
@@ -225,7 +225,7 @@ const FilterProperties = () => {
             type="submit"
             disabled={isPending}
           >
-            {isPending ? "Loading..." : "Search"}
+            {isPending ? "Cargando.." : "Buscar"}
           </Button>
         </div>
       </form>

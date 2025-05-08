@@ -30,13 +30,21 @@ export const Dropdown = ({ session }: DropdownProps) => {
       {session ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-3 py-2 rounded-md transition-colors">
+            <div className="group flex items-center gap-2 cursor-pointer hover:bg-[#4A60A1] px-3 py-2 rounded-md transition-colors">
               <Avatar>
                 <AvatarFallback>
                   <User size={20} />
                 </AvatarFallback>
               </Avatar>
-              <span>
+              <span
+                className={`transition-colors ${
+                  session
+                    ? "group-hover:text-white text-black" // Si hay sesión
+                    : isHome
+                      ? "text-white"
+                      : "text-black"
+                }`}
+              >
                 {session ? (
                   session.name
                 ) : (
@@ -70,8 +78,9 @@ export const Dropdown = ({ session }: DropdownProps) => {
       ) : (
         <Link
           href={"/auth/login"}
-          className={`${isHome ? "text-white" : "text-black"} px-3 py-2 text-sm  font-medium transition-all duration-300 border-b-1 border-transparent hover:border-white`}
+          className={`${isHome ? "text-white" : "text-black"} flex items-center gap-1 px-3 py-2 text-[18px]  font-medium transition-all duration-300 border-b-1 border-transparent `}
         >
+          <User />
           Sign in
         </Link>
       )}

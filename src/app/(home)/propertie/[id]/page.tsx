@@ -72,12 +72,12 @@ async function page({
               <div className="border rounded-md flex flex-col items-center justify-center gap-2 p-4">
                 <Bed size={30} />
                 <span className="font-bold">{data.bedrooms}</span>
-                <span className="text-sm text-gray-400">Bedrooms</span>
+                <span className="text-sm text-gray-400">Habitaciones</span>
               </div>
               <div className="border rounded-md flex flex-col items-center justify-center gap-2 p-4">
                 <Bath />
                 <span className="font-bold">{data.bathrooms}</span>
-                <span className="text-sm text-gray-400">Bathrooms</span>
+                <span className="text-sm text-gray-400">Baños</span>
               </div>
               <div className="border rounded-md flex flex-col items-center justify-center gap-2 p-4">
                 <Maximize />
@@ -87,7 +87,7 @@ async function page({
               <div className="border rounded-md flex flex-col items-center justify-center gap-2 p-4">
                 <Car />
                 <span className="font-bold">{data.parkingSpaces}</span>
-                <span className="text-sm text-gray-400">Parking Spaces</span>
+                <span className="text-sm text-gray-400">Estacionamiento</span>
               </div>
             </div>
           </div>

@@ -38,7 +38,7 @@ export async function ListProperties({ searchParams }: Props) {
 
   return (
     <div id="properties" className="w-full  flex flex-col gap-8">
-      <h3 className="text-2xl font-bold">List Properties</h3>
+      <h3 className="text-2xl font-bold">Propiedades Destacadas</h3>
       <div className="grid gap-4 md:grid-cols-3">
         {data.map((item: PropertyType) => (
           <Link href={`/propertie/${item.id}`} key={item.id}>

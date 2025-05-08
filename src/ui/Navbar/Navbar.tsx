@@ -25,7 +25,7 @@ const Navbar = ({ session }: sessionProps) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-full fixed top-0 z-50 backdrop-blur-sm bg-opacity-80"
+      className="w-full top-0 z-50 backdrop-blur-sm bg-opacity-80"
     >
       <div
         className={`w-full  ${!isHome ? "bg-white/80 shadow-lg" : "bg-transparent"} transition-all duration-300`}
@@ -33,17 +33,14 @@ const Navbar = ({ session }: sessionProps) => {
         <div className="px-6 mx-auto flex justify-between items-center h-20">
           {/* Logo */}
           <Link href="/" className="flex-shrink-0 flex items-center group">
-            <motion.span
-              whileHover={{ scale: 1.05 }}
-              className="text-2xl gap-3 font-bold flex items-center"
-            >
+            <motion.span className="text-2xl gap-3 font-bold flex items-center">
               <div
                 className={`p-2 rounded-lg ${isHome ? "bg-white/10" : "bg-black/5"} transition-colors duration-300`}
               >
                 <House
                   size={24}
                   color={`${isHome ? "white" : "black"}`}
-                  className="transition-transform duration-300 group-hover:rotate-12"
+                  // className="transition-transform duration-300 group-hover:rotate-12"
                 />
               </div>
               <h1
@@ -57,20 +54,14 @@ const Navbar = ({ session }: sessionProps) => {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
+          <div className="hidden md:flex md:items-center md:space-x-2">
             {navLinks.map((link) => (
               <motion.a
                 key={link.href}
                 href="#properties"
-                whileHover={{ scale: 1.05 }}
                 className={`
                   ${isHome ? "text-white" : "text-gray-800"}
-                  relative px-4 py-2 text-sm font-medium transition-all duration-300
-                  before:content-['']
-                  before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5
-                  before:transition-all before:duration-300
-                  before:bg-current
-                  hover:before:w-full
+               text-[18px]
                 `}
               >
                 {link.label}

@@ -40,7 +40,9 @@ export function CardPropertie({ dataItem, widht }: Props) {
           </span>
         </div>
         <p className="text-xl font-bold">{dataItem.title}</p>
-        <p className=" text-sm mb-4 text-gray-600">{dataItem.description}</p>
+        <p className=" text-sm h-10 mb-4 text-gray-600">
+          {dataItem.description}
+        </p>
         <div className="flex items-center justify-between">
           <div className=" flex items-center gap-2 text-sm">
             <span>{dataItem.bedrooms} bedrooms</span>

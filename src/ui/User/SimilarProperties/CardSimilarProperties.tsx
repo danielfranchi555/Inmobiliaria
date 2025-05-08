@@ -40,7 +40,7 @@ export function CardSimilarProperties({ dataItem }: Props) {
           </span>
         </div>
         <p className="text-[14px] font-bold ">{dataItem.title}</p>
-        <p className="text-[12px] mb-4 text-gray-600">
+        <p className="text-[12px] h-12 mb-4 text-gray-600">
           {dataItem.description.length > 120
             ? `${dataItem.description.substring(0, 120)}...`
             : dataItem.description}

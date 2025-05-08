@@ -159,19 +159,16 @@ export const MobileMenu = ({
               {/* Navigation Links */}
               <div className="space-y-2  w-full">
                 {navLinks.map((link, i) => (
-                  <motion.div
+                  <motion.a
                     key={link.href}
+                    href="#properties"
                     variants={itemVariants}
                     custom={session ? i + 1 : i}
+                    onClick={() => setOpen(false)}
+                    className="block w-full text-2xl font-medium text-white/90 hover:text-white py-3 px-6 rounded-xl hover:bg-white/5 transition-all duration-300"
                   >
-                    <Link
-                      href={link.href}
-                      className="block w-full text-2xl font-medium text-white/90 hover:text-white py-3 px-6 rounded-xl hover:bg-white/5 transition-all duration-300"
-                      onClick={() => setOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
+                    {link.label}
+                  </motion.a>
                 ))}
               </div>
 

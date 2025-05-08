@@ -3,7 +3,6 @@ import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
 import ListProperties from "@/ui/User/ListProperties/ListProperties";
 import { Suspense } from "react";
 import SkeletonListProperties from "../skeletons/SkeletonListProperties";
-import Navbar from "@/ui/Navbar/Navbar";
 import NavbarWrapper from "@/ui/Navbar/NavBarWrapper/NavBarWrapper";
 
 type Props = {
@@ -30,12 +29,12 @@ export default async function Home({ searchParams }: Props) {
 
         <section className="relative flex flex-col gap-4 z-10 mt-20 px-4">
           <h1 className="text-3xl md:text-5xl text-white font-bold">
-            Find Your Dream Home
+            Encuentra la casa de tus sueños{" "}
           </h1>
           <p className="text-gray-200 max-w-md md:max-w-2xl mx-auto text-sm md:text-base">
-            Explore top-rated listings in your area, carefully selected to match
-            your lifestyle and budget. Start your journey toward the perfect
-            home today.
+            Explora los listados mejor valorados en tu zona, cuidadosamente
+            seleccionados para adaptarse a tu estilo de vida y presupuesto.
+            Comienza hoy tu camino hacia el hogar perfecto
           </p>
         </section>
 
@@ -48,7 +47,7 @@ export default async function Home({ searchParams }: Props) {
 
       <main
         id="property-section"
-        className="px-6 mt-20 min-h-[600px] flex flex-col gap-4"
+        className="px-2 md:px-6 mt-20 min-h-[600px] flex flex-col gap-4"
       >
         <Suspense fallback={null}>
           <ShowFilters />
