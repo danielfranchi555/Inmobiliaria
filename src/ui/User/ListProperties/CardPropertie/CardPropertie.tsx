@@ -9,49 +9,52 @@ type Props = {
   dataItem: PropertyType;
   widht: string;
 };
+
 export function CardPropertie({ dataItem, widht }: Props) {
   return (
     <Card
-      className={` hover:scale-101 h-auto transition-all duration-300 ease-in-out shadow-md cursor-pointer p-0 pb-5  ${widht}`}
+      className={`hover:scale-101 h-auto transition-all duration-300 ease-in-out shadow-md cursor-pointer p-0 pb-5 ${widht}`}
     >
       <CardHeader className="p-0 relative">
         <div className="relative">
           <Image
             src={dataItem.images[0] || imageTest}
-            width={100}
-            height={200}
+            width={400}
+            height={250}
             alt="image"
-            className="w-full h-[250px] rounded-t-lg object-cover "
+            className="w-full h-[200px] sm:h-[220px] md:h-[250px] rounded-t-lg object-cover"
           />
         </div>
         <div className="absolute bottom-3 left-1">
           <Badge
-            className={`${dataItem.listingType === "RENT" ? "bg-blue-500" : "bg-green-500"}`}
+            className={`${
+              dataItem.listingType === "RENT" ? "bg-blue-500" : "bg-green-500"
+            }`}
           >
             {dataItem.listingType}
           </Badge>
         </div>
       </CardHeader>
-      <CardFooter className="grid  m-0">
+      <CardFooter className="grid gap-y-2 m-0">
         <div className="flex items-center gap-1">
           <MapPin size={18} />
           <span className="text-sm text-gray-600">
             {dataItem.neighborhood}, {dataItem.city}
           </span>
         </div>
-        <p className="text-xl font-bold">{dataItem.title}</p>
-        <p className=" text-sm h-10 mb-4 text-gray-600">
+        <p className="text-md sm:text-lg font-bold">{dataItem.title}</p>
+        <p className="text-sm text-gray-600 line-clamp-2">
           {dataItem.description}
         </p>
         <div className="flex items-center justify-between">
-          <div className=" flex items-center gap-2 text-sm">
+          <div className="flex flex-wrap gap-2 text-sm">
             <span>{dataItem.bedrooms} Habitaciones</span>
             <span>{dataItem.bathrooms} Baños</span>
             <span>{dataItem.squareMeters} m²</span>
           </div>
-          <p className="text-1xl flex flex-col items-center gap-0 md:flex-row md:gap-1 md:text-lg font-bold text-[#4A60A1]">
-            <span> {dataItem.currency === "USD" ? "$ USD " : " $ ARG "}</span>
-            <span> {dataItem.price.toLocaleString("en-US")}</span>
+          <p className="text-sm sm:text-base md:text-lg font-bold text-[#4A60A1] text-right">
+            <span>{dataItem.currency === "USD" ? "$ USD " : "$ ARG "}</span>
+            <span>{dataItem.price.toLocaleString("en-US")}</span>
           </p>
         </div>
       </CardFooter>
