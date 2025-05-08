@@ -65,7 +65,8 @@ async function page({
               <Badge
                 className={`${data.listingType === "RENT" ? "bg-blue-500" : "bg-green-500"}`}
               >
-                {data.listingType}
+                {data.listingType === "RENT" && "Alquiler"}
+                {data.listingType === "SALE" && "Venta"}
               </Badge>
             </div>
             <div className="grid md:grid md:grid-cols-6 gap-4  mt-4">

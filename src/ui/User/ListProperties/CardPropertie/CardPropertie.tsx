@@ -31,7 +31,8 @@ export function CardPropertie({ dataItem, widht }: Props) {
               dataItem.listingType === "RENT" ? "bg-blue-500" : "bg-green-500"
             }`}
           >
-            {dataItem.listingType}
+            {dataItem.listingType === "RENT" && "Alquiler"}
+            {dataItem.listingType === "SALE" && "Venta"}
           </Badge>
         </div>
       </CardHeader>

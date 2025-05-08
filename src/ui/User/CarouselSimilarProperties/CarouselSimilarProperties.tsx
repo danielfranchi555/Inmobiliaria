@@ -44,7 +44,8 @@ const CarouselSimilarProperties = ({ data }: props) => {
                     <Badge
                       className={`${item.listingType === "RENT" ? "bg-blue-500" : "bg-green-500"}`}
                     >
-                      {item.listingType}
+                      {item.listingType === "RENT" && "Alquiler"}
+                      {item.listingType === "SALE" && "Venta"}
                     </Badge>
                   </div>
                 </CardHeader>
