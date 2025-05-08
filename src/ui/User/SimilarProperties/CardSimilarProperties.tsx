@@ -1,6 +1,5 @@
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import Image from "next/image";
-import imageTest from "../../../../image/test-image-1.webp";
 import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
 import { PropertyType } from "@/app/types/property";
@@ -47,8 +46,8 @@ export function CardSimilarProperties({ dataItem }: Props) {
         </p>
         <div className="flex items-center justify-between ">
           <div className=" flex items-center gap-2 text-[10px]">
-            <span>{dataItem.bedrooms} bedrooms</span>
-            <span>{dataItem.bathrooms} bathrooms</span>
+            <span>{dataItem.bedrooms} Habitaciones</span>
+            <span>{dataItem.bathrooms} Baños</span>
             <span>{dataItem.squareMeters} m²</span>
           </div>
           <p className="text-1xl  flex flex-col items-center gap-0 md:flex-row md:gap-1 md:text-lg font-bold text-green-600">
