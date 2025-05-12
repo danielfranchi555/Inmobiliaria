@@ -13,17 +13,17 @@ const Footer: React.FC = () => {
             <h4 className="text-lg font-semibold mb-2">Enlaces rápidos</h4>
             <ul className="text-sm space-y-1">
               <li>
-                <a href="/about" className="hover:underline">
+                <a href="#" className="hover:underline">
                   Sobre nosotros
                 </a>
               </li>
               <li>
-                <a href="/properties" className="hover:underline">
+                <a href="#" className="hover:underline">
                   Propiedades
                 </a>
               </li>
               <li>
-                <a href="/contact" className="hover:underline">
+                <a href="#" className="hover:underline">
                   Contacto
                 </a>
               </li>
