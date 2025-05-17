@@ -87,7 +87,7 @@ export function LoginForm({
                   {isPending ? "Loading..." : "Login"}
                 </Button>
               </div>
-              <div className="text-center text-sm">
+              <div className="text-center text-sm ">
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/auth/signUp"
@@ -96,12 +96,10 @@ export function LoginForm({
                   Sign up
                 </Link>
                 {state?.message && !state?.success && (
-                  <div className="flex items-start gap-3 p-4 border border-red-400 text-red-700 bg-red-50 rounded-md">
+                  <div className="flex flex-col justify-center items-center gap-1 p-4 border border-red-400 text-red-700 bg-red-50 rounded-md">
                     {/* <LogIn className="w-5 h-5 mt-0.5" /> */}
-                    <div>
-                      <p className="font-semibold">Login failed</p>
-                      <p className="text-sm">{state.message}</p>
-                    </div>
+                    <p className="font-semibold">Login failed</p>
+                    <p className="text-sm">{state.message}</p>
                   </div>
                 )}
               </div>

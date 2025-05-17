@@ -4,6 +4,7 @@ import ListProperties from "@/ui/User/ListProperties/ListProperties";
 import { Suspense } from "react";
 import SkeletonListProperties from "../skeletons/SkeletonListProperties";
 import NavbarWrapper from "@/ui/Navbar/NavBarWrapper/NavBarWrapper";
+import { getCities } from "./actions";
 
 type Props = {
   searchParams: Promise<{
@@ -12,12 +13,15 @@ type Props = {
     Minprice: string;
     Maxprice: string;
     Currency: string;
+    City: string;
     page?: string; // nuevo parámetro opcional para página
     pageSize?: string;
   }>;
 };
 
 export default async function Home({ searchParams }: Props) {
+  const { data } = await getCities();
+
   return (
     <div className=" grid gap-4 w-full ">
       <header className="shadow-xl relative w-full flex flex-col justify-center text-center bg-[url('/bg-image.jpg')] bg-cover bg-center h-[700px] md:h-[600px]">
@@ -40,7 +44,7 @@ export default async function Home({ searchParams }: Props) {
 
         <div className="relative z-10 flex justify-center items-center w-full mt-8 px-4 md:absolute md:bottom-[-50px]">
           <Suspense fallback={null}>
-            <FilterProperties />
+            <FilterProperties cities={data} />
           </Suspense>
         </div>
       </header>

@@ -24,6 +24,12 @@ type Inputs = {
   userSellerId: string | null; // Nueva propiedad
   propertyType: "HOUSE" | "APARTMENT" | "COMMERCIAL" | "LAND"; // Added missing property
 };
+function normalizeString(str: string) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
 
 export async function createProperty(data: Inputs) {
   const validate = schemaCreateProperty.safeParse(data);
@@ -45,11 +51,11 @@ export async function createProperty(data: Inputs) {
         listingType: data.listingType,
         status: data.status,
         address: data.address,
-        city: data.city,
+        city: normalizeString(data.city), // 👈 normalizado
         bathrooms: data.bathrooms,
         bedrooms: data.bedrooms,
         squareMeters: data.squareMeters,
-        neighborhood: data.neighborhood,
+        neighborhood: normalizeString(data.neighborhood),
         images: data.images as string[],
         parkingSpaces: data.parkingSpaces,
         userSellerId: data.userSellerId,
@@ -67,8 +73,6 @@ export async function createProperty(data: Inputs) {
       error: null,
     };
   } catch (error) {
-    console.log(error);
-
     return {
       success: false,
       message: "Error creating property",
@@ -77,9 +81,28 @@ export async function createProperty(data: Inputs) {
   }
 }
 
-export async function getPropertiesByAdmin() {
+export async function getPropertiesByAdmin(
+  searchParams: Promise<{
+    Type: string;
+    Contract: string;
+    Minprice: string;
+    Maxprice: string;
+    Currency: string;
+    City: string;
+    page?: string;
+    pageSize?: string;
+  }>
+) {
   try {
+    const params = await searchParams;
+    const where: any = {};
+
+    if (params.City) {
+      where.city = params.City;
+    }
+
     const properties = await prisma.property.findMany({
+      where,
       select: {
         id: true,
         title: true,

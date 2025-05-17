@@ -12,15 +12,13 @@ import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formatPrice } from "@/app/utils/formatPrice";
 
 const propertiesTypes = [
   { id: 1, name: "HOUSE", label: "Casas" },
   { id: 2, name: "APARTMENT", label: "Departamentos" },
-  // { id: 3, name: "COMMERCIAL", label: "Commercial" },
-  // { id: 4, name: "LAND", label: "Land" },
 ];
 
 const contractTypes = [
@@ -34,11 +32,16 @@ type Inputs = {
   minprice: string;
   maxprice: string;
   currency: string;
+  city: string;
+};
+
+type Props = {
+  cities: string[] | null;
 };
 
 const currency = ["USD", "ARG"];
 
-const FilterProperties = () => {
+const FilterProperties = ({ cities }: Props) => {
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -56,6 +59,7 @@ const FilterProperties = () => {
       minprice: searchParams.get("Minprice") || "",
       maxprice: searchParams.get("Maxprice") || "",
       currency: searchParams.get("Currency") || "",
+      city: searchParams.get("City") || "",
     },
   });
 
@@ -71,6 +75,7 @@ const FilterProperties = () => {
     if (data.currency) params.set("Currency", data.currency);
     if (data.minprice) params.set("Minprice", data.minprice);
     if (data.maxprice) params.set("Maxprice", data.maxprice);
+    if (data.city) params.set("City", data.city);
 
     setTransition(async () => {
       router.replace(`?${params.toString()}`, { scroll: false });
@@ -90,6 +95,7 @@ const FilterProperties = () => {
       minprice: searchParams.get("Minprice") || "",
       maxprice: searchParams.get("Maxprice") || "",
       currency: searchParams.get("Currency") || "",
+      city: searchParams.get("City") || "",
     };
     reset(newValues);
   }, [searchParams, reset]);
@@ -140,6 +146,28 @@ const FilterProperties = () => {
                 {contractTypes.map((item) => (
                   <SelectItem key={item.id} value={item.name}>
                     {item.label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
+          <Label>Seleccionar Ciudad</Label>
+          <Select
+            value={watch("contract") || searchParams.get("Contract") || ""}
+            onValueChange={(value) => setValue("contract", value)}
+          >
+            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
+              <SelectValue placeholder="Ciudad" className="font-light" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Ciudad</SelectLabel>
+                {cities?.map((item) => (
+                  <SelectItem key={item} value={item}>
+                    {item}
                   </SelectItem>
                 ))}
               </SelectGroup>

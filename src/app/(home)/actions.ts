@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { PropertyType } from "@prisma/client";
+import { error } from "console";
 import { revalidatePath } from "next/cache";
 
 export async function filterProperties(
@@ -183,5 +184,31 @@ export async function getProperties(
       error,
       data: null,
     };
+  }
+}
+
+export async function getCities() {
+  try {
+    const rawData = await prisma.property.findMany({
+      distinct: ["city"],
+      select: {
+        city: true,
+      },
+    });
+
+    function removeAccents(str: string) {
+      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    // Normalizamos (minúsculas + sin tildes) y eliminamos duplicados
+    const data = Array.from(
+      new Set(
+        rawData.map((c) => removeAccents(c.city.toLowerCase())).filter(Boolean) // por si hay nulls
+      )
+    );
+
+    return { data, error: null };
+  } catch (error) {
+    return { data: null, error: error };
   }
 }

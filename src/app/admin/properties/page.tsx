@@ -1,8 +1,23 @@
 import TableProperties from "@/ui/Admin/TableProperties/TableProperties";
 import { getPropertiesByAdmin } from "./actions";
+import { FilterPropertiesByCity } from "@/ui/Admin/FilterProperties/FilterPropertiesByCity";
 
-export default async function page() {
-  const { data, error, message } = await getPropertiesByAdmin();
+type Props = {
+  searchParams: Promise<{
+    Type: string;
+    Contract: string;
+    Minprice: string;
+    Maxprice: string;
+    Currency: string;
+    City: string;
+    page?: string; // nuevo parámetro opcional para página
+    pageSize?: string;
+  }>;
+};
+
+export default async function page({ searchParams }: Props) {
+  const { data, error, message } = await getPropertiesByAdmin(searchParams);
+
   if (error) {
     return (
       <div className="flex flex-col w-full items-center justify-center h-screen">
@@ -26,10 +41,14 @@ export default async function page() {
       </div>
     );
   }
+
   const totalItems = data.length;
 
   return (
     <>
+      <div className="  flex justify-end px-4">
+        <FilterPropertiesByCity />
+      </div>
       <TableProperties data={data} total={totalItems} />
     </>
   );
