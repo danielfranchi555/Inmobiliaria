@@ -151,6 +151,11 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
         message: "Invalid Credentials",
       };
     }
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("foo");
+      }, 3000);
+    });
 
     // create session
     const userId = user.id;

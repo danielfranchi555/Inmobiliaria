@@ -10,11 +10,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useTransition } from "react";
 import { login } from "@/app/auth/actions";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogIn } from "lucide-react";
 
 export type FormStateLogin =
   | {
@@ -41,14 +40,19 @@ export function LoginForm({
     redirectUrl: "",
     message: "",
   };
+
   const [state, formAction, isPending] = useActionState(login, initialState);
   const router = useRouter();
+  const [isRedirecting, startRedirect] = useTransition();
 
   useEffect(() => {
     if (state?.success && state.redirectUrl) {
-      router.push(state.redirectUrl);
+      startRedirect(() => {
+        router.push(state.redirectUrl!);
+      });
     }
   }, [state, router]);
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -83,8 +87,12 @@ export function LoginForm({
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full">
-                  {isPending ? "Loading..." : "Login"}
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isPending || isRedirecting}
+                >
+                  {isPending || isRedirecting ? "Loading..." : "Login"}
                 </Button>
               </div>
               <div className="text-center text-sm ">

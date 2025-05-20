@@ -11,6 +11,7 @@ type Props = {
     Minprice: string;
     Maxprice: string;
     Currency: string;
+    City: string;
     page?: string;
     pageSize?: string;
   }>;

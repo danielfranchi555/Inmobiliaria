@@ -24,12 +24,10 @@ export async function filterProperties(
         error: " Not found properties",
       };
     }
-    console.log({ findByType });
     revalidatePath("/");
 
     return { success: true, error: null, data: findByType };
   } catch (error) {
-    console.log("Error in filterProperties:", error);
     return {
       success: false,
       error: error,
@@ -110,11 +108,14 @@ export async function getProperties(
     Minprice: string;
     Maxprice: string;
     Currency: string;
+    City: string;
     page?: string;
     pageSize?: string;
   }>
 ) {
   const params = await searchParams;
+  console.log({ params });
+
   const where: any = {};
 
   if (params.Type) {
@@ -143,12 +144,19 @@ export async function getProperties(
     };
   }
 
+  if (params.City) {
+    const rawCity = params.City;
+    const city = decodeURIComponent(rawCity);
+    where.city = city;
+  }
+
   // Parámetros para paginación
   const page = params.page ? Math.max(parseInt(params.page), 1) : 1; // obtener page
   const pageSize = 5; // cantidad de elementos que queremos que se muestre por page
 
   const skip = (page - 1) * pageSize; // = 5
   const take = skip + pageSize;
+  console.log({ where });
 
   try {
     const properties = await prisma.property.findMany({
@@ -163,7 +171,6 @@ export async function getProperties(
     const totalProperties = await prisma.property.count({ where });
 
     const totalPages = Math.ceil(totalProperties / pageSize);
-    console.log({ totalPages });
 
     return {
       success: true,

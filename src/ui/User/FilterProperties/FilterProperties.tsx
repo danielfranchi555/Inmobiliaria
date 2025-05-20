@@ -156,8 +156,8 @@ const FilterProperties = ({ cities }: Props) => {
         <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
           <Label>Seleccionar Ciudad</Label>
           <Select
-            value={watch("contract") || searchParams.get("Contract") || ""}
-            onValueChange={(value) => setValue("contract", value)}
+            value={watch("city") || searchParams.get("City") || ""}
+            onValueChange={(value) => setValue("city", value)}
           >
             <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
               <SelectValue placeholder="Ciudad" className="font-light" />
