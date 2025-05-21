@@ -5,7 +5,6 @@ import { SignUpSchema } from "../schemas/auth/signup";
 import bcrypt from "bcryptjs";
 import { loginSchema } from "../schemas/auth/login";
 import { createSession, deleteSession } from "./sessionActions";
-import { redirect } from "next/navigation";
 
 export type FormStateRegister =
   | {

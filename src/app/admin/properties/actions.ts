@@ -89,6 +89,7 @@ export async function getPropertiesByAdmin(
     Maxprice: string;
     Currency: string;
     City: string;
+    Address: string;
     page?: string;
     pageSize?: string;
   }>
@@ -99,6 +100,21 @@ export async function getPropertiesByAdmin(
 
     if (params.City) {
       where.city = params.City;
+    }
+    if (params.Type) {
+      where.propertyType = params.Type;
+    }
+
+    if (params.Contract) {
+      where.listingType = params.Contract;
+    }
+
+    if (params.Address) {
+      console.log(params.Address);
+      where.address = {
+        contains: params.Address,
+        mode: "insensitive",
+      };
     }
 
     const properties = await prisma.property.findMany({

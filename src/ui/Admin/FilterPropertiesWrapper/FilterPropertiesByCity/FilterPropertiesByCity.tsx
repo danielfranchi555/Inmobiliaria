@@ -1,4 +1,5 @@
 "use client";
+import { capitalizeFirstLetter } from "@/app/utils/capitalizeFirstLetter";
 import {
   Select,
   SelectContent,
@@ -8,9 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export function FilterPropertiesByCity() {
+type cityProps = {
+  cities: string[] | null;
+};
+export function FilterPropertiesByCity({ cities }: cityProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -27,16 +31,16 @@ export function FilterPropertiesByCity() {
   return (
     <Select onValueChange={handleFilter}>
       <SelectTrigger className="border ">
-        <SelectValue placeholder="Select a fruit" />
+        <SelectValue placeholder="Selecciona una ciudad" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="Cordoba">Cordoba</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
+          <SelectLabel>Ciudades</SelectLabel>
+          {cities?.map((item, index) => (
+            <SelectItem key={index} value={item}>
+              {capitalizeFirstLetter(item)}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>
