@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma/prisma";
 import { PropertyType } from "@prisma/client";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
+import { capitalizeFirstLetter } from "../utils/capitalizeFirstLetter";
 
 export async function filterProperties(
   prevState: { success: boolean; data: any; error: any },
@@ -208,11 +209,16 @@ export async function getCities() {
     }
 
     // Normalizamos (minúsculas + sin tildes) y eliminamos duplicados
-    const data = Array.from(
-      new Set(
-        rawData.map((c) => removeAccents(c.city.toLowerCase())).filter(Boolean) // por si hay nulls
-      )
-    );
+    // const data = Array.from(
+    //   new Set(
+    //     rawData.map((c) => removeAccents(c.city.toLowerCase())).filter(Boolean) // por si hay nulls
+    //   )
+    // );
+
+    const data = rawData.map((item) => ({
+      value: removeAccents(item.city.toLocaleLowerCase()),
+      label: capitalizeFirstLetter(item.city),
+    }));
 
     return { data, error: null };
   } catch (error) {

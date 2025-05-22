@@ -31,8 +31,9 @@ export async function ListProperties({ searchParams }: Props) {
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center w-full h-[500px]">
-        <h1 className="text-2xl font-bold">No properties available</h1>
+      <div className="text-center text-gray-600">
+        <h2 className="text-2xl font-semibold">No encontramos propiedades</h2>
+        <p className="mt-2">Proba ajustando los filtros o volvé más tarde.</p>
       </div>
     );
   }

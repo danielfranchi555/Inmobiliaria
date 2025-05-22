@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Property } from "@prisma/client";
 import Link from "next/link";
 import { deleteProperty } from "@/app/admin/properties/actions";
 import Alert from "@/ui/Alert/Alert";

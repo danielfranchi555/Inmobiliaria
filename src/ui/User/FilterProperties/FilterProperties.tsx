@@ -15,16 +15,12 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useTransition } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formatPrice } from "@/app/utils/formatPrice";
-
-const propertiesTypes = [
-  { id: 1, name: "HOUSE", label: "Casas" },
-  { id: 2, name: "APARTMENT", label: "Departamentos" },
-];
-
-const contractTypes = [
-  { id: 1, name: "RENT", label: "Alquiler" },
-  { id: 2, name: "SALE", label: "Venta" },
-];
+import { UseSelect } from "@/hooks/UseSelect";
+import {
+  contractTypeOptions,
+  currencyTypeLablesOptions,
+  propertyTypeOptions,
+} from "@/app/utils/translations/translations";
 
 type Inputs = {
   type: string;
@@ -35,24 +31,21 @@ type Inputs = {
   city: string;
 };
 
-type Props = {
-  cities: string[] | null;
+type citiesProp = {
+  value: string;
+  label: string;
 };
 
-const currency = ["USD", "ARG"];
+type Props = {
+  cities: citiesProp[] | null;
+};
 
 const FilterProperties = ({ cities }: Props) => {
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const {
-    handleSubmit,
-    watch,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>({
+  const { handleSubmit, watch, setValue, reset } = useForm<Inputs>({
     defaultValues: {
       type: searchParams.get("Type") || "",
       contract: searchParams.get("Contract") || "",
@@ -107,74 +100,30 @@ const FilterProperties = ({ cities }: Props) => {
         className="flex flex-col md:flex-row  items-center gap-6 " // Usa `gap-4` para mejor espacio entre elementos
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
-          <Label>Selecciona el tipo</Label>
-          <Select
-            onValueChange={(value) => {
-              setValue("type", value);
-            }}
-            value={watch("type")}
-          >
-            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
-              <SelectValue placeholder="Tipo de propiedad" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Tipo de propiedad</SelectLabel>
-                {propertiesTypes.map((item) => (
-                  <SelectItem key={item.id} value={item.name}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
-          <Label>Tipo de contrato</Label>
-          <Select
-            value={watch("contract") || searchParams.get("Contract") || ""}
-            onValueChange={(value) => setValue("contract", value)}
-          >
-            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
-              <SelectValue placeholder="Contrato" className="font-light" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Contrato</SelectLabel>
-                {contractTypes.map((item) => (
-                  <SelectItem key={item.id} value={item.name}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
-          <Label>Seleccionar Ciudad</Label>
-          <Select
-            value={watch("city") || searchParams.get("City") || ""}
-            onValueChange={(value) => setValue("city", value)}
-          >
-            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
-              <SelectValue placeholder="Ciudad" className="font-light" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Ciudad</SelectLabel>
-                {cities?.map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-
+        <UseSelect
+          data={propertyTypeOptions}
+          setValue={setValue}
+          value={watch("type")}
+          placeholder="Tipo de propiedad"
+          label="Selecciona el tipo"
+          name={"type"}
+        />
+        <UseSelect
+          data={contractTypeOptions}
+          setValue={setValue}
+          value={watch("contract")}
+          placeholder="Tipo de contrato"
+          label="Selecciona el tipo"
+          name={"contract"}
+        />
+        <UseSelect
+          data={cities}
+          setValue={setValue}
+          value={watch("city")}
+          placeholder="Tipo de ciudad"
+          label="Selecciona la ciudad"
+          name={"city"}
+        />
         <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
           <Label>Precio</Label>
           <Select>
@@ -199,9 +148,9 @@ const FilterProperties = ({ cities }: Props) => {
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Moneda</SelectLabel>
-                        {currency.map((item) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
+                        {currencyTypeLablesOptions.map((item) => (
+                          <SelectItem key={item.value} value={item.value}>
+                            {item.label}
                           </SelectItem>
                         ))}
                       </SelectGroup>
