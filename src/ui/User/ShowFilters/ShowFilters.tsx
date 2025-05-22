@@ -35,9 +35,11 @@ const valueTranslations: Record<string, Record<string, string>> = {
 export const ShowFilters = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const [filters, setFilters] = useState<
     Array<{ originalKey: string; label: string; value: string }>
   >([]);
+
   const [deletingKey, setDeletingKey] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 

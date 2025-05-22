@@ -8,6 +8,7 @@ import { FilterSearchAddress } from "./FilterSearchAddress/FilterSearchAddress";
 
 export async function FilterPropertiesWrapper() {
   const { data } = await getCities();
+
   const types = Object.values(PropertyType);
   const contracts = Object.values(PropertyListingType);
 

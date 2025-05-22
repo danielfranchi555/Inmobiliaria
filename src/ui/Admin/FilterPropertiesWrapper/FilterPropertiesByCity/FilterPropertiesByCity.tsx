@@ -11,10 +11,14 @@ import {
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 
-type cityProps = {
-  cities: string[] | null;
+type cityProp = {
+  label: string;
+  value: string;
 };
-export function FilterPropertiesByCity({ cities }: cityProps) {
+type Props = {
+  cities: cityProp[] | null;
+};
+export function FilterPropertiesByCity({ cities }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -37,8 +41,8 @@ export function FilterPropertiesByCity({ cities }: cityProps) {
         <SelectGroup>
           <SelectLabel>Ciudades</SelectLabel>
           {cities?.map((item, index) => (
-            <SelectItem key={index} value={item}>
-              {capitalizeFirstLetter(item)}
+            <SelectItem key={index} value={item.value}>
+              {capitalizeFirstLetter(item.label)}
             </SelectItem>
           ))}
         </SelectGroup>

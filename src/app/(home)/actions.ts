@@ -208,13 +208,6 @@ export async function getCities() {
       return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
-    // Normalizamos (minúsculas + sin tildes) y eliminamos duplicados
-    // const data = Array.from(
-    //   new Set(
-    //     rawData.map((c) => removeAccents(c.city.toLowerCase())).filter(Boolean) // por si hay nulls
-    //   )
-    // );
-
     const data = rawData.map((item) => ({
       value: removeAccents(item.city.toLocaleLowerCase()),
       label: capitalizeFirstLetter(item.city),

@@ -70,15 +70,11 @@ const FilterProperties = ({ cities }: Props) => {
     if (data.maxprice) params.set("Maxprice", data.maxprice);
     if (data.city) params.set("City", data.city);
 
+    sessionStorage.setItem("scrollToResults", "true");
+
     setTransition(async () => {
       router.replace(`?${params.toString()}`, { scroll: false });
     });
-
-    setTimeout(() => {
-      document
-        .getElementById("property-section")
-        ?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
   };
 
   useEffect(() => {
