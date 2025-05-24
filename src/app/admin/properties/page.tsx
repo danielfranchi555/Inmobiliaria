@@ -39,7 +39,7 @@ export default async function page({ searchParams }: Props) {
         <TableProperties data={data} total={totalItems} />
       ) : (
         <div className="flex flex-col w-full items-center justify-center h-screen">
-          <h1 className="text-2xl font-bold">No Properties</h1>
+          <h1 className="text-2xl font-bold">No hay propiedades</h1>
           <p className="text-sm text-muted-foreground">
             No se encontraron propiedades con los filtros aplicados.
           </p>
