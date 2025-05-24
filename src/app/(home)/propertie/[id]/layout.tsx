@@ -1,4 +1,3 @@
-import Navbar from "@/ui/Navbar/Navbar";
 import NavbarWrapper from "@/ui/Navbar/NavBarWrapper/NavBarWrapper";
 
 export default function layout({ children }: { children: React.ReactNode }) {

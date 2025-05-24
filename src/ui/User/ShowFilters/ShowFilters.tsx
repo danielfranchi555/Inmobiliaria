@@ -13,6 +13,7 @@ const filterTranslations: Record<string, string> = {
   Minprice: "Precio mín",
   Maxprice: "Precio máx",
   Location: "Ubicación",
+  City: "Ciudad",
 };
 
 // Traducciones para los valores de los filtros
@@ -85,38 +86,44 @@ export const ShowFilters = () => {
   }, [isPending]);
 
   return (
-    <div className="flex items-center gap-2 text-black h-20 rounded-md px-0">
-      <div className="hidden md:flex md:items-center md:gap-4">
-        <Filter size={25} strokeWidth={1} />
-        <p className="whitespace-nowrap">Filtros activados: </p>
+    <div className="flex flex-col md:flex-row items-start md:items-center gap-3 text-black min-h-[5rem] p-4 bg-white/50 backdrop-blur-sm rounded-lg border border-gray-100 shadow-sm">
+      <div className="flex items-center gap-3 text-gray-600">
+        <Filter size={20} strokeWidth={1.5} className="text-[#4A60A1]" />
+        <p className="text-sm font-medium whitespace-nowrap">Filtros activos</p>
       </div>
-      <div className="grid grid-cols-2 w-full gap-2 md:flex md:gap-2 md:flex-wrap">
+
+      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:flex md:flex-wrap gap-2">
         {filters.length === 0 ? (
-          <Badge
-            variant="outline"
-            className="flex items-center justify-center text-sm"
-          >
-            No hay filtros
-          </Badge>
+          <div className="col-span-full md:col-span-1">
+            <Badge
+              variant="outline"
+              className="flex items-center justify-center text-sm text-gray-500 bg-gray-50/80 hover:bg-gray-50 transition-colors duration-200 py-2 px-4 border-gray-200"
+            >
+              No hay filtros aplicados
+            </Badge>
+          </div>
         ) : (
           filters.map((filter, index) => (
             <div
-              className=" gap-4 md:flex md:items-center  md:gap-2"
+              className="transition-all duration-200 ease-in-out transform hover:scale-[1.02]"
               key={index}
             >
               <Badge
                 variant="secondary"
-                className="bg-[#4A60A1] w-full gap-1 h-10 px-3  text-white md:w-50"
+                className="bg-[#4A60A1]/90 hover:bg-[#4A60A1] w-full h-9 px-3 text-white flex items-center gap-2 transition-all duration-200 shadow-sm"
               >
-                <span className="text-xs truncate max-w-full">{`${filter.label}: ${filter.value}`}</span>{" "}
+                <span className="text-xs font-medium truncate max-w-[150px]">
+                  {`${filter.label}: ${filter.value}`}
+                </span>
                 {deletingKey === filter.originalKey ? (
-                  <div className="w-4 h-4 border-2 ml-1 border-white p-0.5 border-t-transparent border-r-transparent rounded-full animate-spin" />
+                  <div className="w-3.5 h-3.5 border-2 border-white/80 border-t-transparent border-r-transparent rounded-full animate-spin shrink-0" />
                 ) : (
                   <button
                     onClick={() => deleteParams(filter.originalKey)}
-                    className="ml-1 rounded-full hover:bg-[#4A60A1] p-0.5 cursor-pointer"
+                    className="shrink-0 rounded-full hover:bg-white/10 p-0.5 transition-colors duration-200"
+                    aria-label="Eliminar filtro"
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-3.5 w-3.5" />
                   </button>
                 )}
               </Badge>

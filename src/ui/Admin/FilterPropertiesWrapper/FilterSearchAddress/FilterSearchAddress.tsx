@@ -29,6 +29,7 @@ export function FilterSearchAddress() {
       placeholder="Filtrar por ciudad"
       onChange={handleChange}
       defaultValue={searchParams.get("address") || ""}
+      className="max-w-max"
     />
   );
 }

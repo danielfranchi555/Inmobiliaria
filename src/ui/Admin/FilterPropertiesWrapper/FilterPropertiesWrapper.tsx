@@ -5,6 +5,7 @@ import { FilterPropertiesByCity } from "./FilterPropertiesByCity/FilterPropertie
 import { FilterPropertiesByTypes } from "./FilterPropertiesByTypes/FilterPropertiesByTypes";
 import { FilterPropertiesByContracts } from "./FilterPropertiesByContracts/FilterPropertiesByContracts";
 import { FilterSearchAddress } from "./FilterSearchAddress/FilterSearchAddress";
+import { DeleteFilters } from "./DeleteFilters/DeleteFilters";
 
 export async function FilterPropertiesWrapper() {
   const { data } = await getCities();
@@ -18,6 +19,7 @@ export async function FilterPropertiesWrapper() {
       <FilterPropertiesByCity cities={data} />
       <FilterPropertiesByTypes types={types} contracts={contracts} />
       <FilterPropertiesByContracts contracts={contracts} />
+      <DeleteFilters />
     </div>
   );
 }

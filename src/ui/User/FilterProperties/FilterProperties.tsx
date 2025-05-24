@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useEffect, useTransition } from "react";
+import { useEffect, useTransition, useMemo, useCallback } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { formatPrice } from "@/app/utils/formatPrice";
 import { UseSelect } from "@/hooks/UseSelect";
@@ -21,6 +21,7 @@ import {
   currencyTypeLablesOptions,
   propertyTypeOptions,
 } from "@/app/utils/translations/translations";
+import { memo } from "react";
 
 type Inputs = {
   type: string;
@@ -40,45 +41,53 @@ type Props = {
   cities: citiesProp[] | null;
 };
 
-const FilterProperties = ({ cities }: Props) => {
+const FilterProperties = memo(function FilterProperties({ cities }: Props) {
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
-
-  const { handleSubmit, watch, setValue, reset } = useForm<Inputs>({
-    defaultValues: {
+  const initialValues = useMemo(
+    () => ({
       type: searchParams.get("Type") || "",
       contract: searchParams.get("Contract") || "",
       minprice: searchParams.get("Minprice") || "",
       maxprice: searchParams.get("Maxprice") || "",
       currency: searchParams.get("Currency") || "",
       city: searchParams.get("City") || "",
-    },
+    }),
+    [searchParams]
+  );
+
+  const { handleSubmit, watch, setValue, reset } = useForm<Inputs>({
+    defaultValues: initialValues,
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const params = new URLSearchParams();
+  const onSubmit: SubmitHandler<Inputs> = useCallback(
+    (data) => {
+      const params = new URLSearchParams();
 
-    // Resetear siempre a página 1 al aplicar nuevos filtros
-    params.set("page", "1");
+      // Resetear siempre a página 1 al aplicar nuevos filtros
+      params.set("page", "1");
 
-    // Setear nuevos valores
-    if (data.type) params.set("Type", data.type);
-    if (data.contract) params.set("Contract", data.contract);
-    if (data.currency) params.set("Currency", data.currency);
-    if (data.minprice) params.set("Minprice", data.minprice);
-    if (data.maxprice) params.set("Maxprice", data.maxprice);
-    if (data.city) params.set("City", data.city);
+      // Setear nuevos valores
+      if (data.type) params.set("Type", data.type);
+      if (data.contract) params.set("Contract", data.contract);
+      if (data.currency) params.set("Currency", data.currency);
+      if (data.minprice) params.set("Minprice", data.minprice);
+      if (data.maxprice) params.set("Maxprice", data.maxprice);
+      if (data.city) params.set("City", data.city);
 
-    sessionStorage.setItem("scrollToResults", "true");
+      sessionStorage.setItem("scrollToResults", "true");
 
-    setTransition(async () => {
-      router.replace(`?${params.toString()}`, { scroll: false });
-    });
-  };
+      setTransition(async () => {
+        router.replace(`?${params.toString()}`, { scroll: false });
+      });
+    },
+    [router, setTransition]
+  );
 
   useEffect(() => {
-    const newValues = {
+    // Solo resetear el formulario si los valores han cambiado significativamente
+    const currentValues = {
       type: searchParams.get("Type") || "",
       contract: searchParams.get("Contract") || "",
       minprice: searchParams.get("Minprice") || "",
@@ -86,8 +95,17 @@ const FilterProperties = ({ cities }: Props) => {
       currency: searchParams.get("Currency") || "",
       city: searchParams.get("City") || "",
     };
-    reset(newValues);
-  }, [searchParams, reset]);
+
+    const hasChanged = Object.keys(currentValues).some(
+      (key) =>
+        currentValues[key as keyof typeof currentValues] !==
+        initialValues[key as keyof typeof initialValues]
+    );
+
+    if (hasChanged) {
+      reset(currentValues);
+    }
+  }, [searchParams, reset, initialValues]);
 
   return (
     <div className="w-full shadow-xl bg-white max-w-[300px] md:max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
@@ -204,6 +222,6 @@ const FilterProperties = ({ cities }: Props) => {
       </form>
     </div>
   );
-};
+});
 
 export default FilterProperties;

@@ -78,7 +78,7 @@ export const Dropdown = ({ session }: DropdownProps) => {
       ) : (
         <Link
           href={"/auth/login"}
-          className={`${isHome ? "text-white" : "text-black"} flex items-center gap-1 px-3 py-2 text-[18px]  font-medium transition-all duration-300 border-b-1 border-transparent `}
+          className={`${isHome ? "text-white" : "text-black"} flex items-center gap-1 px-3 py-2   font-medium transition-all duration-300 border-b-1 border-transparent `}
         >
           <User />
           Sign in

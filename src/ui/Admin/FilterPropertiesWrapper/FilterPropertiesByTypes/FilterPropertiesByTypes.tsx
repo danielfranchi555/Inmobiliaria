@@ -34,11 +34,10 @@ export const FilterPropertiesByTypes = ({ types }: typesProps) => {
   return (
     <Select onValueChange={handleFilter}>
       <SelectTrigger className="border ">
-        <SelectValue placeholder="Selecciona un tipo de propiedad" />
+        <SelectValue placeholder="Tipo de propiedad" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Tipos de propiedades</SelectLabel>
           {types?.map((item, index) => (
             <SelectItem key={index} value={item}>
               {capitalizeFirstLetter(item)}

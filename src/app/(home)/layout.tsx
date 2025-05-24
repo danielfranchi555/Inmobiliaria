@@ -1,15 +1,14 @@
-"use client";
+import NavbarWrapper from "@/ui/Navbar/NavBarWrapper/NavBarWrapper";
 import Footer from "@/ui/User/Footer/Footer";
-import { usePathname } from "next/navigation";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isHome = pathname === "/";
-
+const Layout = function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
-      <main className={`flex-grow  `}>{children}</main>
+      <NavbarWrapper />
+      <main className="flex-grow">{children}</main>
       <Footer />
     </div>
   );
-}
+};
+
+export default Layout;
