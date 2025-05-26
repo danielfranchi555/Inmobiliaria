@@ -108,10 +108,10 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
   }, [searchParams, reset, initialValues]);
 
   return (
-    <div className="w-full shadow-xl bg-white max-w-[300px] md:max-w-[900px] flex p-5 flex-col gap-4 rounded-md">
+    <div className=" shadow-xl bg-white w-full md:max-w-[990px] flex p-3 md:px-5 flex-col gap-4 rounded-md">
       <h2 className="text-2xl font-semibold">Filtra tu busqueda</h2>
       <form
-        className="flex flex-col md:flex-row  items-center gap-6 " // Usa `gap-4` para mejor espacio entre elementos
+        className="grid grid-cols-2 md:grid-cols-5 gap-4 "
         onSubmit={handleSubmit(onSubmit)}
       >
         <UseSelect
@@ -210,7 +210,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           </Select>
         </div>
 
-        <div className="flex flex-col items-center w-full mt-4">
+        <div className="w-full mt-4 col-span-2 md:col-span-1">
           <Button
             className="w-full bg-[#4A60A1]"
             type="submit"

@@ -25,10 +25,7 @@ export default async function Home({ searchParams }: Props) {
     <div className=" grid gap-4 w-full ">
       <header className="shadow-xl relative w-full flex flex-col justify-center text-center bg-[url('/bg-image.jpg')] bg-cover bg-center h-[700px] md:h-[600px]">
         <div className="absolute inset-0 bg-[#063053] opacity-40"></div>
-        {/* <div className="absolute top-0 left-0 w-full z-20">
-          <NavbarWrapper />
-        </div> */}
-        <section className="relative flex flex-col gap-4 z-10 mt-20 px-4">
+        <section className="relative flex flex-col gap-4 z-10 mt-40 px-4">
           <h1 className="text-3xl md:text-5xl text-white font-bold">
             Encuentra la casa de tus sueños{" "}
           </h1>
