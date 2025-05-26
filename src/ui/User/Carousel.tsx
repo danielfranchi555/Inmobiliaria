@@ -25,13 +25,13 @@ const CarouselImages = ({ images }: Props) => {
         <CarouselContent>
           {images.map((image, index) => (
             <CarouselItem key={index}>
-              <div onClick={() => setSelectedImage(image)}>
+              <div onClick={() => setSelectedImage(image)} className="relative">
                 <Image
                   src={image}
                   alt={`Image ${index + 1}`}
                   width={1000}
                   height={1000}
-                  className={`rounded-lg object-cover w-full ${imageHeight} cursor-pointer`}
+                  className={`rounded-lg object-cover w-full ${imageHeight} cursor-pointer hover:brightness-75 transition-all`}
                 />
               </div>
             </CarouselItem>
