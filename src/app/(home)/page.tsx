@@ -3,9 +3,7 @@ import { ShowFilters } from "@/ui/User/ShowFilters/ShowFilters";
 import ListProperties from "@/ui/User/ListProperties/ListProperties";
 import { Suspense } from "react";
 import SkeletonListProperties from "../skeletons/SkeletonListProperties";
-import NavbarWrapper from "@/ui/Navbar/NavBarWrapper/NavBarWrapper";
 import { getCities } from "./actions";
-import Chatbot from "@/ui/User/ChatBot/ChatBot";
 
 type Props = {
   searchParams: Promise<{
@@ -58,7 +56,6 @@ export default async function Home({ searchParams }: Props) {
         <Suspense fallback={<SkeletonListProperties />}>
           <ListProperties searchParams={searchParams} />
         </Suspense>
-        <Chatbot />
       </main>
     </div>
   );
