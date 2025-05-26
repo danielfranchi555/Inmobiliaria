@@ -4,6 +4,7 @@ import imageTest from "../../../../image/test-image-1.webp";
 import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
 import { PropertyType } from "@/app/types/property";
+import { capitalizeFirstLetter } from "@/app/utils/capitalizeFirstLetter";
 
 type Props = {
   dataItem: PropertyType;
@@ -40,10 +41,14 @@ export function CardPropertie({ dataItem, widht }: Props) {
         <div className="flex items-center gap-1">
           <MapPin size={18} />
           <span className="text-sm text-gray-600">
-            {dataItem.neighborhood}, {dataItem.city}
+            {capitalizeFirstLetter(dataItem.neighborhood)},{" "}
+            {capitalizeFirstLetter(dataItem.city)}
           </span>
         </div>
-        <p className="text-md sm:text-lg font-bold">{dataItem.title}</p>
+
+        <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis md:text-1xl">
+          {dataItem.title}
+        </p>
         <p className="text-sm text-gray-600 line-clamp-2">
           {dataItem.description}
         </p>

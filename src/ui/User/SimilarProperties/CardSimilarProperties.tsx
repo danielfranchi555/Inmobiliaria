@@ -10,17 +10,15 @@ type Props = {
 
 export function CardSimilarProperties({ dataItem }: Props) {
   return (
-    <Card
-      className={` hover:scale-101 h-auto transition-all duration-300 ease-in-out shadow-md cursor-pointer p-0 pb-2 w-[340px]`}
-    >
+    <Card className="hover:scale-[1.01] transition-all duration-300 ease-in-out shadow-md cursor-pointer p-0 pb-2 w-full h-full">
       <CardHeader className="p-0 relative">
         <div className="relative">
           <Image
             src={dataItem.images[0]}
-            width={100}
-            height={200}
+            width={340}
+            height={250}
             alt="image"
-            className="w-full h-[250px] rounded-t-lg object-cover "
+            className="w-full h-[180px] sm:h-[220px] md:h-[250px] rounded-t-lg object-cover"
           />
         </div>
         <div className="absolute bottom-3 left-1">
@@ -32,32 +30,30 @@ export function CardSimilarProperties({ dataItem }: Props) {
           </Badge>
         </div>
       </CardHeader>
-      <CardFooter className="grid p-2 m-0">
+      <CardFooter className="grid p-2 m-0 gap-2 h-auto">
         <div className="flex items-center gap-1">
           <MapPin size={18} />
-          <span className="text-[10px] text-gray-600">
+          <span className="text-xs sm:text-sm text-gray-600">
             {dataItem.neighborhood}, {dataItem.city}
           </span>
         </div>
-        <p className="text-[14px] font-bold ">{dataItem.title}</p>
-        <p className="text-[12px] h-12 mb-4 text-gray-600">
-          {dataItem.description.length > 120
-            ? `${dataItem.description.substring(0, 120)}...`
-            : dataItem.description}
+        <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis  ">
+          {dataItem.title}
         </p>
-        <div className="flex items-center justify-between ">
-          <div className=" flex items-center gap-2 text-[10px]">
-            <span>{dataItem.bedrooms} Habitaciones</span>
+        <p className="line-clamp-2 overflow-hidden tex-sm">
+          {dataItem.description}
+        </p>
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex items-center gap-2 text-xs sm:text-sm">
+            <span>{dataItem.bedrooms} Hab.</span>
             <span>{dataItem.bathrooms} Baños</span>
             <span>{dataItem.squareMeters} m²</span>
           </div>
-          <p className="text-1xl  flex flex-col items-center gap-0 md:flex-row md:gap-1 md:text-lg font-bold text-green-600">
-            <span className="text-[14px]">
-              {" "}
-              {dataItem.currency === "USD" ? "$ USD " : " $ ARG "}
+          <p className="flex flex-col items-center gap-0 md:flex-row md:gap-1 font-bold text-green-600">
+            <span className="text-xs sm:text-sm">
+              {dataItem.currency === "USD" ? "$ USD " : "$ ARG "}
             </span>
-            <span className="text-[14px]">
-              {" "}
+            <span className="text-xs sm:text-sm">
               {dataItem.price.toLocaleString("en-US")}
             </span>
           </p>
