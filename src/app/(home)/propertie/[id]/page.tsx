@@ -100,7 +100,7 @@ async function page({
           ) : (
             <>
               <div className="hidden md:grid md:grid-cols-4  md:gap-4 md:w-full">
-                {similarProperties.map((item) => (
+                {similarProperties.slice(0, 5).map((item) => (
                   <Link key={item.id} href={`/propertie/${item.id}`}>
                     <CardSimilarProperties dataItem={item} />
                   </Link>
