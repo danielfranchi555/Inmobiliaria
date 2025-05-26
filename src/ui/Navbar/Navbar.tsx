@@ -29,7 +29,7 @@ const Navbar = ({ session }: sessionProps) => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="fixed w-full top-0 z-50"
+      className={`${isHome && "fixed "}  w-full top-0 z-50`}
     >
       <AnimatePresence>
         <motion.div

@@ -22,7 +22,6 @@ type Props = {
 
 export default async function Home({ searchParams }: Props) {
   const { data } = await getCities();
-  console.log({ data });
 
   return (
     <div className=" grid gap-4 w-full ">

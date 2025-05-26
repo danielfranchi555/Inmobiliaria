@@ -82,7 +82,6 @@ export default function AddPropertyForm({ data }: SellersProps) {
   });
 
   const sellersOptions = data;
-  console.log(sellersOptions);
 
   const watchStudio = watch("studio");
   const watchImages = watch("images");
