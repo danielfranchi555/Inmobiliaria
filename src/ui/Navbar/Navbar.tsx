@@ -1,5 +1,6 @@
 "use client";
-import { House, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { House } from "lucide-react";
 import Link from "next/link";
 import { Dropdown } from "./Dropdown/Dropdown";
 import { MobileMenu } from "./MenuMobile/MenuMobile";
@@ -24,12 +25,32 @@ const Navbar = ({ session }: sessionProps) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setShowNavbar(false); // Oculta al hacer scroll hacia abajo
+      } else {
+        setShowNavbar(true); // Muestra al hacer scroll hacia arriba
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className={`${isHome && "fixed "}  w-full top-0 z-50`}
+      initial={{ opacity: 1, y: 0 }}
+      animate={{ y: showNavbar ? 0 : -100 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+      className={`${isHome && "fixed"} w-full top-0 z-50`}
     >
       <AnimatePresence>
         <motion.div
@@ -43,7 +64,7 @@ const Navbar = ({ session }: sessionProps) => {
               : "bg-transparent"
           )}
         >
-          <div className=" px-4 sm:px-6  flex justify-between items-center h-16 md:h-20 ">
+          <div className="px-4 sm:px-6 flex justify-between items-center h-16 md:h-20">
             {/* Logo */}
             <Link
               href="/"
@@ -84,7 +105,7 @@ const Navbar = ({ session }: sessionProps) => {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex md:items-center md:space-x-1 ">
+            <div className="hidden md:flex md:items-center md:space-x-1">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
