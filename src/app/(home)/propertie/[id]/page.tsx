@@ -110,11 +110,6 @@ async function page({
               {/* MOBILE */}
               <div className=" md:hidden ">
                 <CarouselSimilarProperties data={similarProperties} />
-                {/* {similarProperties.map((item) => (
-                <Link key={item.id} href={`/propertie/${item.id}`}>
-                  <CardSimilarProperties dataItem={item} />
-                </Link>
-              ))} */}
               </div>
             </>
           )}
