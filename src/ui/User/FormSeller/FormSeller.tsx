@@ -15,6 +15,7 @@ import { contactSeller } from "@/app/(home)/propertie/[id]/actions";
 import Link from "next/link";
 import { capitalizeFirstLetter } from "@/app/utils/capitalizeFirstLetter";
 import { getInitials } from "@/app/utils/nameAvatar";
+import { usePathname } from "next/navigation";
 
 type FormStateSeller =
   | {
@@ -37,7 +38,9 @@ type Props = {
     lastName: string;
   };
 };
+
 export const FormSeller = ({ sellerData }: Props) => {
+  const pathname = usePathname();
   const initialState: FormStateSeller = undefined;
   const [state, formAction, isPending] = useActionState(
     contactSeller,
@@ -69,6 +72,8 @@ export const FormSeller = ({ sellerData }: Props) => {
       </CardHeader>
       <CardContent>
         <form action={formAction}>
+          {/* Campo oculto para enviar la ruta actual */}
+          <input type="hidden" name="redirectTo" value={pathname} />
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
@@ -84,13 +89,13 @@ export const FormSeller = ({ sellerData }: Props) => {
               <div className="flex items-center">
                 <Label htmlFor="name">Name</Label>
               </div>
-              <Input id="password" type="text" name="name" required />
+              <Input id="name" type="text" name="name" required />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="name">Message</Label>
+                <Label htmlFor="message">Message</Label>
               </div>
-              <Textarea id="password" name="message" required />
+              <Textarea id="message" name="message" required />
             </div>
             <Button type="submit" className="w-full">
               {isPending ? "Loading..." : "Contact"}
@@ -106,7 +111,7 @@ export const FormSeller = ({ sellerData }: Props) => {
               {state.message}{" "}
               <Link
                 className="text-blue-500 underline hover:underline"
-                href="/auth/login"
+                href={`/auth/login?redirectTo=${encodeURIComponent(pathname)}`}
               >
                 {" "}
                 Login

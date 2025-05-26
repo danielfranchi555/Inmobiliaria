@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { useActionState, useEffect, useTransition } from "react";
 import { login } from "@/app/auth/actions";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export type FormStateLogin =
   | {
@@ -31,6 +31,8 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "";
   const initialState: FormStateLogin = {
     success: false,
     errors: {
@@ -64,6 +66,7 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <form action={formAction}>
+            <input type="hidden" name="redirectTo" value={redirectTo} />
             <div className="grid gap-6">
               <div className="grid gap-6">
                 <div className="grid gap-2">
@@ -105,7 +108,6 @@ export function LoginForm({
                 </Link>
                 {state?.message && !state?.success && (
                   <div className="flex flex-col justify-center items-center gap-1 p-4 border border-red-400 text-red-700 bg-red-50 rounded-md">
-                    {/* <LogIn className="w-5 h-5 mt-0.5" /> */}
                     <p className="font-semibold">Login failed</p>
                     <p className="text-sm">{state.message}</p>
                   </div>

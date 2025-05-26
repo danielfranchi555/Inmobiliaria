@@ -150,11 +150,6 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
         message: "Invalid Credentials",
       };
     }
-    new Promise((resolve) => {
-      setTimeout(() => {
-        resolve("foo");
-      }, 3000);
-    });
 
     // create session
     const userId = user.id;
@@ -164,10 +159,16 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
       name: user.name,
       expiresAt: new Date(Date.now() + 60 * 60 * 1000),
     });
+
+    // Obtén el redirectTo del formData o usa el valor predeterminado
+    const redirectTo = data.redirectTo as string;
+    // Si no hay redirectTo, usa la ruta según el rol del usuario
+    const redirectUrl = redirectTo || (user.role === "ADMIN" ? "/admin" : "/");
+
     return {
       success: true,
       message: "Login successful",
-      redirectUrl: user?.role === "ADMIN" ? "/admin" : "/",
+      redirectUrl,
     };
   } catch (error) {
     return {
