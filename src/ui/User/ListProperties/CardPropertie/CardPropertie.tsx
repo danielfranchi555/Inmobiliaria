@@ -42,8 +42,9 @@ export function CardPropertie({ dataItem, widht }: Props) {
           <MapPin size={18} />
           <div className="flex items-center gap-1 ">
             <span className="text-sm text-gray-600 space-x-1">
-              {capitalizeFirstLetter(dataItem.neighborhood)}
+              {capitalizeFirstLetter(dataItem.neighborhood) + ","}
             </span>
+
             <span className="text-sm text-gray-600 space-x-1">
               {capitalizeFirstLetter(dataItem.city)}
             </span>
