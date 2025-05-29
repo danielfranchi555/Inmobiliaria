@@ -34,7 +34,7 @@ export const UseSelect = ({
   name,
 }: Props) => {
   return (
-    <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-4 ">
+    <div className="flex flex-col gap-1 w-full md:border-r-1 md:pr-4 ">
       <Label>{label}</Label>
       <Select
         onValueChange={(value) => {

@@ -113,7 +113,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
     <div className="shadow-xl bg-white w-full md:max-w-[990px] flex p-3 md:px-5 flex-col gap-4 rounded-md">
       <h2 className="text-2xl font-semibold">Filtra tu búsqueda</h2>
       <form
-        className="grid grid-cols-2 md:grid-cols-5 gap-4"
+        className="grid grid-cols-1 md:grid-cols-5 gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
         <UseSelect
@@ -140,8 +140,8 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           label="Selecciona la ciudad"
           name="city"
         />
-        <div className="flex flex-col gap-1 w-full md:border-r-1 md:pr-6">
-          <Label>Precio</Label>
+        <div className=" flex flex-col gap-1 w-full md:border-r-1 md:pr-6">
+          <Label>Selecciona el Precio</Label>
           <Select>
             <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
               <SelectValue placeholder="Precio" />
@@ -208,7 +208,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           </Select>
         </div>
 
-        <div className="w-full mt-4 col-span-2 md:col-span-1">
+        <div className="w-full mt-4  md:col-span-1">
           <Button
             className="w-full bg-[#4A60A1]"
             type="submit"
