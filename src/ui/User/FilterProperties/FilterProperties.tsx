@@ -118,7 +118,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           data={propertyTypeOptions}
           setValue={setValue}
           value={watch("type")}
-          placeholder="Tipo de propiedad"
+          placeholder="Tipo de inmueble"
           label="Selecciona el tipo"
           name={"type"}
         />
@@ -127,7 +127,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           setValue={setValue}
           value={watch("contract")}
           placeholder="Tipo de contrato"
-          label="Selecciona el tipo"
+          label="Selecciona el contrato"
           name={"contract"}
         />
         <UseSelect

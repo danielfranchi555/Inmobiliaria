@@ -3,9 +3,15 @@
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,6 +19,7 @@ import { LogOut, User } from "lucide-react";
 import { deleteSession } from "@/app/auth/sessionActions";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 type DropdownProps = {
   session: {
@@ -52,7 +59,7 @@ export const Dropdown = ({ session }: DropdownProps) => {
                     href={"/auth/login"}
                     className={`${isHome ? "text-white" : "text-black"}`}
                   >
-                    Sign In
+                    Iniciar sesión
                   </Link>
                 )}
               </span>
@@ -60,7 +67,7 @@ export const Dropdown = ({ session }: DropdownProps) => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="w-48">
-            <DropdownMenuLabel>Profile</DropdownMenuLabel>
+            <DropdownMenuLabel>Perfil</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={async () => {
@@ -69,7 +76,7 @@ export const Dropdown = ({ session }: DropdownProps) => {
               className="cursor-pointer"
             >
               <span className="flex items-center justify-between w-full">
-                Sign Out
+                Cerrar Sesión
                 <LogOut className="ml-2 h-4 w-4" />
               </span>
             </DropdownMenuItem>
@@ -78,10 +85,9 @@ export const Dropdown = ({ session }: DropdownProps) => {
       ) : (
         <Link
           href={"/auth/login"}
-          className={`${isHome ? "text-white" : "text-black"} flex items-center gap-1 px-3 py-2   font-medium transition-all duration-300 border-b-1 border-transparent `}
+          className={`${isHome ? "text-white" : "text-black"} flex items-center gap-1 px-3 py-2  text-sm  font-medium transition-all duration-300 border-b-1 border-transparent `}
         >
-          <User />
-          Sign in
+          Iniciar sesión
         </Link>
       )}
     </>

@@ -161,7 +161,7 @@ export const MobileMenu = ({
                 {navLinks.map((link, i) => (
                   <motion.a
                     key={link.href}
-                    href="#properties"
+                    href={link.href}
                     variants={itemVariants}
                     custom={session ? i + 1 : i}
                     onClick={() => setOpen(false)}

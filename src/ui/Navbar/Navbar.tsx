@@ -105,7 +105,7 @@ const Navbar = ({ session }: sessionProps) => {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden md:flex md:items-center md:space-x-1">
+            <div className="hidden md:flex md:items-center ">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -133,7 +133,7 @@ const Navbar = ({ session }: sessionProps) => {
                   </Link>
                 );
               })}
-              <div className="pl-2">
+              <div className="">
                 <Dropdown session={session} />
               </div>
             </div>
