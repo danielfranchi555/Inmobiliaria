@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
 import { PropertyType } from "@/app/types/property";
+import { capitalizeFirstLetter } from "@/app/utils/capitalizeFirstLetter";
 
 type Props = {
   dataItem: PropertyType;
@@ -34,11 +35,12 @@ export function CardSimilarProperties({ dataItem }: Props) {
         <div className="flex items-center gap-1">
           <MapPin size={18} />
           <span className="text-xs sm:text-sm text-gray-600">
-            {dataItem.neighborhood}, {dataItem.city}
+            {capitalizeFirstLetter(dataItem.neighborhood)},{" "}
+            {capitalizeFirstLetter(dataItem.city)}
           </span>
         </div>
         <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis  ">
-          {dataItem.title}
+          {capitalizeFirstLetter(dataItem.title)}
         </p>
         <p className="line-clamp-2 overflow-hidden tex-sm">
           {dataItem.description}

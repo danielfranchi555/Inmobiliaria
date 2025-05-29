@@ -63,7 +63,7 @@ async function page({
             </div>
           </div>
           <div className="col-span-4 md:col-span-3 grid gap-4">
-            <div className="flex flex-col md:flex-row  text-left justify-between">
+            <div className="flex flex-col md:flex-row  text-left justify-between ">
               <h1 className="text-1xl md:text-2xl font-bold">{data.title}</h1>
               <p className="text-2xl font-bold text-green-500">${data.price}</p>
             </div>
@@ -99,6 +99,10 @@ async function page({
                 <span className="font-bold">{data.parkingSpaces}</span>
                 <span className="text-sm text-gray-400">Estacionamiento</span>
               </div>
+            </div>
+            <div>
+              <h4 className="text-1xl md:text-2xl font-bold">Descripcion</h4>
+              <p>{data.description}</p>
             </div>
           </div>
         </div>

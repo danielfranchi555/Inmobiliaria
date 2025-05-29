@@ -45,6 +45,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
   const [isPending, setTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
+
   const initialValues = useMemo(
     () => ({
       type: searchParams.get("Type") || "",
@@ -61,14 +62,16 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
     defaultValues: initialValues,
   });
 
+  const watchAllFields = watch();
+
+  const isFilterApplied = useMemo(() => {
+    return Object.values(watchAllFields).some((value) => value !== "");
+  }, [watchAllFields]);
+
   const onSubmit: SubmitHandler<Inputs> = useCallback(
     (data) => {
       const params = new URLSearchParams();
-
-      // Resetear siempre a página 1 al aplicar nuevos filtros
       params.set("page", "1");
-
-      // Setear nuevos valores
       if (data.type) params.set("Type", data.type);
       if (data.contract) params.set("Contract", data.contract);
       if (data.currency) params.set("Currency", data.currency);
@@ -86,7 +89,6 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
   );
 
   useEffect(() => {
-    // Solo resetear el formulario si los valores han cambiado significativamente
     const currentValues = {
       type: searchParams.get("Type") || "",
       contract: searchParams.get("Contract") || "",
@@ -108,10 +110,10 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
   }, [searchParams, reset, initialValues]);
 
   return (
-    <div className=" shadow-xl bg-white w-full md:max-w-[990px] flex p-3 md:px-5 flex-col gap-4 rounded-md">
-      <h2 className="text-2xl font-semibold">Filtra tu busqueda</h2>
+    <div className="shadow-xl bg-white w-full md:max-w-[990px] flex p-3 md:px-5 flex-col gap-4 rounded-md">
+      <h2 className="text-2xl font-semibold">Filtra tu búsqueda</h2>
       <form
-        className="grid grid-cols-2 md:grid-cols-5 gap-4 "
+        className="grid grid-cols-2 md:grid-cols-5 gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
         <UseSelect
@@ -120,7 +122,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           value={watch("type")}
           placeholder="Tipo de inmueble"
           label="Selecciona el tipo"
-          name={"type"}
+          name="type"
         />
         <UseSelect
           data={contractTypeOptions}
@@ -128,17 +130,17 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           value={watch("contract")}
           placeholder="Tipo de contrato"
           label="Selecciona el contrato"
-          name={"contract"}
+          name="contract"
         />
         <UseSelect
           data={cities}
           setValue={setValue}
           value={watch("city")}
-          placeholder="Tipo de ciudad"
+          placeholder="Ciudad"
           label="Selecciona la ciudad"
-          name={"city"}
+          name="city"
         />
-        <div className="flex flex-col gap-1 w-full  md:border-r-1 md:pr-6 ">
+        <div className="flex flex-col gap-1 w-full md:border-r-1 md:pr-6">
           <Label>Precio</Label>
           <Select>
             <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
@@ -147,13 +149,9 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Precio</SelectLabel>
-                <div className="flex  flex-col gap-2">
+                <div className="flex flex-col gap-2">
                   <Select
-                    value={
-                      watch("currency") || searchParams.get("Currency") || ""
-                    }
-                    // defaultValue={searchParams.get("Currency") || ""}
-                    // value={searchParams.get("Currency") || ""}
+                    value={watch("currency") || ""}
                     onValueChange={(value) => setValue("currency", value)}
                   >
                     <SelectTrigger className="w-full">
@@ -214,7 +212,7 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           <Button
             className="w-full bg-[#4A60A1]"
             type="submit"
-            disabled={isPending}
+            disabled={isPending || !isFilterApplied}
           >
             {isPending ? "Cargando.." : "Buscar"}
           </Button>
