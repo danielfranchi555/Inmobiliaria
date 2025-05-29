@@ -14,34 +14,52 @@ type Props = {
   images: string[];
 };
 
+const enhanceCloudinaryURL = (url: string): string => {
+  const uploadIndex = url.indexOf("/upload/");
+  if (uploadIndex === -1) return url;
+
+  const prefix = url.slice(0, uploadIndex + 8);
+  const suffix = url.slice(uploadIndex + 8);
+
+  return `${prefix}c_limit,w_1600,f_auto,q_100/${suffix}`;
+};
+
 const CarouselImages = ({ images }: Props) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const imageHeight = "h-[400px] md:h-[400px] lg:h-[500px]";
 
   return (
     <div>
-      {/* Carrusel con shadcn/ui */}
+      {/* Carrusel principal */}
       <Carousel className="w-full">
         <CarouselContent>
-          {images.map((image, index) => (
-            <CarouselItem key={index}>
-              <div onClick={() => setSelectedImage(image)} className="relative">
-                <Image
-                  src={image}
-                  alt={`Image ${index + 1}`}
-                  width={1000}
-                  height={1000}
-                  className={`rounded-lg object-cover w-full ${imageHeight} cursor-pointer hover:brightness-75 transition-all`}
-                />
-              </div>
-            </CarouselItem>
-          ))}
+          {images.map((image, index) => {
+            const optimizedImage = enhanceCloudinaryURL(image);
+            return (
+              <CarouselItem key={index}>
+                <div
+                  onClick={() => setSelectedImage(optimizedImage)}
+                  className="relative"
+                >
+                  <Image
+                    src={optimizedImage}
+                    alt={`Imagen ${index + 1}`}
+                    width={1000}
+                    height={600}
+                    quality={100}
+                    className={`rounded-lg object-cover w-full ${imageHeight} cursor-pointer hover:brightness-75 transition-all`}
+                    priority
+                  />
+                </div>
+              </CarouselItem>
+            );
+          })}
         </CarouselContent>
         <CarouselPrevious />
         <CarouselNext />
       </Carousel>
 
-      {/* Diálogo modal personalizado */}
+      {/* Modal ampliado */}
       {selectedImage && (
         <div
           style={{
@@ -71,8 +89,9 @@ const CarouselImages = ({ images }: Props) => {
             <Image
               src={selectedImage}
               alt="Imagen ampliada"
-              width={1920}
-              height={1080}
+              width={1600}
+              height={1200}
+              quality={100}
               style={{
                 maxWidth: "98vw",
                 maxHeight: "98vh",
@@ -84,7 +103,8 @@ const CarouselImages = ({ images }: Props) => {
               onClick={(e) => e.stopPropagation()}
               priority
             />
-            {/* Botón de cerrar */}
+
+            {/* Botón cerrar */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
