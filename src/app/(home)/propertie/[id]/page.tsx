@@ -48,12 +48,18 @@ async function page({
               <span>Volver al inicio</span>
             </Button>
           </Link>
-          <div className="col-span-4 grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="col-span-1 md:col-span-3">
-              <Carousel images={data.images} />
-            </div>
-            <div className="col-span-1 md:col-span-1">
-              <FormSeller sellerData={data.User} />
+          <div className="col-span-4">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="w-full md:w-3/4">
+                <div className="h-full">
+                  <Carousel images={data.images} />
+                </div>
+              </div>
+              <div className="w-full md:w-1/4">
+                <div className="h-full">
+                  <FormSeller sellerData={data.User} />
+                </div>
+              </div>
             </div>
           </div>
           <div className="col-span-4 md:col-span-3 grid gap-4">

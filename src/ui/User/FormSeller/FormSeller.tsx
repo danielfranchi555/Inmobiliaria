@@ -48,7 +48,7 @@ export const FormSeller = ({ sellerData }: Props) => {
   );
 
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardDescription className="flex py-4 gap-2">
           <Avatar>
@@ -70,11 +70,14 @@ export const FormSeller = ({ sellerData }: Props) => {
           </div>
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form action={formAction}>
-          {/* Campo oculto para enviar la ruta actual */}
+      <CardContent className="flex-grow flex flex-col justify-between">
+        <form
+          action={formAction}
+          className="flex flex-col gap-6 h-full justify-between"
+        >
           <input type="hidden" name="redirectTo" value={pathname} />
-          <div className="flex flex-col gap-6">
+
+          <div className="flex flex-col gap-6 flex-grow">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -86,38 +89,42 @@ export const FormSeller = ({ sellerData }: Props) => {
               />
             </div>
             <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="name">Nombre</Label>
-              </div>
+              <Label htmlFor="name">Nombre</Label>
               <Input id="name" type="text" name="name" required />
             </div>
-            <div className="grid gap-2">
-              <div className="flex items-center">
-                <Label htmlFor="message">Mensaje</Label>
-              </div>
-              <Textarea id="message" name="message" required />
+            <div className="flex flex-col gap-2 flex-grow ">
+              <Label htmlFor="message">Mensaje</Label>
+              <Textarea
+                id="message"
+                name="message"
+                required
+                className="h-full "
+              />
             </div>
+          </div>
+
+          <div>
             <Button type="submit" className="w-full">
               {isPending ? "Enviando..." : "Contactar"}
             </Button>
+            {state?.success && (
+              <div className="mt-4 text-center text-sm text-green-500">
+                {state.message}
+              </div>
+            )}
+            {state?.success === false && (
+              <div className="mt-4 text-center text-sm text-red-400">
+                {state.message}{" "}
+                <Link
+                  className="text-blue-500 underline hover:underline"
+                  href={`/auth/login?redirectTo=${encodeURIComponent(pathname)}`}
+                >
+                  {" "}
+                  Login
+                </Link>
+              </div>
+            )}
           </div>
-          {state?.success && (
-            <div className="mt-4 text-center text-sm text-green-500">
-              {state.message}
-            </div>
-          )}
-          {state?.success === false && (
-            <div className="mt-4 text-center text-sm text-red-400">
-              {state.message}{" "}
-              <Link
-                className="text-blue-500 underline hover:underline"
-                href={`/auth/login?redirectTo=${encodeURIComponent(pathname)}`}
-              >
-                {" "}
-                Login
-              </Link>
-            </div>
-          )}
         </form>
       </CardContent>
     </Card>

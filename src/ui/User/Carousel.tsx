@@ -53,8 +53,9 @@ const CarouselImages = ({ images }: Props) => {
                   <Image
                     src={optimizedImage}
                     alt={`Imagen ${index + 1}`}
-                    fill
-                    className="object-cover rounded-lg hover:brightness-75 transition-all"
+                    width={100}
+                    height={100}
+                    className="object-cover w-full h-full rounded-lg hover:brightness-75 transition-all"
                     priority
                   />
                 </div>
@@ -81,7 +82,7 @@ const CarouselImages = ({ images }: Props) => {
               alt="Imagen ampliada"
               width={1600}
               height={900}
-              className="max-w-[98vw] max-h-[98vh] object-contain rounded-lg shadow-xl"
+              className="max-w-[98vw] max-h-[100vh] object-contain rounded-lg shadow-xl"
               priority
             />
 
