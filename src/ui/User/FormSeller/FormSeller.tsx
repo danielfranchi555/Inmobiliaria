@@ -62,7 +62,7 @@ export const FormSeller = ({ sellerData }: Props) => {
                 {capitalizeFirstLetter(sellerData.name)}{" "}
                 {capitalizeFirstLetter(sellerData.lastName)}
               </h4>
-              <p>Seller Agent</p>
+              <p>Agente - Vendedor</p>
             </div>
             <div>
               <p className="text-muted-foreground">+ {sellerData.phone}</p>
@@ -87,18 +87,18 @@ export const FormSeller = ({ sellerData }: Props) => {
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Nombre</Label>
               </div>
               <Input id="name" type="text" name="name" required />
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
-                <Label htmlFor="message">Message</Label>
+                <Label htmlFor="message">Mensaje</Label>
               </div>
               <Textarea id="message" name="message" required />
             </div>
             <Button type="submit" className="w-full">
-              {isPending ? "Loading..." : "Contact"}
+              {isPending ? "Enviando..." : "Contactar"}
             </Button>
           </div>
           {state?.success && (
