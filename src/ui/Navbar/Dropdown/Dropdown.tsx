@@ -53,7 +53,9 @@ export const Dropdown = ({ session }: DropdownProps) => {
                 }`}
               >
                 {session ? (
-                  session.name
+                  <p className={`${isHome ? "text-white" : "text-black"}`}>
+                    {session.name}
+                  </p>
                 ) : (
                   <Link
                     href={"/auth/login"}
@@ -85,7 +87,7 @@ export const Dropdown = ({ session }: DropdownProps) => {
       ) : (
         <Link
           href={"/auth/login"}
-          className={`${isHome ? "text-white" : "text-black"} flex items-center gap-1 px-3 py-2  text-sm  font-medium transition-all duration-300 border-b-1 border-transparent `}
+          className={`${isHome ? "text-white" : "text-gray-600 hover:text-[#4A60A1]"} flex items-center gap-1 px-3 py-2  text-sm  font-medium transition-all duration-300 border-b-1 border-transparent `}
         >
           Iniciar sesión
         </Link>

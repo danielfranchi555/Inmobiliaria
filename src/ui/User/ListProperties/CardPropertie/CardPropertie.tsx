@@ -40,10 +40,14 @@ export function CardPropertie({ dataItem, widht }: Props) {
       <CardFooter className="grid gap-y-2 m-0">
         <div className="flex items-center gap-1">
           <MapPin size={18} />
-          <span className="text-sm text-gray-600">
-            {capitalizeFirstLetter(dataItem.neighborhood)},{" "}
-            {capitalizeFirstLetter(dataItem.city)}
-          </span>
+          <div className="flex items-center gap-1 ">
+            <span className="text-sm text-gray-600 space-x-1">
+              {capitalizeFirstLetter(dataItem.neighborhood)}
+            </span>
+            <span className="text-sm text-gray-600 space-x-1">
+              {capitalizeFirstLetter(dataItem.city)}
+            </span>
+          </div>
         </div>
 
         <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis md:text-1xl">
