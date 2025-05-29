@@ -9,6 +9,7 @@ import Link from "next/link";
 import { CardSimilarProperties } from "@/ui/User/SimilarProperties/CardSimilarProperties";
 import CarouselSimilarProperties from "@/ui/User/CarouselSimilarProperties/CarouselSimilarProperties";
 import Navbar from "@/ui/Navbar/Navbar";
+import { Button } from "@/components/ui/button";
 
 async function page({
   params,
@@ -40,10 +41,12 @@ async function page({
         <div className="grid grid-cols-4 gap-4 px-2 sm:px-6 mt-10">
           <Link
             href={"/"}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors w-fit bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-[14px] md:text-1xl"
+            // className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors w-fit bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg text-[14px] md:text-1xl"
           >
-            <ArrowLeft size={20} />
-            <span>Volver al inicio</span>
+            <Button variant={"outline"} className="cursor-pointer">
+              <ArrowLeft size={20} />
+              <span>Volver al inicio</span>
+            </Button>
           </Link>
           <div className="col-span-4 grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className="col-span-1 md:col-span-3">

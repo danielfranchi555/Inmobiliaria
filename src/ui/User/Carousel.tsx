@@ -8,7 +8,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   images: string[];
@@ -21,16 +21,25 @@ const enhanceCloudinaryURL = (url: string): string => {
   const prefix = url.slice(0, uploadIndex + 8);
   const suffix = url.slice(uploadIndex + 8);
 
-  return `${prefix}c_limit,w_1600,f_auto,q_100/${suffix}`;
+  // Establece una relación de aspecto constante y calidad
+  return `${prefix}c_fill,w_1600,h_900,f_auto,q_auto/${suffix}`;
 };
 
 const CarouselImages = ({ images }: Props) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const imageHeight = "h-[400px] md:h-[400px] lg:h-[500px]";
+
+  // Cierra modal con tecla ESC
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedImage(null);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
 
   return (
     <div>
-      {/* Carrusel principal */}
+      {/* Carrusel */}
       <Carousel className="w-full">
         <CarouselContent>
           {images.map((image, index) => {
@@ -39,15 +48,13 @@ const CarouselImages = ({ images }: Props) => {
               <CarouselItem key={index}>
                 <div
                   onClick={() => setSelectedImage(optimizedImage)}
-                  className="relative"
+                  className="relative w-full aspect-[16/9] cursor-pointer"
                 >
                   <Image
                     src={optimizedImage}
                     alt={`Imagen ${index + 1}`}
-                    width={1000}
-                    height={600}
-                    quality={100}
-                    className={`rounded-lg object-cover w-full ${imageHeight} cursor-pointer hover:brightness-75 transition-all`}
+                    fill
+                    className="object-cover rounded-lg hover:brightness-75 transition-all"
                     priority
                   />
                 </div>
@@ -59,74 +66,30 @@ const CarouselImages = ({ images }: Props) => {
         <CarouselNext />
       </Carousel>
 
-      {/* Modal ampliado */}
+      {/* Modal de imagen ampliada */}
       {selectedImage && (
         <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.9)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 9999,
-          }}
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
           onClick={() => setSelectedImage(null)}
         >
           <div
-            style={{
-              maxWidth: "98vw",
-              maxHeight: "98vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              position: "relative",
-            }}
+            className="relative max-w-[98vw] max-h-[98vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
           >
             <Image
               src={selectedImage}
               alt="Imagen ampliada"
               width={1600}
-              height={1200}
-              quality={100}
-              style={{
-                maxWidth: "98vw",
-                maxHeight: "98vh",
-                objectFit: "contain",
-                borderRadius: "0.5rem",
-                boxShadow:
-                  "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-              }}
-              onClick={(e) => e.stopPropagation()}
+              height={900}
+              className="max-w-[98vw] max-h-[98vh] object-contain rounded-lg shadow-xl"
               priority
             />
 
-            {/* Botón cerrar */}
+            {/* Botón de cierre */}
             <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedImage(null);
-              }}
-              style={{
-                position: "absolute",
-                top: "0",
-                right: "0",
-                background: "rgba(0,0,0,0.5)",
-                color: "white",
-                border: "none",
-                borderRadius: "50%",
-                width: "2.5rem",
-                height: "2.5rem",
-                fontSize: "1.5rem",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                margin: "0.5rem",
-              }}
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-2 right-2 text-white bg-black/50 hover:bg-black/70 rounded-full w-10 h-10 text-2xl flex items-center justify-center"
+              aria-label="Cerrar imagen"
             >
               ×
             </button>
