@@ -94,9 +94,9 @@ async function page({
           </div>
         </div>
         <div className="mt-20 px-2 sm:px-6">
-          <h3 className="text-2xl font-bold py-4">Similar Properties</h3>
+          <h3 className="text-2xl font-bold py-4">Propiedades similares</h3>
           {!similarProperties ? (
-            "No similar properties"
+            "No se encuentran propiedades similares"
           ) : (
             <>
               <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full">

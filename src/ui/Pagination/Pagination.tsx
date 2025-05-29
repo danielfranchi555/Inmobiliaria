@@ -1,8 +1,8 @@
 "use client";
+
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -42,13 +42,23 @@ export function PaginationWrapper({ totalPages, currentPage }: Props) {
           />
         </PaginationItem>
 
-        {Array.from({ length: totalPages }).map((_, index) => (
-          <PaginationItem key={index}>
-            <PaginationLink href={createPageURL(index + 1)}>
-              {index + 1}
-            </PaginationLink>
-          </PaginationItem>
-        ))}
+        {Array.from({ length: totalPages }).map((_, index) => {
+          const page = index + 1;
+          const isActive = page === currentPage;
+
+          return (
+            <PaginationItem key={index}>
+              <PaginationLink
+                href={isActive ? undefined : createPageURL(page)}
+                aria-current={isActive ? "page" : undefined}
+                aria-disabled={isActive}
+                className={isActive ? "pointer-events-none opacity-50" : ""}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          );
+        })}
 
         <PaginationItem>
           <PaginationNext
