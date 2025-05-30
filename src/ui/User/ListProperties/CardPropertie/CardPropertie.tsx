@@ -54,7 +54,7 @@ export function CardPropertie({ dataItem, widht }: Props) {
         <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis md:text-1xl">
           {dataItem.title}
         </p>
-        <p className="text-sm text-gray-600 line-clamp-2">
+        <p className="text-sm whitespace-nowrap overflow-hidden text-ellipsis md:text-1xl">
           {dataItem.description}
         </p>
         <div className="flex items-center justify-between">
@@ -64,7 +64,7 @@ export function CardPropertie({ dataItem, widht }: Props) {
             <span>{dataItem.squareMeters} m²</span>
           </div>
           <p className="text-sm sm:text-base md:text-lg font-bold text-[#4A60A1] text-right">
-            <span>{dataItem.currency === "USD" ? "$ USD " : "$ ARG "}</span>
+            <span>{dataItem.currency === "USD" ? "$ USD " : "$ ARS "}</span>
             <span>{dataItem.price.toLocaleString("en-US")}</span>
           </p>
         </div>

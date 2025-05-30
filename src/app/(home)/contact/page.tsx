@@ -69,7 +69,7 @@ const ContactPage = () => {
           >
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                Información de Contacto
+                Información de contacto
               </h2>
 
               <div className="space-y-6">
@@ -149,7 +149,7 @@ const ContactPage = () => {
           >
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                Envíanos un Mensaje
+                Envíanos un mensaje
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -158,7 +158,7 @@ const ContactPage = () => {
                     htmlFor="name"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Nombre completo
+                    Nombre y apellido
                   </label>
                   <input
                     type="text"
@@ -168,7 +168,7 @@ const ContactPage = () => {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#4A60A1] focus:border-transparent transition-colors duration-200"
-                    placeholder="Tu nombre"
+                    placeholder="Tu nombre y apellido"
                   />
                 </div>
 

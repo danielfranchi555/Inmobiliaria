@@ -18,7 +18,7 @@ const contractTypeLabels: Record<PropertyListingType, string> = {
 
 const currencyTypeLables: Record<CurrencyType, string> = {
   USD: "USD",
-  ARG: "ARG",
+  ARS: "ARS",
 };
 
 // Generar automáticamente los arrays con `value` y `label`

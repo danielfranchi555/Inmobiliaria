@@ -65,7 +65,9 @@ async function page({
           <div className="col-span-4 md:col-span-3 grid gap-4">
             <div className="flex flex-col md:flex-row  text-left justify-between ">
               <h1 className="text-1xl md:text-2xl font-bold">{data.title}</h1>
-              <p className="text-2xl font-bold text-green-500">${data.price}</p>
+              <p className="text-2xl font-bold text-green-500">
+                {data.currency} ${data.price}
+              </p>
             </div>
             <div className=" flex justify-between">
               <h1 className="text-sm text-gray-400 font-bold text-center">

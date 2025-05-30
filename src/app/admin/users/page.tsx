@@ -34,7 +34,6 @@ export default async function page({ searchParams }: searchParams) {
         <div className="">
           <SearchUser />
         </div>
-        <Button>Add User</Button>
       </div>
       <TableUsers data={filteredData} />
     </>

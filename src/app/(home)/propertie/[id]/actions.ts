@@ -5,12 +5,18 @@ import { contactSellerSchema } from "@/app/schemas/contactSeller";
 
 type FormStateSeller =
   | {
-      success: boolean;
+      success: true;
+      message: string;
+      errors?: undefined;
+    }
+  | {
+      success: false;
       message: string;
       errors?: {
         email?: string[];
         name?: string[];
         message?: string[];
+        telefono?: string[];
       };
     }
   | undefined;
@@ -22,12 +28,11 @@ export async function contactSeller(
   if (!session) {
     return {
       success: false,
-      message: "You must be logged in to contact the seller",
+      message: "Debes iniciar sesión para contactar al vendedor",
     };
   }
   await new Promise((resolve) => setTimeout(resolve, 2000));
   const dataForm = Object.fromEntries(formData.entries());
-  // const { email, name, message } = dataForm;
 
   const validatedFields = contactSellerSchema.safeParse(dataForm);
 
@@ -35,12 +40,12 @@ export async function contactSeller(
     return {
       success: false,
       errors: validatedFields.error.flatten().fieldErrors,
-      message: "Validation error",
+      message: "Error de validacion",
     };
   }
 
   return {
     success: true,
-    message: "Message sent successfully",
+    message: "Mensaje enviado exitosamente!",
   };
 }

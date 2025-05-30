@@ -120,7 +120,7 @@ export function AppSidebar({ dataUser }: SessionData) {
             >
               <a href="#">
                 <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc </span>
+                <span className="text-base font-semibold">Panel Admin </span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

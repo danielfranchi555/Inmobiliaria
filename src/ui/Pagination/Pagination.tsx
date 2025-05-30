@@ -39,7 +39,9 @@ export function PaginationWrapper({ totalPages, currentPage }: Props) {
             href={isFirstPage ? undefined : createPageURL(currentPage - 1)}
             aria-disabled={isFirstPage}
             className={isFirstPage ? "pointer-events-none opacity-50" : ""}
-          />
+          >
+            Anterior
+          </PaginationPrevious>
         </PaginationItem>
 
         {Array.from({ length: totalPages }).map((_, index) => {
@@ -65,7 +67,9 @@ export function PaginationWrapper({ totalPages, currentPage }: Props) {
             href={isLastPage ? undefined : createPageURL(currentPage + 1)}
             aria-disabled={isLastPage}
             className={isLastPage ? "pointer-events-none opacity-50" : ""}
-          />
+          >
+            Siguiente
+          </PaginationNext>
         </PaginationItem>
       </PaginationContent>
     </Pagination>

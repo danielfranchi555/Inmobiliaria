@@ -34,11 +34,11 @@ model Property {
   status        PropertyStatus      @default(AVAILABLE)
   propertyType  PropertyType
   address       String
-  currency      CurrencyType    
+  currency      CurrencyType
   city          String
   bedrooms      Int?
   bathrooms     Int?
-  squareMeters  Float 
+  squareMeters  Float
   parkingSpaces Int?
   furnished     Boolean             @default(false)
   images        String[]
@@ -111,8 +111,7 @@ enum PropertyListingType {
   RENT // Para alquiler
 }
 
-
 enum CurrencyType {
   USD
-  ARG
+  ARS
 }

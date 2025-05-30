@@ -7,7 +7,7 @@ export type PropertyType = {
   status: "AVAILABLE" | "SOLD" | "RENTED" | "PENDING"; // o el enum que uses
   propertyType: "HOUSE" | "APARTMENT" | "COMMERCIAL" | "LAND";
   address: string;
-  currency: "USD" | "ARG"; // según tu schema
+  currency: "USD" | "ARS"; // según tu schema
   city: string;
   bedrooms: number | null;
   bathrooms: number | null;

@@ -70,7 +70,7 @@ const CarouselSimilarProperties = ({ data }: props) => {
                       <span>{item.squareMeters} m²</span>
                     </div>
                     <p className="text-[14px] font-bold text-green-600">
-                      {item.currency === "USD" ? "$ USD" : "$ ARG"}{" "}
+                      {item.currency === "USD" ? "$ USD" : "$ ARS"}{" "}
                       {item.price.toLocaleString("en-US")}
                     </p>
                   </div>

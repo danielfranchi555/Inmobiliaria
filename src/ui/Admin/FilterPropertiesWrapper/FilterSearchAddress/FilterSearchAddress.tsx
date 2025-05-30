@@ -26,7 +26,7 @@ export function FilterSearchAddress() {
   return (
     <Input
       type="text"
-      placeholder="Filtrar por ciudad"
+      placeholder="Filtrar por direccion"
       onChange={handleChange}
       defaultValue={searchParams.get("address") || ""}
       className="max-w-max"

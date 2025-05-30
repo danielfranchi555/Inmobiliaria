@@ -46,7 +46,7 @@ export async function registerUser(
       return {
         success: false,
         errors: validatedFields.error.flatten().fieldErrors,
-        message: "Validation error",
+        message: "Error de validación",
       };
     }
 
@@ -59,7 +59,7 @@ export async function registerUser(
     if (userExist) {
       return {
         success: false,
-        message: "User already exists",
+        message: "El usuario ya existe",
       };
     }
 
@@ -81,7 +81,7 @@ export async function registerUser(
     if (!userCreate) {
       return {
         success: false,
-        message: "Error creating user",
+        message: "Error al crear el usuario",
       };
     }
     // create session
@@ -94,14 +94,14 @@ export async function registerUser(
 
     return {
       success: true,
-      message: "User registered successfully",
+      message: "Usuario registrado con éxito",
       role: userCreate.role,
       redirectUrl: userCreate.role === "ADMIN" ? "/admin" : "/",
     };
   } catch (error) {
     return {
       success: false,
-      message: "An unexpected error occurred. Please try again later.",
+      message: "Ocurrió un error inesperado. Por favor, inténtalo más tarde.",
       redirectUrl: "/auth/login",
       role: undefined,
     };
@@ -119,7 +119,7 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
       return {
         success: false,
         errors: validatedFields.error.flatten().fieldErrors,
-        message: "Error validating fields",
+        message: "Error validando los campos",
       };
     }
 
@@ -133,7 +133,7 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
     if (!user) {
       return {
         success: false,
-        message: "Invalid Credentials",
+        message: "Credenciales inválidas",
       };
     }
 
@@ -147,7 +147,7 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
     if (!isPasswordValid) {
       return {
         success: false,
-        message: "Invalid Credentials",
+        message: "Credenciales inválidas",
       };
     }
 
@@ -167,13 +167,13 @@ export async function login(prevState: FormStateLogin, formData: FormData) {
 
     return {
       success: true,
-      message: "Login successful",
+      message: "Inicio de sesión exitoso",
       redirectUrl,
     };
   } catch (error) {
     return {
       success: false,
-      message: "An unexpected error occurred. Please try again later.",
+      message: "Ocurrió un error inesperado. Por favor, inténtalo más tarde.",
       redirectUrl: "/auth/login",
     };
   }
@@ -195,7 +195,7 @@ export async function getUserData(userId: string) {
     if (!user) {
       return {
         success: false,
-        message: "User not found",
+        message: "Usuario no encontrado",
       };
     }
 
@@ -208,12 +208,12 @@ export async function getUserData(userId: string) {
         phone: user.phone,
         role: user.role,
       },
-      message: "User data retrieved successfully",
+      message: "Datos del usuario obtenidos con éxito",
     };
   } catch (error) {
     return {
       success: false,
-      message: "Error getting user data",
+      message: "Error al obtener los datos del usuario",
     };
   }
 }

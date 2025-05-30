@@ -31,7 +31,7 @@ const OPTIONS = {
   status: ["AVAILABLE", "SOLD", "RENTED", "PENDING"],
   propertyType: ["HOUSE", "APARTMENT", "COMMERCIAL", "LAND"],
   listingType: ["SALE", "RENT"],
-  currency: ["USD", "ARG"],
+  currency: ["USD", "ARS"],
 };
 
 type Inputs = {

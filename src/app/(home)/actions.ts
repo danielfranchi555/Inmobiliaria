@@ -188,7 +188,7 @@ export async function getProperties(
   } catch (error) {
     return {
       success: false,
-      message: "Error fetching properties",
+      message: "Error al obtener las properties ",
       error,
       data: null,
     };

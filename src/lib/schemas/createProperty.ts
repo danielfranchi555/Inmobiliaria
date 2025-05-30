@@ -37,7 +37,7 @@ export const schema = z.object({
   status: z.enum(["AVAILABLE", "SOLD", "RENTED", "PENDING"], {
     message: "Invalid status value",
   }),
-  currency: z.enum(["USD", "ARG"], {
+  currency: z.enum(["USD", "ARS"], {
     message: "Invalid currency",
   }),
   address: z.string().min(1, { message: "Address is required" }),

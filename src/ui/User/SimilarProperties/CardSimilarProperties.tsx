@@ -53,7 +53,7 @@ export function CardSimilarProperties({ dataItem }: Props) {
           </div>
           <p className="flex flex-col items-center gap-0 md:flex-row md:gap-1 font-bold text-green-600">
             <span className="text-xs sm:text-sm">
-              {dataItem.currency === "USD" ? "$ USD " : "$ ARG "}
+              {dataItem.currency === "USD" ? "$ USD " : "$ ARS "}
             </span>
             <span className="text-xs sm:text-sm">
               {dataItem.price.toLocaleString("en-US")}

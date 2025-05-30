@@ -71,7 +71,7 @@ const UpdateFormProperty = ({ id, propertie, sellers }: Props) => {
 
   console.log(propertie);
 
-  const CURRENCY_OPTIONS = ["USD", "ARG"];
+  const CURRENCY_OPTIONS = ["USD", "ARS"];
   const {
     register,
     handleSubmit,

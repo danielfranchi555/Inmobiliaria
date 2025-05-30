@@ -47,7 +47,7 @@ export async function createProperty(data: Inputs) {
         title: data.title,
         description: data.description,
         price: data.price,
-        currency: data.currency as "USD" | "ARG",
+        currency: data.currency as "USD" | "ARS",
         listingType: data.listingType,
         status: data.status,
         address: data.address,

@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,6 +25,7 @@ type FormStateSeller =
       errors?: {
         email?: string[];
         name?: string[];
+        telefono?: string[];
         message?: string[];
       };
     }
@@ -46,6 +48,22 @@ export const FormSeller = ({ sellerData }: Props) => {
     contactSeller,
     initialState
   );
+
+  // Estados controlados para inputs
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [message, setMessage] = useState("");
+
+  // Cuando cambia el estado (respuesta), si fue éxito limpiamos campos
+  useEffect(() => {
+    if (state?.success) {
+      setEmail("");
+      setName("");
+      setTelefono("");
+      setMessage("");
+    }
+  }, [state]);
 
   return (
     <Card className="h-full flex flex-col">
@@ -83,44 +101,92 @@ export const FormSeller = ({ sellerData }: Props) => {
               <Input
                 id="email"
                 type="email"
-                placeholder="m@example.com"
+                placeholder="m@Ejemplo.com"
                 required
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={isPending}
               />
+              {state?.errors?.email && (
+                <p className="text-red-500 text-sm mt-1">
+                  {state.errors.email[0]}
+                </p>
+              )}
             </div>
             <div className="grid gap-2">
               <Label htmlFor="name">Nombre</Label>
-              <Input id="name" type="text" name="name" required />
+              <Input
+                id="name"
+                type="text"
+                name="name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                disabled={isPending}
+              />
+              {state?.errors?.name && (
+                <p className="text-red-500 text-sm mt-1">
+                  {state.errors.name[0]}
+                </p>
+              )}
             </div>
-            <div className="flex flex-col gap-2 flex-grow ">
+            <div className="grid gap-2">
+              <Label htmlFor="telefono">Teléfono</Label>
+              <Input
+                id="telefono"
+                type="text"
+                name="telefono"
+                required
+                value={telefono}
+                onChange={(e) => setTelefono(e.target.value)}
+                disabled={isPending}
+              />
+              {state?.errors?.telefono && (
+                <p className="text-red-500 text-sm mt-1">
+                  {state.errors.telefono[0]}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-2">
               <Label htmlFor="message">Mensaje</Label>
               <Textarea
                 id="message"
                 name="message"
                 required
-                className="h-full "
+                className="h-24 resize-none"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                disabled={isPending}
               />
+              {state?.errors?.message && (
+                <p className="text-red-500 text-sm mt-1">
+                  {state.errors.message[0]}
+                </p>
+              )}
             </div>
           </div>
 
           <div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? "Enviando..." : "Contactar"}
             </Button>
+
             {state?.success && (
               <div className="mt-4 text-center text-sm text-green-500">
                 {state.message}
               </div>
             )}
-            {state?.success === false && (
+
+            {/* Error sin campos, muestra link Login */}
+            {state?.success === false && !state?.errors && (
               <div className="mt-4 text-center text-sm text-red-400">
                 {state.message}{" "}
                 <Link
                   className="text-blue-500 underline hover:underline"
                   href={`/auth/login?redirectTo=${encodeURIComponent(pathname)}`}
                 >
-                  {" "}
-                  Login
+                  Iniciar sesion
                 </Link>
               </div>
             )}
