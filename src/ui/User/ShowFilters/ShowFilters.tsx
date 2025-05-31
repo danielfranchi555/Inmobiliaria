@@ -27,7 +27,7 @@ const valueTranslations: Record<string, Record<string, string>> = {
     SALE: "Venta",
   },
   Currency: {
-    ARS: "Peso Argentino",
+    ARS: "ARS",
     USD: "Dólar",
     EUR: "Euro",
   },

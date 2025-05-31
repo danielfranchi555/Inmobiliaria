@@ -22,6 +22,12 @@ import {
   propertyTypeOptions,
 } from "@/app/utils/translations/translations";
 import { memo } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ChevronDown } from "lucide-react";
 
 type Inputs = {
   type: string;
@@ -140,72 +146,79 @@ const FilterProperties = memo(function FilterProperties({ cities }: Props) {
           label="Selecciona la ciudad"
           name="city"
         />
-        <div className=" flex flex-col gap-1 w-full md:border-r-1 md:pr-6">
+        <div className="flex flex-col gap-1 w-full md:border-r-1 md:pr-6">
           <Label>Selecciona el Precio</Label>
-          <Select>
-            <SelectTrigger className="w-full border-none outline-none shadow-none px-0">
-              <SelectValue placeholder="Precio" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Precio</SelectLabel>
-                <div className="flex flex-col gap-2">
-                  <Select
-                    value={watch("currency") || ""}
-                    onValueChange={(value) => setValue("currency", value)}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Moneda" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Moneda</SelectLabel>
-                        {currencyTypeLablesOptions.map((item) => (
-                          <SelectItem key={item.value} value={item.value}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                  <div className="flex flex-col md:flex-row md:items-center gap-2">
-                    <Input
-                      placeholder="precio min"
-                      value={
-                        watch("minprice")
-                          ? formatPrice(Number(watch("minprice")))
-                          : ""
-                      }
-                      onChange={(e) => {
-                        const raw = e.target.value.replace(/,/g, "");
-                        const number = parseInt(raw, 10);
-                        setValue(
-                          "minprice",
-                          isNaN(number) ? "" : number.toString()
-                        );
-                      }}
-                    />
-                    <Input
-                      placeholder="precio max"
-                      value={
-                        watch("maxprice")
-                          ? formatPrice(Number(watch("maxprice")))
-                          : ""
-                      }
-                      onChange={(e) => {
-                        const raw = e.target.value.replace(/,/g, "");
-                        const number = parseInt(raw, 10);
-                        setValue(
-                          "maxprice",
-                          isNaN(number) ? "" : number.toString()
-                        );
-                      }}
-                    />
-                  </div>
-                </div>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-between"
+                aria-label="Selecciona el precio"
+                type="button"
+              >
+                <span className="truncate">
+                  {watch("currency") || watch("minprice") || watch("maxprice")
+                    ? `${watch("currency") || ""} ${watch("minprice") ? formatPrice(Number(watch("minprice"))) : ""}${watch("maxprice") ? " - " + formatPrice(Number(watch("maxprice"))) : ""}`
+                    : "Precio"}
+                </span>
+                <ChevronDown className="w-4 h-4 ml-2 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-72 p-4 space-y-4">
+              <Select
+                value={watch("currency") || ""}
+                onValueChange={(value) => setValue("currency", value)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Moneda" />
+                </SelectTrigger>
+                <SelectContent className="w-full">
+                  <SelectGroup>
+                    <SelectLabel>Moneda</SelectLabel>
+                    {currencyTypeLablesOptions.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <div className="flex gap-2">
+                <Input
+                  placeholder="Precio min"
+                  value={
+                    watch("minprice")
+                      ? formatPrice(Number(watch("minprice")))
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/,/g, "");
+                    const number = parseInt(raw, 10);
+                    setValue(
+                      "minprice",
+                      isNaN(number) ? "" : number.toString()
+                    );
+                  }}
+                />
+                <Input
+                  placeholder="Precio max"
+                  value={
+                    watch("maxprice")
+                      ? formatPrice(Number(watch("maxprice")))
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const raw = e.target.value.replace(/,/g, "");
+                    const number = parseInt(raw, 10);
+                    setValue(
+                      "maxprice",
+                      isNaN(number) ? "" : number.toString()
+                    );
+                  }}
+                />
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="w-full mt-4  md:col-span-1">
